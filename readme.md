@@ -1,2 +1,3 @@
 Readme for the frontend
-test 1 Corey
+
+<a href="https://github.com/peterriesing">Peter Riesing</a>
