@@ -7,6 +7,12 @@ module.exports = {
       niveausmallcaps: ["niveau-grotesk-small-caps", "sans-serif"],
       newspirit: ["new-spirit", "serif"],
     },
+    colors: {
+      green: "#387f5f",
+      blue: "#96d9f7",
+      black: "#000000",
+      gray: "#efebe4",
+    },
     extend: {},
   },
   plugins: [],
