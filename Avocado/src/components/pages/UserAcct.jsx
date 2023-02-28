@@ -1,5 +1,10 @@
 import React from "react";
 import { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
+const supabaseKey =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MDE3MzYsImV4cCI6MTk5MzE3NzczNn0.aNzbzagYgmQ8F9R0OT0MtrQv1yNfQiozBGZyzSBrQTA";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const UserAcct = () => {
 	const [accountDetails, setAccountDetails] = useState({});
@@ -12,7 +17,13 @@ const UserAcct = () => {
 	};
 
 	const sendToSupabase = async (accountDetails) => {
-		fetch("http://localhost:3060/signup", {
+		// let { data, error } = await supabase.auth.signUp({
+		// 	email: "123@123.com",
+		// 	password: "testing1234567",
+		// });
+		// console.log(data);
+
+		const data = await fetch("http://localhost:3060/signup", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
