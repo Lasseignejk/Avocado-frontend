@@ -12,9 +12,13 @@ const UserAcct = () => {
 	};
 
 	const sendToSupabase = async (accountDetails) => {
-		// fetch("http://localhost:3060/signup", {
-		// 	method: "POST",
-		// });
+		fetch("http://localhost:3060/signup", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(accountDetails),
+		});
 		console.log(accountDetails);
 	};
 
@@ -22,7 +26,7 @@ const UserAcct = () => {
 		<div>
 			<form>
 				<h1>User Account</h1>
-				<div>
+				{/* <div>
 					<label htmlFor="name">First Name</label>
 					<input
 						type="text"
@@ -49,7 +53,7 @@ const UserAcct = () => {
 								: ""
 						}
 					/>
-				</div>
+				</div> */}
 				<div>
 					<label htmlFor="email">Email</label>
 					<input
@@ -62,7 +66,7 @@ const UserAcct = () => {
 						}
 					/>
 				</div>
-				<div>
+				{/* <div>
 					<label htmlFor="phone">Phone Number</label>
 					<input
 						type="text"
@@ -75,9 +79,9 @@ const UserAcct = () => {
 								: ""
 						}
 					/>
-				</div>
-				<div>
-					<label htmlFor="password">Address</label>
+				</div> */}
+				{/* <div>
+					<label htmlFor="address">Address</label>
 					<input
 						type="address"
 						id="address"
@@ -85,7 +89,7 @@ const UserAcct = () => {
 						onChange={(e) => setFormState(e)}
 						value={accountDetails.Address ? accountDetails.Address : ""}
 					/>
-				</div>
+				</div> */}
 				<div>
 					<label htmlFor="password">Password</label>
 					<input
@@ -97,7 +101,7 @@ const UserAcct = () => {
 					/>
 				</div>
 				<div>
-					<button type="button" onClick={sendToSupabase(accountDetails)}>
+					<button type="button" onClick={() => sendToSupabase(accountDetails)}>
 						SUBMIT
 					</button>
 				</div>
