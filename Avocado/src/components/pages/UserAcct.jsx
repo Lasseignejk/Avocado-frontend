@@ -17,12 +17,6 @@ const UserAcct = () => {
 	};
 
 	const sendToSupabase = async (accountDetails) => {
-		// let { data, error } = await supabase.auth.signUp({
-		// 	email: "123@123.com",
-		// 	password: "testing1234567",
-		// });
-		// console.log(data);
-
 		const data = await fetch("http://localhost:3060/signup", {
 			method: "POST",
 			headers: {
@@ -37,7 +31,7 @@ const UserAcct = () => {
 		<div>
 			<form>
 				<h1>User Account</h1>
-				{/* <div>
+				<div>
 					<label htmlFor="name">First Name</label>
 					<input
 						type="text"
@@ -64,7 +58,7 @@ const UserAcct = () => {
 								: ""
 						}
 					/>
-				</div> */}
+				</div>
 				<div>
 					<label htmlFor="email">Email</label>
 					<input
