@@ -30,7 +30,7 @@ const UserAcct = () => {
 					/>
 				</div>
 				<div>
-					<label htmlFor="name">First Name</label>
+					<label htmlFor="name">Last Name</label>
 					<input
 						type="text"
 						id="name"
