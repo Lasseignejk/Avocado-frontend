@@ -18,14 +18,14 @@ const Login = () => {
 		const loginBtn = document.querySelector(".loginBtn");
 		loginBtn.disabled = true;
 		loginBtn.classList.add("bg-[#b3b3b3]", "text-black");
-		loginBtn.classList.remove("bg-green", "hover:bg-blue");
-		// const data = await fetch("http://localhost:3060/signup", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(loginDetails),
-		// });
+		loginBtn.classList.remove("bg-green", "hover:bg-blue", "text-grey");
+		const data = await fetch("http://localhost:3060/login", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(loginDetails),
+		});
 		console.log(loginDetails);
 	};
 
@@ -82,7 +82,7 @@ const Login = () => {
 					<div className="flex justify-center">
 						<button
 							className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
-							onClick={() => sendToSupabase()}>
+							onClick={() => sendToSupabase(loginDetails)}>
 							Let's make some guac
 						</button>
 					</div>
