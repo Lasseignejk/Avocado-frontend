@@ -1,10 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
-const supabaseKey =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MDE3MzYsImV4cCI6MTk5MzE3NzczNn0.aNzbzagYgmQ8F9R0OT0MtrQv1yNfQiozBGZyzSBrQTA";
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const UserAcct = () => {
 	const [accountDetails, setAccountDetails] = useState({});
@@ -32,10 +27,10 @@ const UserAcct = () => {
 			<form>
 				<h1>User Account</h1>
 				<div>
-					<label htmlFor="name">First Name</label>
+					<label htmlFor="firstName">First Name</label>
 					<input
 						type="text"
-						id="name"
+						id="firstName"
 						name="CustomerFirstName"
 						onChange={(e) => setFormState(e)}
 						value={
@@ -46,10 +41,10 @@ const UserAcct = () => {
 					/>
 				</div>
 				<div>
-					<label htmlFor="name">Last Name</label>
+					<label htmlFor="lastName">Last Name</label>
 					<input
 						type="text"
-						id="name"
+						id="lastName"
 						name="CustomerLastName"
 						onChange={(e) => setFormState(e)}
 						value={
@@ -71,7 +66,7 @@ const UserAcct = () => {
 						}
 					/>
 				</div>
-				{/* <div>
+				<div>
 					<label htmlFor="phone">Phone Number</label>
 					<input
 						type="text"
@@ -84,8 +79,8 @@ const UserAcct = () => {
 								: ""
 						}
 					/>
-				</div> */}
-				{/* <div>
+				</div>
+				<div>
 					<label htmlFor="address">Address</label>
 					<input
 						type="address"
@@ -94,7 +89,7 @@ const UserAcct = () => {
 						onChange={(e) => setFormState(e)}
 						value={accountDetails.Address ? accountDetails.Address : ""}
 					/>
-				</div> */}
+				</div>
 				<div>
 					<label htmlFor="password">Password</label>
 					<input
