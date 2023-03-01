@@ -3,21 +3,21 @@ import React, { useState } from "react";
 const NewMenuItem = () => {
   const [newItem, setNewItem] = useState({});
 
-  const [check, setCheck] = useState({
-    ItemBreakfast: false,
-    ItemLunch: false,
-    ItemDinner: false,
-    ItemAvailable: false,
-    ItemIsPopular: false,
-  });
+  // const [check, setCheck] = useState({
+  //   ItemBreakfast: false,
+  //   ItemLunch: false,
+  //   ItemDinner: false,
+  //   ItemAvailable: false,
+  //   ItemIsPopular: false,
+  // });
 
-  const setChecked = (e) => {
-    const value = newItem[e.target.name];
-    setCheck({
-      ...check,
-      [e.target.name]: !value,
-    });
-  };
+  // const setChecked = (e) => {
+  //   const value = newItem[e.target.name];
+  //   setCheck({
+  //     ...check,
+  //     [e.target.name]: !value,
+  //   });
+  // };
 
   const setFormState = (e) => {
     setNewItem({
@@ -26,15 +26,45 @@ const NewMenuItem = () => {
     });
   };
 
-  const sendToSupabase = async (newItem) => {
-    const data = await fetch("http://localhost:3060/addmenuitem", {
+  const [breakfast, setBreakfast] = useState(false);
+  const toggleBreakfast = () => {
+    setBreakfast(!breakfast);
+  };
+  const [lunch, setLunch] = useState(false);
+  const toggleLunch = () => {
+    setLunch(!lunch);
+  };
+  const [dinner, setDinner] = useState(false);
+  const toggleDinner = () => {
+    setDinner(!dinner);
+  };
+  const [available, setAvailable] = useState(false);
+  const toggleAvailable = () => {
+    setAvailable(!available);
+  };
+  const [popular, setPopular] = useState(false);
+  const togglePopular = () => {
+    setPopular(!popular);
+  };
+
+  const sendToSupabase = async () => {
+    const dataTosend = {
+      ...newItem,
+      ItemBreakfast: breakfast,
+      ItemIsPopular: popular,
+      ItemAvailable: available,
+      ItemDinner: dinner,
+      ItemLunch: lunch,
+    };
+    console.log(dataTosend);
+    const data = await fetch("http://localhost:3060/addtomenu", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newItem),
+      body: JSON.stringify(dataTosend),
     });
-    console.log(newItem);
+    console.log(data);
   };
 
   return (
@@ -88,7 +118,8 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemBreakfast"
               name="ItemBreakfast"
-              onChange={(e) => setChecked(e)}
+              checked={breakfast}
+              onChange={toggleBreakfast}
             />
           </div>
           <div>
@@ -97,8 +128,8 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemLunch"
               name="ItemLunch"
-              checked={newItem.ItemLunch}
-              onChange={(e) => setChecked(e)}
+              checked={lunch}
+              onChange={toggleLunch}
             />
           </div>
           <div>
@@ -107,7 +138,8 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemDinner"
               name="ItemDinner"
-              onChange={(e) => setChecked(e)}
+              checked={dinner}
+              onChange={toggleDinner}
             />
           </div>
         </div>
@@ -118,7 +150,8 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemAvailable"
               name="ItemAvailable"
-              onChange={(e) => setChecked(e)}
+              checked={available}
+              onChange={toggleAvailable}
             />
           </div>
           <div>
@@ -127,7 +160,8 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemIsPopular"
               name="ItemIsPopular"
-              onChange={(e) => setChecked(e)}
+              checked={popular}
+              onChange={togglePopular}
             />
           </div>
         </div>
@@ -152,7 +186,10 @@ const NewMenuItem = () => {
           />
         </div>
         <div>
-          <button type="button" onClick={() => sendToSupabase(newItem)}>
+          <button
+            type="button"
+            onClick={() => sendToSupabase(newItem, breakfast)}
+          >
             SUBMIT
           </button>
         </div>
