@@ -12,13 +12,13 @@ const AdminRestaurant = () => {
 	};
 
 	const sendToSupabase = async (restaurantDetails) => {
-		// await fetch("http://localhost:3060/{NAME OF ROUTE}", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(restaurantDetails),
-		// });
+		await fetch("http://localhost:3060/addrest", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(restaurantDetails),
+		});
 		console.log(restaurantDetails);
 	};
 
