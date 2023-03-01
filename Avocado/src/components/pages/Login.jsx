@@ -79,7 +79,7 @@ const Login = () => {
 					</div>
 					<div className="flex justify-center">
 						<button
-							className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in"
+							className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
 							onClick={() => sendToSupabase()}>
 							Let's make some guac
 						</button>
