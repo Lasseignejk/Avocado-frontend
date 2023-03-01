@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 import "../pages/Login.css";
 
 const Login = () => {
-	const [accountDetails, setAccountDetails] = useState({});
+	// const [accountDetails, setAccountDetails] = useState({});
 	const [loginDetails, setLoginDetails] = useState({});
 
 	const setFormState = (e) => {
-		setAccountDetails({
-			...accountDetails,
+		setLoginDetails({
+			...loginDetails,
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	const sendToSupabase = async (accountDetails) => {
+	const sendToSupabase = async (loginDetails) => {
 		const loginBtn = document.querySelector(".loginBtn");
 		loginBtn.disabled = true;
 		loginBtn.classList.add("bg-[#b3b3b3]", "text-black");
@@ -24,9 +24,9 @@ const Login = () => {
 		// 	headers: {
 		// 		"Content-Type": "application/json",
 		// 	},
-		// 	body: JSON.stringify(accountDetails),
+		// 	body: JSON.stringify(loginDetails),
 		// });
-		console.log(accountDetails);
+		console.log(loginDetails);
 	};
 
 	return (
@@ -38,6 +38,7 @@ const Login = () => {
 					<div className="flex flex-col">
 						<label htmlFor="email">email</label>
 						<input
+							className="pl-3"
 							type="email"
 							id="email"
 							name="CustomerEmail"
@@ -50,6 +51,7 @@ const Login = () => {
 					<div className="flex flex-col">
 						<label htmlFor="password">password</label>
 						<input
+							className="pl-3"
 							type="password"
 							id="password"
 							name="Password"
