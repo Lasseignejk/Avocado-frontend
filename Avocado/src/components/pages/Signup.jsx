@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const UserAcct = () => {
+const Signup = () => {
 	const [accountDetails, setAccountDetails] = useState({});
 
 	const setFormState = (e) => {
@@ -11,22 +11,39 @@ const UserAcct = () => {
 		});
 	};
 
-	// const sendToSupabase = async (accountDetails) => {
-	// 	const data = await fetch("http://localhost:3060/signup", {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify(accountDetails),
-	// 	});
-	// 	console.log(accountDetails);
-	// };
+	const sendToSupabase = async (accountDetails) => {
+		const data = await fetch("http://localhost:3060/signup", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(accountDetails),
+		});
+		console.log(accountDetails);
+	};
 
 	return (
 		<div>
 			<form>
-				<h1>User Account</h1>
+				<h1>Signup for an Avocado account</h1>
 				<div>
+					<div>
+						<select
+							name="RestOwner"
+							id=""
+							value={accountDetails.RestOwner ? accountDetails.RestOwner : ""}
+							onChange={(e) => setFormState(e)}>
+							<option value="" name="RestOwner" selected disabled>
+								I am...
+							</option>
+							<option value="false" name="RestOwner">
+								a customer
+							</option>
+							<option value="true" name="RestOwner">
+								a restaurant owner
+							</option>
+						</select>
+					</div>
 					<label htmlFor="firstName">First Name</label>
 					<input
 						type="text"
@@ -110,4 +127,4 @@ const UserAcct = () => {
 	);
 };
 
-export default UserAcct;
+export default Signup;
