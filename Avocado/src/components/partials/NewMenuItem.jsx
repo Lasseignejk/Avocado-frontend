@@ -3,6 +3,22 @@ import React, { useState } from "react";
 const NewMenuItem = () => {
   const [newItem, setNewItem] = useState({});
 
+  const [check, setCheck] = useState({
+    ItemBreakfast: false,
+    ItemLunch: false,
+    ItemDinner: false,
+    ItemAvailable: false,
+    ItemIsPopular: false,
+  });
+
+  const setChecked = (e) => {
+    const value = newItem[e.target.name];
+    setCheck({
+      ...check,
+      [e.target.name]: !value,
+    });
+  };
+
   const setFormState = (e) => {
     setNewItem({
       ...newItem,
@@ -72,8 +88,7 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemBreakfast"
               name="ItemBreakfast"
-              onChange={(e) => setFormState(e)}
-              value={newItem.ItemBreakfast ? newItem.ItemBreakfast : ""}
+              onChange={(e) => setChecked(e)}
             />
           </div>
           <div>
@@ -82,8 +97,8 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemLunch"
               name="ItemLunch"
-              onChange={(e) => setFormState(e)}
-              value={newItem.ItemLunch ? newItem.ItemLunch : ""}
+              checked={newItem.ItemLunch}
+              onChange={(e) => setChecked(e)}
             />
           </div>
           <div>
@@ -92,8 +107,7 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemDinner"
               name="ItemDinner"
-              onChange={(e) => setFormState(e)}
-              value={newItem.ItemDinner ? newItem.ItemDinner : ""}
+              onChange={(e) => setChecked(e)}
             />
           </div>
         </div>
@@ -104,8 +118,7 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemAvailable"
               name="ItemAvailable"
-              onChange={(e) => setFormState(e)}
-              value={newItem.ItemAvailable ? newItem.ItemAvailable : ""}
+              onChange={(e) => setChecked(e)}
             />
           </div>
           <div>
@@ -114,15 +127,14 @@ const NewMenuItem = () => {
               type="checkbox"
               id="ItemIsPopular"
               name="ItemIsPopular"
-              onChange={(e) => setFormState(e)}
-              value={newItem.ItemIsPopular ? newItem.ItemIsPopular : ""}
+              onChange={(e) => setChecked(e)}
             />
           </div>
         </div>
         <div>
           <label htmlFor="ItemCookTime">Cooking Time</label>
           <input
-            type="ItemCookTime"
+            type="text"
             id="ItemCookTime"
             name="ItemCookTime"
             onChange={(e) => setFormState(e)}
@@ -132,7 +144,7 @@ const NewMenuItem = () => {
         <div>
           <label htmlFor="ItemImg">Item image URL</label>
           <input
-            type="ItemImg"
+            type="text"
             id="ItemImg"
             name="ItemImg"
             onChange={(e) => setFormState(e)}
