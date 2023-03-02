@@ -31,7 +31,9 @@ const Signup = () => {
 			<div className="w-[300px] bg-gray flex flex-col items-center p-5 gap-10">
 				<form className="flex flex-col gap-5 font-niveau font-bold">
 					<img src="../logos/avocado_green.svg" alt="" />
-					<h1 className="text-center text-lg">Signup for an Avocado account</h1>
+					<h1 className="text-center text-lg">
+						Sign up for an Avocado account
+					</h1>
 
 					<div className="flex gap-3">
 						<p>I am...*</p>
