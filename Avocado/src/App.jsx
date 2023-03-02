@@ -7,6 +7,7 @@ import Login from "./components/pages/Login";
 import Menu from "./components/pages/Menu";
 import Signup from "./components/pages/Signup";
 import UserAcct from "./components/pages/UserAcct";
+import AdminNavTest from "./components/pages/AdminNavTest";
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 				<Route path="/account" element={<UserAcct />} />
 				<Route path="/restaurantinfo" element={<AdminRestaurant />} />
 				<Route path="/menuinfo" element={<AdminMenu />} />
+				<Route path="/navtest" element={<AdminNavTest />} />
 				<Route path="*" element={<Error />} />
 			</Routes>
 		</div>
