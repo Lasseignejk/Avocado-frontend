@@ -1,55 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setCustomer } from "../state/CustomerSlice";
 
-const UserAcct = () => {
-	const customer = useSelector((state) => state.customer);
-	const dispatch = useDispatch();
-
-	const getCustomer = async () => {
-		const response = await fetch("http://localhost:3060/displaycustomer");
-		const json = await response.json();
-		dispatch(setCustomer(json));
-	};
-
-	useEffect(() => {
-		getCustomer();
-	}, []);
-
-	const [accountDetails, setAccountDetails] = useState({});
-
-	const setFormState = (e) => {
-		setAccountDetails({
-			...accountDetails,
-			[e.target.name]: e.target.value,
-		});
-	};
-
-	// const updateUserAccount = async (accountDetails) => {
-	// 	const data = await fetch("http://localhost:3060/update", {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify(accountDetails),
-	// 	});
-	// 	console.log(accountDetails);
-	// };
-
+const AdminAccount = () => {
 	return (
 		<div>
-			<div className="flex flex-col gap-5">
-				{customer.map((individual) => (
-					<div>
-						<p>{individual.CustomerFirstName}</p>
-						<p>{individual.CustomerLastName}</p>
-						<p>{individual.CustomerEmail}</p>
-					</div>
-				))}
-			</div>
 			<form>
-				<h1>User Account</h1>
+				<h1>Admin Account</h1>
 				<div>
 					<label htmlFor="firstName">First Name</label>
 					<input
@@ -125,10 +80,8 @@ const UserAcct = () => {
 					/>
 				</div>
 				<div>
-					<button
-						type="button"
-						onClick={() => updateUserAccount(accountDetails)}>
-						Update Account
+					<button type="button" onClick={() => sendToSupabase(accountDetails)}>
+						SUBMIT
 					</button>
 				</div>
 			</form>
@@ -136,4 +89,4 @@ const UserAcct = () => {
 	);
 };
 
-export default UserAcct;
+export default AdminAccount;
