@@ -3,7 +3,7 @@ import AdminNavBar from "../partials/AdminNavBar";
 
 const AdminNavTest = () => {
 	return (
-		<div className="md:flex">
+		<div className="mb-[55px] md:flex md:mb-0">
 			<AdminNavBar />
 			<div>
 				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta iure
