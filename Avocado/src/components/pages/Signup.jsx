@@ -16,7 +16,7 @@ const Signup = () => {
 		signUpBtn.disabled = true;
 		signUpBtn.classList.add("bg-[#b3b3b3]", "text-black");
 		signUpBtn.classList.remove("bg-green", "hover:bg-blue", "text-gray");
-		const data = await fetch("http://localhost:3060/signup", {
+		const data = await fetch("http://localhost:3060/auth/signup", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

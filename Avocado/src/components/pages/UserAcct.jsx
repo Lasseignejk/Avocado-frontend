@@ -8,7 +8,9 @@ const UserAcct = () => {
 	const dispatch = useDispatch();
 
 	const getCustomer = async () => {
-		const response = await fetch("http://localhost:3060/displaycustomer");
+		const response = await fetch(
+			"http://localhost:3060/customer/displaycustomer"
+		);
 		const json = await response.json();
 		dispatch(setCustomer(json));
 	};

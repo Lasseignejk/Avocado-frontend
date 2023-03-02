@@ -19,7 +19,7 @@ const Login = () => {
 		loginBtn.disabled = true;
 		loginBtn.classList.add("bg-[#b3b3b3]", "text-black");
 		loginBtn.classList.remove("bg-green", "hover:bg-blue", "text-grey");
-		const data = await fetch("http://localhost:3060/login", {
+		const data = await fetch("http://localhost:3060/auth/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
