@@ -15,6 +15,7 @@ const AdminRestaurant = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [restToEdit, setRestToEdit] = useState();
 
+  // Add a Restaurant
   const setFormState = (e) => {
     setRestaurantDetails({
       ...restaurantDetails,
@@ -33,7 +34,8 @@ const AdminRestaurant = () => {
     });
     console.log(restaurantDetails);
   };
-  // GET RESTAURANTS BY OWNER ID
+
+  // Get restaurants by owner ID
   useEffect(() => {
     const fetchRestaurantsbyOwner = async () => {
       const { data, error } = await supabase
