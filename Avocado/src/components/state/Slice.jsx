@@ -6,11 +6,11 @@ const initialState = {
   isAdmin: false,
   isOwner: false,
   cart: [],
-  CustomerData: [],
+  customerData: [],
   specificItem: [],
 };
 
-export const artSlice = createSlice({
+export const detailsSlice = createSlice({
   name: "details",
   initialState,
   reducers: {
@@ -20,6 +20,6 @@ export const artSlice = createSlice({
     },
   },
 });
-export const { updateSpecificItem } = artSlice.actions;
+export const { updateSpecificItem } = detailsSlice.actions;
 
-export default artSlice.reducer;
+export default detailsSlice.reducer;

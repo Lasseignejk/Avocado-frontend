@@ -29,13 +29,14 @@ const initialState = [];
 // console.log(customerData);
 
 export const CustomerSlice = createSlice({
-	name: "customer",
-	initialState,
-	reducers: {
-		setCustomer: (state, action) => {
-			return (state = action.payload);
-		},
-	},
+  name: "customer",
+  initialState,
+  reducers: {
+    setCustomer: (state, action) => {
+      console.log(action.payload);
+      state.push(...[action.payload]);
+    },
+  },
 });
 
 export const { setCustomer } = CustomerSlice.actions;
