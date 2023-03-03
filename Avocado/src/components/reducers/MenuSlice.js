@@ -1,10 +1,17 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  menu: [],
-};
+const initialState = [];
 
-export const fetchMenu = createAsyncThunk("displaymenu", async () => {
-  const response = await client.get("http://localhost:3060/displaymenu");
-  return response.data;
+export const MenuSlice = createSlice({
+	name: "menu",
+	initialState,
+	reducers: {
+		setMenu: (state, action) => {
+			return (state = action.payload);
+		},
+	},
 });
+
+export const { setMenu } = MenuSlice.actions;
+
+export default MenuSlice.reducer;
