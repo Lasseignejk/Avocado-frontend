@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setCustomer } from "../state/CustomerSlice";
+import { setCustomer } from "../reducers/CustomerSlice";
 
 const UserAcct = () => {
 	const customer = useSelector((state) => state.customer);
