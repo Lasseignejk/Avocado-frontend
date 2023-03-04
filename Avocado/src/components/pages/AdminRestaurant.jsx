@@ -13,19 +13,17 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const AdminRestaurant = () => {
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restaurants, setRestaurants] = useState([]);
+	const [restLogo, setRestLogo] = useState("");
 	const [restToEdit, setRestToEdit] = useState();
-
-	// const getCustomer = async () => {
-	// 	const response = await fetch("http://localhost:3060/displaycustomer");
-	// 	const json = await response.json();
-	// 	dispatch(setCustomer(json));
-	// };
 
 	// Get restaurants by owner ID
 	useEffect(() => {
 		const getRestaurants = async () => {
 			const response = await fetch(
-				"http://localhost:3060/admin/managerestaurants"
+				"http://localhost:3060/admin/restaurant/getrestaurants",
+				{
+					method: "GET",
+				}
 			);
 			console.log(response);
 			if (!response.ok) {
@@ -45,8 +43,27 @@ const AdminRestaurant = () => {
 			...restaurantDetails,
 			[e.target.name]: e.target.value,
 			OwnerId: 1,
+			RestLogo: restLogo,
 		});
 	};
+
+	const formatLogoPath = (e) => {
+		let file = e.target.files[0].name;
+		setRestLogo(file);
+	};
+
+	// const uploadImage = async (e) => {
+	// 	let file = e.target.files[0].name;
+	// 	console.log(file);
+	// 	const { data, error } = await supabase.storage
+	// 		.from("restaurant-restlogo")
+	// 		.upload(8 + "/" + file, file);
+	// 	if (data) {
+	// 		console.log(data);
+	// 	} else {
+	// 		console.log(error);
+	// 	}
+	// };
 
 	const sendToSupabase = async (restaurantDetails) => {
 		await fetch("http://localhost:3060/admin/restaurant/addrest", {
@@ -57,16 +74,21 @@ const AdminRestaurant = () => {
 			body: JSON.stringify(restaurantDetails),
 		});
 		console.log(restaurantDetails);
+		// const { data, error } = await supabase.storage
+		// 	.from("restaurant-restlogo")
+		// 	.upload(8 + "/" + file, file);
 	};
-
-	//   Set restaurant to edit menu in state
-	// On click route to menu page with restaurant in state
 
 	return (
 		<div className="mb-[55px] md:flex md:mb-0">
 			<AdminNavBar />
 			<div className="flex flex-col gap-10">
-				<div>
+				<div className="flex flex-col gap-2">
+					<h1 className="text-center text-4xl">admin name</h1>
+					<h1 className="text-center text-3xl font-bold">Manage Restaurants</h1>
+				</div>
+
+				<div className="flex flex-col">
 					{restaurants.map((restaurant, index) => (
 						<Link to="/menuinfo" state={restaurant}>
 							<RestaurantCard restaurant={restaurant} key={index} />
@@ -133,10 +155,8 @@ const AdminRestaurant = () => {
 							type="file"
 							id="logo"
 							name="RestLogo"
-							value={
-								restaurantDetails.RestLogo ? restaurantDetails.RestLogo : ""
-							}
-							onChange={(e) => setFormState(e)}
+							accept=".png, .jpeg"
+							onChange={(e) => formatLogoPath(e)}
 						/>
 					</div>
 					<div>
@@ -147,6 +167,18 @@ const AdminRestaurant = () => {
 						</button>
 					</div>
 				</form>
+				{/* <form action="">
+					<div>
+						<label htmlFor="logo">Logo</label>
+						<input
+							type="file"
+							id="logo"
+							name="RestLogo"
+							accept=".png, .jpeg"
+							onChange={(e) => uploadImage(e)}
+						/>
+					</div>
+				</form> */}
 			</div>
 		</div>
 	);
