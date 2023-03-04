@@ -6,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdmin } from "../reducers/AdminSlice";
 import { setCustomer } from "../reducers/CustomerSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
 import { setIsSignedUp, setIsLogginIn } from "../reducers/DashboardSlice";
 
@@ -16,6 +17,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const DashboardLogin = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
   const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
 
@@ -53,11 +56,14 @@ const DashboardLogin = () => {
     console.log(error);
 
     const { data: user } = await supabase.auth.getUser();
+    console.log(user);
 
     if (user) {
-      dispatch(setIsLogginIn(isLogginIn));
+      dispatch(setIsLogginIn(!isLogginIn));
+      dispatch(setIsSignedUp(!isSignedUp));
+      console.log(user);
     }
-    return redirect("/");
+    return navigate("/dashboard");
   };
 
   ///

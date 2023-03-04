@@ -63,14 +63,20 @@ const DashboardSignup = () => {
       password: Password,
     });
 
+    //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
+    console.log(user);
 
+    //turns off component
     if (user) {
       dispatch(setIsLogginIn(!isLogginIn));
-      dispatch(setIsSignedUp(!isSignedUp));
       console.log(user);
+      //navigates to dashboard if signed in
+      return navigate("/dashboard");
     }
-    return navigate("/dashboard");
+
+    //navigates to signup/login again
+    return navigate("/");
 
     /*
     if (RestOwner == "false") {
@@ -106,9 +112,6 @@ const DashboardSignup = () => {
       dispatch(setAdmin(user));
     }
 */
-    // dispatch(setAdmin(user));
-
-    // window.location.replace("http://localhost:5173/admin");
   };
 
   return (
