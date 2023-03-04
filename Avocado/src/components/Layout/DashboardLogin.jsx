@@ -6,17 +6,26 @@ import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdmin } from "../reducers/AdminSlice";
 import { setCustomer } from "../reducers/CustomerSlice";
+
+import { setIsSignedUp, setIsLogginIn } from "../reducers/DashboardSlice";
+
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const Login = () => {
+const DashboardLogin = () => {
   const dispatch = useDispatch();
-  const admin = useSelector((state) => state.admin);
-  const customer = useSelector((state) => state.customer);
-  // const [accountDetails, setAccountDetails] = useState({});
+  const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
+  const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
+
   const [loginDetails, setLoginDetails] = useState({});
+
+  if (isLogginIn || !isSignedUp) {
+    return null;
+  }
+
+  // const [accountDetails, setAccountDetails] = useState({});
 
   const setFormState = (e) => {
     setLoginDetails({
@@ -26,7 +35,9 @@ const Login = () => {
   };
 
   const sendToSupabase = async (loginDetails) => {
-    const { CustomerEmail, Password, RestOwner } = loginDetails;
+    const { CustomerEmail, Password } = loginDetails;
+
+    console.log(loginDetails);
 
     const loginBtn = document.querySelector(".loginBtn");
     loginBtn.disabled = true;
@@ -36,11 +47,22 @@ const Login = () => {
     let { data, error } = await supabase.auth.signInWithPassword({
       email: CustomerEmail,
       password: Password,
-      restowner: RestOwner,
     });
 
-    console.log(RestOwner);
+    console.log(data);
+    console.log(error);
 
+    const { data: user } = await supabase.auth.getUser();
+
+    if (user) {
+      dispatch(setIsLogginIn(isLogginIn));
+    }
+    return redirect("/");
+  };
+
+  ///
+
+  /*
     if (RestOwner == "false") {
       let { data, error } = await supabase.from("Customer").insert([
         {
@@ -54,6 +76,8 @@ const Login = () => {
       console.log(data);
       console.log(error);
 
+      //setting user to customer state
+      /*
       const { data: user } = await supabase.auth.getUser();
       console.log(user);
       dispatch(setCustomer(user));
@@ -73,7 +97,8 @@ const Login = () => {
       console.log(user);
       dispatch(setAdmin(user));
     }
-  };
+    */
+
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-green">
       <div className="w-[300px] h-[400px] bg-gray flex flex-col items-center p-5 gap-10">
@@ -138,7 +163,12 @@ const Login = () => {
         <div className="text-center font-niveau">
           <h1 className="text-sm">New to Avocado online ordering?</h1>
           <p className="text-green text-center text-sm">
-            <Link to={"/signup"}>Create Account</Link>
+            <button
+              className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
+              onClick={() => dispatch(setIsSignedUp(!isSignedUp))}
+            >
+              Create Account
+            </button>
           </p>
         </div>
       </div>
@@ -146,4 +176,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default DashboardLogin;
