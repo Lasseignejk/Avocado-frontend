@@ -16,7 +16,7 @@ const AdminRestaurant = () => {
 	const [restLogo, setRestLogo] = useState("");
 	const [restToEdit, setRestToEdit] = useState();
 
-	// Get restaurants by owner ID
+	// Get restaurants by owner ID on reload
 	useEffect(() => {
 		const getRestaurants = async () => {
 			const response = await fetch(
@@ -82,91 +82,116 @@ const AdminRestaurant = () => {
 	return (
 		<div className="mb-[55px] md:flex md:mb-0">
 			<AdminNavBar />
-			<div className="flex flex-col gap-10">
-				<div className="flex flex-col gap-2">
-					<h1 className="text-center text-4xl">admin name</h1>
-					<h1 className="text-center text-3xl font-bold">Manage Restaurants</h1>
+			<div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20">
+				<div className="flex flex-col">
+					<h1 className="text-center text-4xl font-bold text-green md:text-left">
+						admin name
+					</h1>
+					<h1 className="text-center text-3xl font-bold md:text-left">
+						Manage Restaurants
+					</h1>
 				</div>
 
-				<div className="flex flex-col">
+				<div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly">
 					{restaurants.map((restaurant, index) => (
 						<Link to="/menuinfo" state={restaurant}>
 							<RestaurantCard restaurant={restaurant} key={index} />
 						</Link>
 					))}
 				</div>
-				<form action="">
-					<h1>Add a restuarant</h1>
-					<div>
-						<label htmlFor="name">Name</label>
-						<input
-							type="text"
-							id="name"
-							name="RestName"
-							value={
-								restaurantDetails.RestName ? restaurantDetails.RestName : ""
-							}
-							onChange={(e) => setFormState(e)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="location">Address</label>
-						<input
-							type="text"
-							id="location"
-							name="RestLocation"
-							value={
-								restaurantDetails.RestLocation
-									? restaurantDetails.RestLocation
-									: ""
-							}
-							onChange={(e) => setFormState(e)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="phone">Phone Number</label>
-						<input
-							type="text"
-							id="phone"
-							name="RestPhoneNumber"
-							value={
-								restaurantDetails.RestPhoneNumber
-									? restaurantDetails.RestPhoneNumber
-									: ""
-							}
-							onChange={(e) => setFormState(e)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="hours">Hours</label>
-						<input
-							type="text"
-							id="hours"
-							name="RestHours"
-							value={
-								restaurantDetails.RestHours ? restaurantDetails.RestHours : ""
-							}
-							onChange={(e) => setFormState(e)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="logo">Logo</label>
-						<input
-							type="file"
-							id="logo"
-							name="RestLogo"
-							accept=".png, .jpeg"
-							onChange={(e) => formatLogoPath(e)}
-						/>
-					</div>
-					<div>
-						<button
-							type="button"
-							onClick={() => sendToSupabase(restaurantDetails)}>
-							SUBMIT
-						</button>
-					</div>
-				</form>
+				<div className="flex justify-center">
+					<form className="px-3 flex flex-col gap-2 mb-3 items-center md:mb-5">
+						<h1 className="text-2xl font-bold text-center">Add a Restuarant</h1>
+						<div className="flex flex-col w-full">
+							<label htmlFor="name" className="font-bold">
+								restaurant name
+							</label>
+							<input
+								className="pl-3"
+								type="text"
+								id="name"
+								name="RestName"
+								placeholder="'McDonalds #123'"
+								value={
+									restaurantDetails.RestName ? restaurantDetails.RestName : ""
+								}
+								onChange={(e) => setFormState(e)}
+							/>
+						</div>
+						<div className="flex flex-col w-full">
+							<label htmlFor="phone" className="font-bold">
+								phone number
+							</label>
+							<input
+								className="pl-3"
+								placeholder="(123) 123-1234"
+								type="text"
+								id="phone"
+								name="RestPhoneNumber"
+								value={
+									restaurantDetails.RestPhoneNumber
+										? restaurantDetails.RestPhoneNumber
+										: ""
+								}
+								onChange={(e) => setFormState(e)}
+							/>
+						</div>
+						<div className="flex flex-col w-full">
+							<label htmlFor="location" className="font-bold">
+								address
+							</label>
+							<input
+								className="pl-3"
+								placeholder="123 street, city, state, zip code"
+								type="text"
+								id="location"
+								name="RestLocation"
+								value={
+									restaurantDetails.RestLocation
+										? restaurantDetails.RestLocation
+										: ""
+								}
+								onChange={(e) => setFormState(e)}
+							/>
+						</div>
+						<div className="flex flex-col w-full">
+							<label htmlFor="hours" className="font-bold">
+								hours
+							</label>
+							<input
+								className="pl-3"
+								placeholder="M-F, 11-8, closed weekends"
+								type="text"
+								id="hours"
+								name="RestHours"
+								value={
+									restaurantDetails.RestHours ? restaurantDetails.RestHours : ""
+								}
+								onChange={(e) => setFormState(e)}
+							/>
+						</div>
+						<div className="flex flex-col">
+							<label htmlFor="logo" className="font-bold">
+								logo
+							</label>
+							<input
+								type="file"
+								id="logo"
+								name="RestLogo"
+								accept=".png, .jpeg"
+								onChange={(e) => formatLogoPath(e)}
+							/>
+						</div>
+						<div className="flex justify-center">
+							<button
+								className="bg-green text-gray text-lg px-5 py-1 duration-200 font-bold hover:bg-dkgreen"
+								type="button"
+								onClick={() => sendToSupabase(restaurantDetails)}>
+								Add my restaurant
+							</button>
+						</div>
+					</form>
+				</div>
 				{/* <form action="">
 					<div>
 						<label htmlFor="logo">Logo</label>
