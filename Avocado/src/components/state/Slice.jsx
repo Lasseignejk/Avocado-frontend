@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { imageData } from "../components/DalleData";
 
 const initialState = {
   isLoggedIn: false,
