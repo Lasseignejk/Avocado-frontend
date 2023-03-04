@@ -5,6 +5,9 @@ const initialState = {
   isLogginIn: false,
   customerLayout: false,
   restaurantLayout: false,
+  isOwner: false,
+  isCustomer: false,
+  userDetails: [],
 };
 
 export const DashboardSlice = createSlice({
@@ -18,10 +21,20 @@ export const DashboardSlice = createSlice({
       state.isLogginIn = action.payload;
     },
     setCustomerLayout: (state, action) => {
-      state.isLogginIn = action.payload;
+      state.customerLayout = action.payload;
     },
     setRestaurantLayout: (state, action) => {
-      state.isLogginIn = action.payload;
+      state.restaurantLayout = action.payload;
+    },
+    setOwner: (state, action) => {
+      state.isOwner = action.payload;
+    },
+    setCustomer: (state, action) => {
+      state.isCustomer = action.payload;
+    },
+    setUserDetails: (state, action) => {
+      state.userDetails = [];
+      state.userDetails.push(...[action.payload]);
     },
   },
 });
@@ -31,6 +44,9 @@ export const {
   setIsLogginIn,
   setCustomerLayout,
   setRestaurantLayout,
+  setOwner,
+  setCustomer,
+  setUserDetails,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

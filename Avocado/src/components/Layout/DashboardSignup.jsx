@@ -67,6 +67,7 @@ const DashboardSignup = () => {
       dispatch(setIsLogginIn(!isLogginIn));
       console.log(user);
 
+      //if customer inject into customer table
       if (RestOwner == "false") {
         let { data, error } = await supabase.from("Customer").insert([
           {
@@ -84,6 +85,7 @@ const DashboardSignup = () => {
         console.log(user);
         dispatch(setCustomer(user));
       } else {
+        //inject into owner table
         let { data, error } = await supabase.from("Owner").insert([
           {
             OwnerFirstName: CustomerFirstName,

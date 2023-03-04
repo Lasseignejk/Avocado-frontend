@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../pages/Login.css";
 import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdmin } from "../reducers/AdminSlice";
-import { setCustomer } from "../reducers/CustomerSlice";
 import { redirect, useNavigate } from "react-router-dom";
 
-import { setIsSignedUp, setIsLogginIn } from "../reducers/DashboardSlice";
+import {
+  setIsSignedUp,
+  setIsLogginIn,
+  setUserDetails,
+} from "../reducers/DashboardSlice";
 
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =
@@ -17,10 +19,12 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const DashboardLogin = () => {
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
   const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
+  const userDetails = useSelector((state) => state.dashboard.userDetails);
 
   const [loginDetails, setLoginDetails] = useState({});
 
@@ -40,18 +44,15 @@ const DashboardLogin = () => {
   const sendToSupabase = async (loginDetails) => {
     const { CustomerEmail, Password } = loginDetails;
 
-    console.log(loginDetails);
-
+    //signs in
     let { data, error } = await supabase.auth.signInWithPassword({
       email: CustomerEmail,
       password: Password,
     });
 
-    console.log(data);
-    console.log(error);
-
+    //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
-    console.log(user);
+    dispatch(setUserDetails(data));
 
     if (user) {
       dispatch(setIsLogginIn(!isLogginIn));
@@ -60,45 +61,6 @@ const DashboardLogin = () => {
     }
     return navigate("/dashboard");
   };
-
-  ///
-
-  /*
-    if (RestOwner == "false") {
-      let { data, error } = await supabase.from("Customer").insert([
-        {
-          CustomerFirstName: CustomerFirstName,
-          CustomerLastName: CustomerLastName,
-          CustomerEmail: CustomerEmail,
-          CustomerPhoneNumber: CustomerPhoneNumber,
-          Address: Address,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      //setting user to customer state
-      /*
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setCustomer(user));
-    } else {
-      let { data, error } = await supabase.from("Owner").insert([
-        {
-          OwnerFirstName: CustomerFirstName,
-          OwnerLastName: CustomerLastName,
-          OwnerEmail: CustomerEmail,
-          OwnerPhoneNumber: CustomerPhoneNumber,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setAdmin(user));
-    }
-    */
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-green">
@@ -133,14 +95,14 @@ const DashboardLogin = () => {
           <div className="flex gap-5">
             <label htmlFor="signIn">Sign in as:</label>
             <button
-              className="bg-green text-gray w-[60px] cursor-pointer userBtn"
+              className="bg-green text-gray w-[70px] cursor-pointer userBtn"
               type="button"
               name="RestOwner"
               id="signIn"
               value={false}
               onClick={(e) => setFormState(e)}
             >
-              user
+              Customer
             </button>
             <button
               className="bg-green text-gray w-[60px] cursor-pointer adminBtn"
@@ -149,7 +111,7 @@ const DashboardLogin = () => {
               value={true}
               onClick={(e) => setFormState(e)}
             >
-              admin
+              Owner
             </button>
           </div>
           <div className="flex justify-center">
