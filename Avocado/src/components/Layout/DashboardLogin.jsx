@@ -4,13 +4,9 @@ import { Link } from "react-router-dom";
 import "../pages/Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
+import { queryIsOwner } from "./Queries";
 
-import { createClient } from "@supabase/supabase-js";
-const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
-const supabase = createClient(supabaseUrl, supabaseKey);
-
+import { supabase } from "../../supabase";
 import {
   setUserDetails,
   setOwner,
@@ -22,10 +18,6 @@ const DashboardLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //selectors
-  const isOwner = useSelector((state) => state.dashboard.isOwner);
-  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
-
   const [loginDetails, setLoginDetails] = useState({});
 
   const setFormState = (e) => {
@@ -36,15 +28,12 @@ const DashboardLogin = () => {
   };
 
   const sendToSupabase = async (loginDetails) => {
-    const { CustomerEmail, Password, RestOwner } = loginDetails;
-
-    console.log(RestOwner);
+    const { CustomerEmail, Password } = loginDetails;
 
     //signs in
     let { data, error } = await supabase.auth.signInWithPassword({
       email: CustomerEmail,
       password: Password,
-      RestOwner: RestOwner,
     });
 
     //grabs token from supabase
@@ -54,20 +43,25 @@ const DashboardLogin = () => {
     dispatch(setUserDetails(user));
     console.log(user);
 
+    const userEmail = user?.user?.email;
+    console.log(userEmail);
+
+    const owner = await queryIsOwner(userEmail);
+
     //Restaurants
-    if (RestOwner == "true") {
+    if (owner) {
       console.log("rest");
       //sets as owner in state
-      dispatch(setOwner(!isOwner));
+      dispatch(setOwner(true));
       //naivates to restaurant dash
       return navigate("/restaurantdashboard");
     }
 
     //Customers
-    if (RestOwner == "false") {
+    if (!owner) {
       console.log("cust");
       //sets as customer in state
-      dispatch(setCustomer(!isCustomer));
+      dispatch(setCustomer(true));
       //naivates to customer dash
       return navigate("/customerdashboard");
     }
@@ -103,28 +97,7 @@ const DashboardLogin = () => {
               value={loginDetails.Password ? loginDetails.Password : ""}
             />
           </div>
-          <div className="flex gap-5">
-            <label htmlFor="signIn">Sign in as:</label>
-            <button
-              className="bg-green text-gray w-[70px] cursor-pointer userBtn"
-              type="button"
-              name="RestOwner"
-              id="signIn"
-              value={false}
-              onClick={(e) => setFormState(e)}
-            >
-              Customer
-            </button>
-            <button
-              className="bg-green text-gray w-[60px] cursor-pointer adminBtn"
-              type="button"
-              name="RestOwner"
-              value={true}
-              onClick={(e) => setFormState(e)}
-            >
-              Owner
-            </button>
-          </div>
+
           <div className="flex justify-center">
             <button
               className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
