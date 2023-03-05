@@ -12,6 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const AdminRestaurant = () => {
 	const [restaurantDetails, setRestaurantDetails] = useState({});
+	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
 	const [restLogo, setRestLogo] = useState("");
 	const [restToEdit, setRestToEdit] = useState();
@@ -35,7 +36,7 @@ const AdminRestaurant = () => {
 			}
 		};
 		getRestaurants();
-	}, []);
+	}, [restName]);
 
 	// Add a Restaurant
 	const setFormState = (e) => {
@@ -66,14 +67,23 @@ const AdminRestaurant = () => {
 	// };
 
 	const sendToSupabase = async (restaurantDetails) => {
-		await fetch("http://localhost:3060/admin/restaurant/addrest", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(restaurantDetails),
-		});
-		console.log(restaurantDetails);
+		const response = await fetch(
+			"http://localhost:3060/admin/restaurant/addrest",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(restaurantDetails),
+			}
+		);
+		if (response.status == 200) {
+			console.log("restaurant added");
+			setRestName(restaurantDetails.restName);
+		}
+
+		console.log("fetch completed");
+
 		// const { data, error } = await supabase.storage
 		// 	.from("restaurant-restlogo")
 		// 	.upload(8 + "/" + file, file);
