@@ -1,7 +1,6 @@
 import React from "react";
-import RestaurantLayout from "./RestaurantLayout";
 import RestaurantNavBar from "./RestaurantNavBar";
-
+import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOwner, setCustomer } from "../reducers/DashboardSlice";
@@ -18,12 +17,31 @@ const RestaurantDashboard = ({ children }) => {
 
   //selectors
   const userDetails = useSelector((state) => state.dashboard.userDetails);
-  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
-  const isOwner = useSelector((state) => state.dashboard.isOwner);
 
   //parsing email
   const userEmail = userDetails[0]?.user?.email;
   console.log(userEmail);
+
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      //searches owner database
+      // Subabase obj: obj = { error, data }
+      // { ownerData: obj['ownerData'] }
+      const { data, error } = await supabase
+        .from("Owner")
+        .select()
+        .eq("OwnerEmail", userEmail);
+
+      if (data) {
+        setUserData(data);
+      }
+    };
+    fetchUserData();
+  }, [userEmail]);
+
+  console.log("userdata:", userData);
 
   return (
     <>

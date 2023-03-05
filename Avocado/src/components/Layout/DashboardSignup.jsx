@@ -21,6 +21,7 @@ const DashboardSignup = () => {
   const navigate = useNavigate();
 
   const [accountDetails, setAccountDetails] = useState({});
+  const [isError, setIsError] = useState(false);
 
   //selectors
   const isOwner = useSelector((state) => state.dashboard.isOwner);
@@ -49,17 +50,28 @@ const DashboardSignup = () => {
       email: CustomerEmail,
       password: Password,
     });
+    if (signUpError) {
+      setIsError(signUpError);
+      return;
+    }
 
     //signs in
-    let { data, error } = await supabase.auth.signInWithPassword({
+    let { data, error: SignInError } = await supabase.auth.signInWithPassword({
       email: CustomerEmail,
       password: Password,
       RestOwner: RestOwner,
     });
+    if (SignInError) {
+      setIsError(SignInError);
+      return;
+    }
 
     //grabs token from supabase
-    const { data: user } = await supabase.auth.getUser();
-
+    const { data: user, error: getUserError } = await supabase.auth.getUser();
+    if (getUserError) {
+      setIsError(getUserError);
+      return;
+    }
     //sets token in state
     dispatch(setUserDetails(user));
     console.log(user);
@@ -67,16 +79,22 @@ const DashboardSignup = () => {
     if (user) {
       //if restaurant inject into owner table
       if (RestOwner == "true") {
-        let { data, error } = await supabase.from("Owner").insert([
-          {
-            OwnerFirstName: CustomerFirstName,
-            OwnerLastName: CustomerLastName,
-            OwnerEmail: CustomerEmail,
-            OwnerPhoneNumber: CustomerPhoneNumber,
-          },
-        ]);
+        let { data, error: insertOwnerError } = await supabase
+          .from("Owner")
+          .insert([
+            {
+              OwnerFirstName: CustomerFirstName,
+              OwnerLastName: CustomerLastName,
+              OwnerEmail: CustomerEmail.toLowerCase(),
+              OwnerPhoneNumber: CustomerPhoneNumber,
+            },
+          ]);
+        if (insertOwnerError) {
+          setIsError(insertOwnerError);
+          return;
+        }
         console.log(data);
-        console.log(error);
+        console.log(insertOwnerError);
 
         //grabs token from supabase
         const { data: user } = await supabase.auth.getUser();
@@ -94,17 +112,23 @@ const DashboardSignup = () => {
 
       //if customer inject into customer table
       if (RestOwner == "false") {
-        let { data, error } = await supabase.from("Customer").insert([
-          {
-            CustomerFirstName: CustomerFirstName,
-            CustomerLastName: CustomerLastName,
-            CustomerEmail: CustomerEmail,
-            CustomerPhoneNumber: CustomerPhoneNumber,
-            Address: Address,
-          },
-        ]);
+        let { data, error: insertCustomerError } = await supabase
+          .from("Customer")
+          .insert([
+            {
+              CustomerFirstName: CustomerFirstName,
+              CustomerLastName: CustomerLastName,
+              CustomerEmail: CustomerEmail.toLowerCase(),
+              CustomerPhoneNumber: CustomerPhoneNumber,
+              Address: Address,
+            },
+          ]);
+        if (insertCustomerError) {
+          setIsError(insertCustomerError);
+          return;
+        }
         console.log(data);
-        console.log(error);
+        console.log(insertCustomerError);
 
         //grabs token from supabase
         const { data: user } = await supabase.auth.getUser();
@@ -124,6 +148,15 @@ const DashboardSignup = () => {
     //navigates to signup/login again
     return navigate("/");
   };
+
+  if (isError) {
+    return (
+      <>
+        <h1>Something went wrong</h1>
+        <pre>{isError?.msg}</pre>
+      </>
+    );
+  }
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-green">
