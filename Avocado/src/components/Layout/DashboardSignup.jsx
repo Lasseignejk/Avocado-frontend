@@ -1,37 +1,30 @@
 import React from "react";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdmin } from "../reducers/AdminSlice";
-import { setCustomer } from "../reducers/CustomerSlice";
-import {
-  setIsSignedUp,
-  setIsLogginIn,
-  setUserDetails,
-} from "../reducers/DashboardSlice";
-import { redirect, useNavigate } from "react-router-dom";
 
+import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+import {
+  setUserDetails,
+  setOwner,
+  setCustomer,
+} from "../reducers/DashboardSlice";
+import { redirect, useNavigate } from "react-router-dom";
+
 const DashboardSignup = () => {
+  //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const admin = useSelector((state) => state.admin);
-  const customer = useSelector((state) => state.customer);
-
   const [accountDetails, setAccountDetails] = useState({});
 
-  const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
-  const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
-  const userDetails = useSelector((state) => state.dashboard.userDetails);
-
-  if (isSignedUp) {
-    return null;
-  }
+  //selectors
+  const isOwner = useSelector((state) => state.dashboard.isOwner);
+  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
 
   const setFormState = (e) => {
     setAccountDetails({
@@ -57,23 +50,47 @@ const DashboardSignup = () => {
       password: Password,
     });
 
-    //automatically signs them in as well
-    let { data: signInData, error: signInError } =
-      await supabase.auth.signInWithPassword({
-        email: CustomerEmail,
-        password: Password,
-      });
+    //signs in
+    let { data, error } = await supabase.auth.signInWithPassword({
+      email: CustomerEmail,
+      password: Password,
+      RestOwner: RestOwner,
+    });
 
     //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
 
     //sets token in state
     dispatch(setUserDetails(user));
+    console.log(user);
 
-    //turns off component
     if (user) {
-      dispatch(setIsLogginIn(!isLogginIn));
-      console.log(user);
+      //if restaurant inject into owner table
+      if (RestOwner == "true") {
+        let { data, error } = await supabase.from("Owner").insert([
+          {
+            OwnerFirstName: CustomerFirstName,
+            OwnerLastName: CustomerLastName,
+            OwnerEmail: CustomerEmail,
+            OwnerPhoneNumber: CustomerPhoneNumber,
+          },
+        ]);
+        console.log(data);
+        console.log(error);
+
+        //grabs token from supabase
+        const { data: user } = await supabase.auth.getUser();
+
+        //sets token in state
+        dispatch(setUserDetails(user));
+        console.log(user);
+
+        //sets as owner in state
+        dispatch(setOwner(!isOwner));
+
+        //naivates to restaurant dash
+        return navigate("/restaurantdashboard");
+      }
 
       //if customer inject into customer table
       if (RestOwner == "false") {
@@ -89,29 +106,19 @@ const DashboardSignup = () => {
         console.log(data);
         console.log(error);
 
+        //grabs token from supabase
         const { data: user } = await supabase.auth.getUser();
-        console.log(user);
-        dispatch(setCustomer(user));
-      } else {
-        //else inject into owner table
-        let { data, error } = await supabase.from("Owner").insert([
-          {
-            OwnerFirstName: CustomerFirstName,
-            OwnerLastName: CustomerLastName,
-            OwnerEmail: CustomerEmail,
-            OwnerPhoneNumber: CustomerPhoneNumber,
-          },
-        ]);
-        console.log(data);
-        console.log(error);
 
-        const { data: user } = await supabase.auth.getUser();
+        //sets token in state
+        dispatch(setUserDetails(user));
         console.log(user);
-        dispatch(setAdmin(user));
+
+        //sets as customer in state
+        dispatch(setCustomer(!isCustomer));
+
+        //naivates to customer dash
+        return navigate("/customerdashboard");
       }
-
-      //navigates to dashboard if signed in
-      return navigate("/dashboard");
     }
 
     //navigates to signup/login again

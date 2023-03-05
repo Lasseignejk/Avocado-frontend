@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import RestaurantNavBar from "./RestaurantNavBar";
 
-//supabase login info
 import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =

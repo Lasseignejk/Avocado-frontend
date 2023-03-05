@@ -2,21 +2,20 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../pages/Login.css";
-import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
 
-import {
-  setIsSignedUp,
-  setIsLogginIn,
-  setUserDetails,
-} from "../reducers/DashboardSlice";
-
-//supabase log in
+import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+import {
+  setUserDetails,
+  setOwner,
+  setCustomer,
+} from "../reducers/DashboardSlice";
 
 const DashboardLogin = () => {
   //hooks
@@ -24,16 +23,10 @@ const DashboardLogin = () => {
   const navigate = useNavigate();
 
   //selectors
-  const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
-  const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
-  const userDetails = useSelector((state) => state.dashboard.userDetails);
+  const isOwner = useSelector((state) => state.dashboard.isOwner);
+  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
 
   const [loginDetails, setLoginDetails] = useState({});
-
-  //component logic
-  if (isLogginIn || !isSignedUp) {
-    return null;
-  }
 
   const setFormState = (e) => {
     setLoginDetails({
@@ -43,26 +36,41 @@ const DashboardLogin = () => {
   };
 
   const sendToSupabase = async (loginDetails) => {
-    const { CustomerEmail, Password } = loginDetails;
+    const { CustomerEmail, Password, RestOwner } = loginDetails;
+
+    console.log(RestOwner);
 
     //signs in
     let { data, error } = await supabase.auth.signInWithPassword({
       email: CustomerEmail,
       password: Password,
+      RestOwner: RestOwner,
     });
 
     //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
+
     //sets token in state
     dispatch(setUserDetails(user));
     console.log(user);
 
-    //if token is supplied update component bools
-    if (user) {
-      dispatch(setIsLogginIn(!isLogginIn));
-      dispatch(setIsSignedUp(!isSignedUp));
+    //Restaurants
+    if (RestOwner == "true") {
+      console.log("rest");
+      //sets as owner in state
+      dispatch(setOwner(!isOwner));
+      //naivates to restaurant dash
+      return navigate("/restaurantdashboard");
     }
-    return navigate("/dashboard");
+
+    //Customers
+    if (RestOwner == "false") {
+      console.log("cust");
+      //sets as customer in state
+      dispatch(setCustomer(!isCustomer));
+      //naivates to customer dash
+      return navigate("/customerdashboard");
+    }
   };
 
   return (
@@ -132,12 +140,7 @@ const DashboardLogin = () => {
         <div className="text-center font-niveau">
           <h1 className="text-sm">New to Avocado online ordering?</h1>
           <p className="text-green text-center text-sm">
-            <button
-              className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
-              onClick={() => dispatch(setIsSignedUp(!isSignedUp))}
-            >
-              Create Account
-            </button>
+            <Link to={"/accountSignUp"}>Create Account</Link>
           </p>
         </div>
       </div>

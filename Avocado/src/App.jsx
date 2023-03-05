@@ -9,15 +9,21 @@ import Signup from "./components/pages/Signup";
 import UserAcct from "./components/pages/UserAcct";
 import AdminNavTest from "./components/pages/AdminNavTest";
 
-import DashboardLoginSignUp from "./components/Layout/DashboardLoginSignUp";
-import Dashboard from "./components/Layout/Dashboard";
+import DashboardLogin from "./components/Layout/DashboardLogin";
+
+import CustomerDashboard from "./components/Layout/CustomerDashboard";
+import RestaurantDashboard from "./components/Layout/RestaurantDashboard";
+
+import DashboardSignup from "./components/Layout/DashboardSignup";
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<DashboardLoginSignUp />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<DashboardLogin />} />
+        <Route path="/accountSignUp" element={<DashboardSignup />} />
+        <Route path="/customerDashboard" element={<CustomerDashboard />} />
+        <Route path="/restaurantDashboard" element={<RestaurantDashboard />} />
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/admin" element={<Admin />} />
