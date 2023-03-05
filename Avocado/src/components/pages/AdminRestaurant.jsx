@@ -70,7 +70,7 @@ const AdminRestaurant = () => {
 				{
 					method: "GET",
 					headers: {
-						userId: userDetails.id,
+						userid: 1,
 					},
 				}
 			);

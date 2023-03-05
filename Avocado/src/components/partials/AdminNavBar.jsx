@@ -30,7 +30,7 @@ const AdminNavBar = () => {
 						<Link to={"#"}> Reports</Link>
 					</li>
 					<li className="border-b-2 border-gray pb-5">
-						<Link to={"/admin"}> Manage Restaurants</Link>
+						<Link to={"/managerestaurants"}> Manage Restaurants</Link>
 					</li>
 					<li className="border-b-2 border-gray pb-5">
 						<Link to={"/admin"}> My Account</Link>
