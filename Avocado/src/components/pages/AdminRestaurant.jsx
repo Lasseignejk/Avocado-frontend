@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { useDispatch, useSelector } from "react-redux";
+import { setOwner, setCustomer } from "../reducers/DashboardSlice";
 import RestaurantCard from "../partials/RestaurantCard";
 import AdminNavBar from "../partials/AdminNavBar";
 import { Link } from "react-router-dom";
@@ -14,16 +16,62 @@ const AdminRestaurant = () => {
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
+
 	const [restLogo, setRestLogo] = useState("");
-	const [restToEdit, setRestToEdit] = useState();
+
+	const userDetails = useSelector((state) => state.dashboard.userDetails);
+	const isCustomer = useSelector((state) => state.dashboard.isCustomer);
+	const isOwner = useSelector((state) => state.dashboard.isOwner);
+
+	const userEmail = userDetails[0]?.user?.email;
+	console.log(userEmail);
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			//searches owner database
+			// Subabase obj: obj = { error, data }
+			// { ownerData: obj['ownerData'] }
+			const { data: ownerData, error: ownerError } = await supabase
+				.from("Owner")
+				.select()
+				.eq("OwnerEmail", userEmail);
+
+			//searches resturants database
+			const { data: customerData, error: customerError } = await supabase
+				.from("Customer")
+				.select()
+				.eq("CustomerEmail", userEmail);
+
+			// console.log("owner:", ownerData);
+			// console.log("customer:", customerData);
+
+			// console.log("owner error:", ownerError);
+			// console.log("customer error:", customerError);
+
+			//checks for customer data and owner error
+			if (ownerError && customerData) {
+				dispatch(setCustomer(!isCustomer));
+			}
+
+			//checks for owner data and customer error
+			else if (customerError && ownerData) {
+				dispatch(setOwner(!isOwner));
+			}
+		};
+		fetchUserData();
+	}, [userEmail]);
 
 	// Get restaurants by owner ID on reload
 	useEffect(() => {
+		console.log();
 		const getRestaurants = async () => {
 			const response = await fetch(
 				"http://localhost:3060/admin/restaurant/getrestaurants",
 				{
 					method: "GET",
+					headers: {
+						userId: userDetails.id,
+					},
 				}
 			);
 			console.log(response);
