@@ -4,7 +4,11 @@ import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdmin } from "../reducers/AdminSlice";
 import { setCustomer } from "../reducers/CustomerSlice";
-import { setIsSignedUp, setIsLogginIn } from "../reducers/DashboardSlice";
+import {
+  setIsSignedUp,
+  setIsLogginIn,
+  setUserDetails,
+} from "../reducers/DashboardSlice";
 import { redirect, useNavigate } from "react-router-dom";
 
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
@@ -23,6 +27,7 @@ const DashboardSignup = () => {
 
   const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
   const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
+  const userDetails = useSelector((state) => state.dashboard.userDetails);
 
   if (isSignedUp) {
     return null;
@@ -47,20 +52,23 @@ const DashboardSignup = () => {
     } = accountDetails;
 
     //signs up
-    const { data, error } = await supabase.auth.signUp({
+    let { data: sigUpnData, error: signUpError } = await supabase.auth.signUp({
       email: CustomerEmail,
       password: Password,
     });
 
     //automatically signs them in as well
-    let { data2, error2 } = await supabase.auth.signInWithPassword({
-      email: CustomerEmail,
-      password: Password,
-    });
+    let { data: signInData, error: signInError } =
+      await supabase.auth.signInWithPassword({
+        email: CustomerEmail,
+        password: Password,
+      });
 
     //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
-    console.log(user);
+
+    //sets token in state
+    dispatch(setUserDetails(user));
 
     //turns off component
     if (user) {
@@ -85,7 +93,7 @@ const DashboardSignup = () => {
         console.log(user);
         dispatch(setCustomer(user));
       } else {
-        //inject into owner table
+        //else inject into owner table
         let { data, error } = await supabase.from("Owner").insert([
           {
             OwnerFirstName: CustomerFirstName,

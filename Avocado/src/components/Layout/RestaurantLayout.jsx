@@ -31,7 +31,7 @@ export function RestaurantLayout({ children }) {
       }
       if (data) {
         //setMenu(data);
-        console.log(data);
+        // console.log(data);
       }
     };
     fetchRestaurants();

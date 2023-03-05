@@ -2,6 +2,7 @@ import React from "react";
 import RestaurantLayout from "./RestaurantLayout";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setOwner, setCustomer } from "../reducers/DashboardSlice";
 
 //supabase login info
 import { createClient } from "@supabase/supabase-js";
@@ -11,10 +12,15 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Dashboard = ({ children }) => {
+  //hooks
   const dispatch = useDispatch();
 
+  //selectors
   const userDetails = useSelector((state) => state.dashboard.userDetails);
-  console.log(userDetails[0]?.user?.email);
+  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
+  const isOwner = useSelector((state) => state.dashboard.isOwner);
+
+  //parsing email
   const userEmail = userDetails[0]?.user?.email;
   console.log(userEmail);
 
@@ -34,9 +40,11 @@ const Dashboard = ({ children }) => {
         .select()
         .eq("CustomerEmail", userEmail);
 
-      console.log(ownerData, customerData);
-      console.log(ownerError);
-      console.log(customerError);
+      console.log("owner:", ownerData);
+      console.log("customer:", customerData);
+
+      console.log("owner error:", ownerError);
+      console.log("customer error:", customerError);
 
       //checks for customer data and owner error
       if (ownerError && customerData) {

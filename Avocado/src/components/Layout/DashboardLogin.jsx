@@ -12,27 +12,28 @@ import {
   setUserDetails,
 } from "../reducers/DashboardSlice";
 
+//supabase log in
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const DashboardLogin = () => {
+  //hooks
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
+  //selectors
   const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
   const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
   const userDetails = useSelector((state) => state.dashboard.userDetails);
 
   const [loginDetails, setLoginDetails] = useState({});
 
+  //component logic
   if (isLogginIn || !isSignedUp) {
     return null;
   }
-
-  // const [accountDetails, setAccountDetails] = useState({});
 
   const setFormState = (e) => {
     setLoginDetails({
@@ -52,12 +53,14 @@ const DashboardLogin = () => {
 
     //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
-    dispatch(setUserDetails(data));
+    //sets token in state
+    dispatch(setUserDetails(user));
+    console.log(user);
 
+    //if token is supplied update component bools
     if (user) {
       dispatch(setIsLogginIn(!isLogginIn));
       dispatch(setIsSignedUp(!isSignedUp));
-      console.log(user);
     }
     return navigate("/dashboard");
   };
