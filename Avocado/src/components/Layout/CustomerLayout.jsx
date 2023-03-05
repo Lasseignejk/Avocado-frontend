@@ -2,17 +2,16 @@ import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import RestaurantNavBar from "./RestaurantNavBar";
-
-//supabase login info
 import { createClient } from "@supabase/supabase-js";
+
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export function RestaurantLayout({ children }) {
+export function CustomerLayout({ children }) {
   const dispatch = useDispatch();
+
   const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
 
   if (!isLogginIn) {
@@ -31,7 +30,7 @@ export function RestaurantLayout({ children }) {
       }
       if (data) {
         //setMenu(data);
-        // console.log(data);
+        console.log(data);
       }
     };
     fetchRestaurants();
@@ -45,4 +44,4 @@ export function RestaurantLayout({ children }) {
   );
 }
 
-export default RestaurantLayout;
+export default CustomerLayout;

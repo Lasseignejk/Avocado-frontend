@@ -4,7 +4,11 @@ import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdmin } from "../reducers/AdminSlice";
 import { setCustomer } from "../reducers/CustomerSlice";
-import { setIsSignedUp, setIsLogginIn } from "../reducers/DashboardSlice";
+import {
+  setIsSignedUp,
+  setIsLogginIn,
+  setUserDetails,
+} from "../reducers/DashboardSlice";
 import { redirect, useNavigate } from "react-router-dom";
 
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
@@ -23,6 +27,7 @@ const DashboardSignup = () => {
 
   const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
   const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
+  const userDetails = useSelector((state) => state.dashboard.userDetails);
 
   if (isSignedUp) {
     return null;
@@ -46,69 +51,71 @@ const DashboardSignup = () => {
       RestOwner,
     } = accountDetails;
 
-    const signUpBtn = document.querySelector(".signUpBtn");
-    signUpBtn.disabled = true;
-    signUpBtn.classList.add("bg-[#b3b3b3]", "text-black");
-    signUpBtn.classList.remove("bg-green", "hover:bg-blue", "text-gray");
-
     //signs up
-    const { data, error } = await supabase.auth.signUp({
+    let { data: sigUpnData, error: signUpError } = await supabase.auth.signUp({
       email: CustomerEmail,
       password: Password,
     });
 
     //automatically signs them in as well
-    let { data2, error2 } = await supabase.auth.signInWithPassword({
-      email: CustomerEmail,
-      password: Password,
-    });
+    let { data: signInData, error: signInError } =
+      await supabase.auth.signInWithPassword({
+        email: CustomerEmail,
+        password: Password,
+      });
 
+    //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
 
+    //sets token in state
+    dispatch(setUserDetails(user));
+
+    //turns off component
     if (user) {
       dispatch(setIsLogginIn(!isLogginIn));
-      dispatch(setIsSignedUp(!isSignedUp));
       console.log(user);
+
+      //if customer inject into customer table
+      if (RestOwner == "false") {
+        let { data, error } = await supabase.from("Customer").insert([
+          {
+            CustomerFirstName: CustomerFirstName,
+            CustomerLastName: CustomerLastName,
+            CustomerEmail: CustomerEmail,
+            CustomerPhoneNumber: CustomerPhoneNumber,
+            Address: Address,
+          },
+        ]);
+        console.log(data);
+        console.log(error);
+
+        const { data: user } = await supabase.auth.getUser();
+        console.log(user);
+        dispatch(setCustomer(user));
+      } else {
+        //else inject into owner table
+        let { data, error } = await supabase.from("Owner").insert([
+          {
+            OwnerFirstName: CustomerFirstName,
+            OwnerLastName: CustomerLastName,
+            OwnerEmail: CustomerEmail,
+            OwnerPhoneNumber: CustomerPhoneNumber,
+          },
+        ]);
+        console.log(data);
+        console.log(error);
+
+        const { data: user } = await supabase.auth.getUser();
+        console.log(user);
+        dispatch(setAdmin(user));
+      }
+
+      //navigates to dashboard if signed in
+      return navigate("/dashboard");
     }
-    return navigate("/dashboard");
 
-    /*
-    if (RestOwner == "false") {
-      let { data, error } = await supabase.from("Customer").insert([
-        {
-          CustomerFirstName: CustomerFirstName,
-          CustomerLastName: CustomerLastName,
-          CustomerEmail: CustomerEmail,
-          CustomerPhoneNumber: CustomerPhoneNumber,
-          Address: Address,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setCustomer(user));
-    } else {
-      let { data, error } = await supabase.from("Owner").insert([
-        {
-          OwnerFirstName: CustomerFirstName,
-          OwnerLastName: CustomerLastName,
-          OwnerEmail: CustomerEmail,
-          OwnerPhoneNumber: CustomerPhoneNumber,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setAdmin(user));
-    }
-*/
-    // dispatch(setAdmin(user));
-
-    // window.location.replace("http://localhost:5173/admin");
+    //navigates to signup/login again
+    return navigate("/");
   };
 
   return (
@@ -224,7 +231,10 @@ const DashboardSignup = () => {
             <button
               className="bg-green text-gray px-3 text-lg py-1 hover:bg-blue hover:text-black signUpBtn"
               type="button"
-              onClick={() => sendToSupabase(accountDetails)}
+              onClick={(e) => {
+                e.preventDefault();
+                sendToSupabase(accountDetails);
+              }}
             >
               Sign me up, Haas
             </button>

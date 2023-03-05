@@ -1,31 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../pages/Login.css";
 import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdmin } from "../reducers/AdminSlice";
-import { setCustomer } from "../reducers/CustomerSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
-import { setIsSignedUp, setIsLogginIn } from "../reducers/DashboardSlice";
+import {
+  setIsSignedUp,
+  setIsLogginIn,
+  setUserDetails,
+} from "../reducers/DashboardSlice";
 
+//supabase log in
 const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const DashboardLogin = () => {
+  //hooks
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  //selectors
   const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
   const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
+  const userDetails = useSelector((state) => state.dashboard.userDetails);
 
   const [loginDetails, setLoginDetails] = useState({});
 
+  //component logic
   if (isLogginIn || !isSignedUp) {
     return null;
   }
-
-  // const [accountDetails, setAccountDetails] = useState({});
 
   const setFormState = (e) => {
     setLoginDetails({
@@ -37,67 +45,25 @@ const DashboardLogin = () => {
   const sendToSupabase = async (loginDetails) => {
     const { CustomerEmail, Password } = loginDetails;
 
-    console.log(loginDetails);
-
-    const loginBtn = document.querySelector(".loginBtn");
-    loginBtn.disabled = true;
-    loginBtn.classList.add("bg-[#b3b3b3]", "text-black");
-    loginBtn.classList.remove("bg-green", "hover:bg-blue", "text-grey");
-
+    //signs in
     let { data, error } = await supabase.auth.signInWithPassword({
       email: CustomerEmail,
       password: Password,
     });
 
-    console.log(data);
-    console.log(error);
-
+    //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
+    //sets token in state
+    dispatch(setUserDetails(user));
+    console.log(user);
 
+    //if token is supplied update component bools
     if (user) {
-      dispatch(setIsLogginIn(isLogginIn));
+      dispatch(setIsLogginIn(!isLogginIn));
+      dispatch(setIsSignedUp(!isSignedUp));
     }
-    return redirect("/");
+    return navigate("/dashboard");
   };
-
-  ///
-
-  /*
-    if (RestOwner == "false") {
-      let { data, error } = await supabase.from("Customer").insert([
-        {
-          CustomerFirstName: CustomerFirstName,
-          CustomerLastName: CustomerLastName,
-          CustomerEmail: CustomerEmail,
-          CustomerPhoneNumber: CustomerPhoneNumber,
-          Address: Address,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      //setting user to customer state
-      /*
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setCustomer(user));
-    } else {
-      let { data, error } = await supabase.from("Owner").insert([
-        {
-          OwnerFirstName: CustomerFirstName,
-          OwnerLastName: CustomerLastName,
-          OwnerEmail: CustomerEmail,
-          OwnerPhoneNumber: CustomerPhoneNumber,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setAdmin(user));
-    }
-    */
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-green">
@@ -132,14 +98,14 @@ const DashboardLogin = () => {
           <div className="flex gap-5">
             <label htmlFor="signIn">Sign in as:</label>
             <button
-              className="bg-green text-gray w-[60px] cursor-pointer userBtn"
+              className="bg-green text-gray w-[70px] cursor-pointer userBtn"
               type="button"
               name="RestOwner"
               id="signIn"
               value={false}
               onClick={(e) => setFormState(e)}
             >
-              user
+              Customer
             </button>
             <button
               className="bg-green text-gray w-[60px] cursor-pointer adminBtn"
@@ -148,13 +114,16 @@ const DashboardLogin = () => {
               value={true}
               onClick={(e) => setFormState(e)}
             >
-              admin
+              Owner
             </button>
           </div>
           <div className="flex justify-center">
             <button
               className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
-              onClick={() => sendToSupabase(loginDetails)}
+              onClick={(e) => {
+                e.preventDefault();
+                sendToSupabase(loginDetails);
+              }}
             >
               Let's make some guac
             </button>
