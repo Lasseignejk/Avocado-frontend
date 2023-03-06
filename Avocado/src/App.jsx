@@ -38,6 +38,7 @@ function App() {
 				<Route path="/restaurantinfo" element={<AdminRestaurant />} />
 				<Route path="/menuinfo" element={<RestaurantAdminMenu />} />
 				<Route path="/navtest" element={<AdminNavTest />} />
+        <Route path="/UserAcct" element={<UserAcct />} />
 			</Routes>
 		</div>
 	);

@@ -20,7 +20,7 @@ const CustomerNavBar = () => {
   };
 
   return (
-    <div className="w-full md:min-h-screen fixed bottom-0 md:flex md:flex-col md:bg-green md:static">
+    <div className="w-full md:min-h-screen fixed bottom-0 md:flex md:flex-col md:bg-green md:static md:w-[300px]">
       <div className="bg-green w-full box-border p-3 flex justify-between z-10 relative md:w-[300px] md:z-0 md:p-5">
         <img src="../logos/avocado_gray.svg" alt="" className="h-[30px]" />
         <button
@@ -42,7 +42,7 @@ const CustomerNavBar = () => {
             <Link to={"/restaurantinfo"}> My Restaurants</Link>
           </li>
           <li className="border-b-2 border-gray pb-5">
-            <Link to={"/admin"}> My Account</Link>
+            <Link to={"/UserAcct"}> My Account</Link>
           </li>
           <li>
             <Link to={"#"}> Logout</Link>
