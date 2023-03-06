@@ -19,28 +19,28 @@ import DashboardEditAccount from "./components/Layout/DashboardEditAccount";
 import RestaurantAdminMenu from "./components/Layout/RestaurantAdminMenu";
 
 function App() {
-  return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<DashboardLogin />} />
-        <Route path="/accountSignUp" element={<DashboardSignup />} />
-        <Route path="/customerDashboard" element={<CustomerDashboard />} />
-        <Route path="/restaurantDashboard" element={<RestaurantDashboard />} />
-        <Route path="*" element={<Error />} />
-        <Route path="/myrestaurants" element={<RestaurantAdmin />} />
-        <Route path="/myadminaccount" element={<DashboardEditAccount />} />
+	return (
+		<div className="App">
+			<Routes>
+				<Route path="/" element={<DashboardLogin />} />
+				<Route path="/accountSignUp" element={<DashboardSignup />} />
+				<Route path="/customerDashboard" element={<CustomerDashboard />} />
+				<Route path="/restaurantDashboard" element={<RestaurantDashboard />} />
+				<Route path="*" element={<Error />} />
+				<Route path="/myrestaurants" element={<RestaurantAdmin />} />
+				<Route path="/myadminaccount" element={<DashboardEditAccount />} />
 
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/order" element={<Menu />} />
-        <Route path="/BOH" element={<BOH />} />
-        <Route path="/account" element={<UserAcct />} />
-        <Route path="/restaurantinfo" element={<AdminRestaurant />} />
-        <Route path="/menuinfo" element={<AdminMenu />} />
-        <Route path="/navtest" element={<AdminNavTest />} />
-      </Routes>
-    </div>
-  );
+				<Route path="/signup" element={<Signup />} />
+				<Route path="/admin" element={<Admin />} />
+				<Route path="/order" element={<Menu />} />
+				<Route path="/BOH" element={<BOH />} />
+				<Route path="/account" element={<UserAcct />} />
+				<Route path="/restaurantinfo" element={<AdminRestaurant />} />
+				<Route path="/menuinfo" element={<AdminMenu />} />
+				<Route path="/navtest" element={<AdminNavTest />} />
+			</Routes>
+		</div>
+	);
 }
 
 export default App;
