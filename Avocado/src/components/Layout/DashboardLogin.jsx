@@ -33,7 +33,6 @@ const DashboardLogin = () => {
 
   const sendToSupabase = async (loginDetails) => {
     const { CustomerEmail, Password } = loginDetails;
-
     //signs in
     let { data, error } = await supabase.auth.signInWithPassword({
       email: CustomerEmail,
@@ -42,31 +41,25 @@ const DashboardLogin = () => {
 
     //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
-
     console.log("dispatching setToken", user.user);
 
     //sets token in state
     dispatch(setToken(user.user));
 
-    //const userEmail = user?.user?.email;
-    //console.log(userEmail);
-
-    //const owner = await queryIsOwner(userEmail);
-    const owner = true;
+    const owner = await queryIsOwner();
+    console.log("owner 55", owner);
     //Restaurants
     if (owner) {
-      console.log("rest");
       //sets as owner in state
-      dispatch(setOwner(true));
+      //dispatch(setOwner(true));
       //naivates to restaurant dash
       return navigate("/restaurantdashboard");
     }
 
     //Customers
     if (!owner) {
-      console.log("cust");
       //sets as customer in state
-      dispatch(setCustomer(true));
+      //dispatch(setCustomer(true));
       //naivates to customer dash
       return navigate("/customerdashboard");
     }

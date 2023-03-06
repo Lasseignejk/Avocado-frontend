@@ -1,30 +1,51 @@
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../reducers/DashboardSlice";
+
+//hook to search for user in  customer/owner database
+export async function queryIsOwner(email) {
+  const { data: CustomerData, error: CustomerError } = await supabase
+    .from("Customer")
+    .select()
+    .eq("CustomerEmail", email);
+
+  const { data: OwnerData, error: OwnerError } = await supabase
+    .from("Owner")
+    .select()
+    .eq("OwnerEmail", email);
+
+  if (CustomerData.length > 0 && OwnerData.length == 0) {
+    dispatch(setCustomer(true));
+    return false;
+  }
+  if (OwnerData.length > 0 && CustomerData.length == 0) {
+    dispatch(setOwner(true));
+    return true;
+  }
+}
 
 //Customer hooks for querying supabase for specific rows
 
 //hook to search for email in  customer/owner database
+
 export function useUserData() {
   const dispatch = useDispatch();
 
-  const token = useSelector((state) => state.token);
-  const isCustomer = useSelector((state) => state.isCustomer);
-  const userDetails = useSelector((state) => state.userDetails);
+  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
+  const userDetails = useSelector((state) => state.dashboard.userDetails);
+  const email = useSelector((state) => state.dashboard.userEmail);
 
   const [error, setError] = useState(null);
 
   //parsing email
-  const userEmail = token[0]?.user?.email;
 
   useEffect(() => {
     const fetchUserData = async () => {
       const { data, error } = await supabase
         .from(isCustomer ? "Customer" : "Owner")
         .select()
-        .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
+        .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", email);
 
       if (error) {
         setError(error);
@@ -34,32 +55,12 @@ export function useUserData() {
         dispatch(setUserDetails(data));
       }
     };
-    if (userEmail) {
+    if (email) {
       fetchUserData();
     }
-  }, [userEmail]);
+  }, [email]);
 
   return { data: userDetails, error };
-}
-
-//hook to search for user in  customer/owner database
-export async function queryIsOwner(userEmail) {
-  const { data: CustomerData, error: CustomerError } = await supabase
-    .from("Customer")
-    .select()
-    .eq("CustomerEmail", userEmail);
-
-  const { data: OwnerData, error: OwnerError } = await supabase
-    .from("Owner")
-    .select()
-    .eq("OwnerEmail", userEmail);
-
-  if (CustomerData.length > 0 && OwnerData.length == 0) {
-    return false;
-  }
-  if (OwnerData.length > 0 && CustomerData.length == 0) {
-    return true;
-  }
 }
 
 /*
