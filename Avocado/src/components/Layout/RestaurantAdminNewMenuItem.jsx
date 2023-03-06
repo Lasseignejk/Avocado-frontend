@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const RestaurantAdminNewMenuItem = () => {
   const [newItem, setNewItem] = useState({});
+
+  const restaurantId = useSelector(
+    (state) => state.dashboard.currentRestaurant[0]
+  );
+  console.log("restaurant id: ", restaurantId);
 
   ///previously new menu item
 
@@ -65,6 +71,7 @@ const RestaurantAdminNewMenuItem = () => {
       ItemAvailable: available,
       ItemDinner: dinner,
       ItemLunch: lunch,
+      RestId: restaurantId,
     };
     console.log(dataTosend);
     const data = await fetch("http://localhost:3060/addtomenu", {
