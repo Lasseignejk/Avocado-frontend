@@ -1,6 +1,16 @@
 import React from "react";
 
-const RestaurantCard = ({ restaurant }) => {
+const RestaurantAdminCard = ({ restaurant }) => {
+	///previously RestaurantCard
+
+	// * expected behavior *
+	//links to Specifc restaurants for editing
+
+	/*
+  To do:
+  Pull data from backend
+  */
+
 	return (
 		<div className="font-niveau px-3 flex pt-3 gap-3 hover:bg-blue duration-200 ease-in md:w-[400px] md:py-3">
 			<img
@@ -16,4 +26,4 @@ const RestaurantCard = ({ restaurant }) => {
 	);
 };
 
-export default RestaurantCard;
+export default RestaurantAdminCard;

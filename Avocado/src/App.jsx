@@ -9,11 +9,27 @@ import Signup from "./components/pages/Signup";
 import UserAcct from "./components/pages/UserAcct";
 import AdminNavTest from "./components/pages/AdminNavTest";
 
+import DashboardLogin from "./components/Layout/DashboardLogin";
+import Error from "./components/Layout/Error";
+import CustomerDashboard from "./components/Layout/CustomerDashboard";
+import RestaurantDashboard from "./components/Layout/RestaurantDashboard";
+import DashboardSignup from "./components/Layout/DashboardSignup";
+import RestaurantAdmin from "./components/Layout/RestaurantAdmin";
+import DashboardEditAccount from "./components/Layout/DashboardEditAccount";
+import RestaurantAdminMenu from "./components/Layout/RestaurantAdminMenu";
+
 function App() {
 	return (
 		<div className="App">
 			<Routes>
-				<Route path="/" element={<Login />} />
+				<Route path="/" element={<DashboardLogin />} />
+				<Route path="/accountSignUp" element={<DashboardSignup />} />
+				<Route path="/customerDashboard" element={<CustomerDashboard />} />
+				<Route path="/restaurantDashboard" element={<RestaurantDashboard />} />
+				<Route path="*" element={<Error />} />
+				<Route path="/myrestaurants" element={<RestaurantAdmin />} />
+				<Route path="/myadminaccount" element={<DashboardEditAccount />} />
+
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/admin" element={<Admin />} />
 				<Route path="/order" element={<Menu />} />
@@ -22,7 +38,6 @@ function App() {
 				<Route path="/restaurantinfo" element={<AdminRestaurant />} />
 				<Route path="/menuinfo" element={<AdminMenu />} />
 				<Route path="/navtest" element={<AdminNavTest />} />
-				<Route path="*" element={<Error />} />
 			</Routes>
 		</div>
 	);

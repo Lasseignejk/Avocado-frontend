@@ -1,19 +1,32 @@
 import React from "react";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
 
-const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../../supabase";
+import { setToken, setOwner, setCustomer } from "../reducers/DashboardSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const DashboardSignup = () => {
+  //previously signup
+
+  // * expected behavior *
+  //signs up user, logs in user (customer or owner) in, injects into Owner or Customer database, grabs token from supabase, sets token in state, sets in state if owner or customer
+
+  /*
+  To do:
+  */
+
+  //hooks
   const dispatch = useDispatch();
-  const admin = useSelector((state) => state.admin);
-  const customer = useSelector((state) => state.customer);
+  const navigate = useNavigate();
 
   const [accountDetails, setAccountDetails] = useState({});
+  const [isError, setIsError] = useState(false);
+
+  //selectors
+  const isOwner = useSelector((state) => state.dashboard.isOwner);
+  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
 
   const setFormState = (e) => {
     setAccountDetails({
@@ -33,55 +46,118 @@ const Signup = () => {
       RestOwner,
     } = accountDetails;
 
-    const signUpBtn = document.querySelector(".signUpBtn");
-    signUpBtn.disabled = true;
-    signUpBtn.classList.add("bg-[#b3b3b3]", "text-black");
-    signUpBtn.classList.remove("bg-green", "hover:bg-blue", "text-gray");
-
-    const { data, error } = await supabase.auth.signUp({
+    //signs up
+    let { data: sigUpnData, error: signUpError } = await supabase.auth.signUp({
       email: CustomerEmail,
       password: Password,
     });
-
-    console.log(RestOwner);
-
-    if (RestOwner == "false") {
-      let { data, error } = await supabase.from("Customer").insert([
-        {
-          CustomerFirstName: CustomerFirstName,
-          CustomerLastName: CustomerLastName,
-          CustomerEmail: CustomerEmail,
-          CustomerPhoneNumber: CustomerPhoneNumber,
-          Address: Address,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setCustomer(user));
-    } else {
-      let { data, error } = await supabase.from("Owner").insert([
-        {
-          OwnerFirstName: CustomerFirstName,
-          OwnerLastName: CustomerLastName,
-          OwnerEmail: CustomerEmail,
-          OwnerPhoneNumber: CustomerPhoneNumber,
-        },
-      ]);
-      console.log(data);
-      console.log(error);
-
-      const { data: user } = await supabase.auth.getUser();
-      console.log(user);
-      dispatch(setAdmin(user));
+    if (signUpError) {
+      setIsError(signUpError);
+      return;
     }
 
-    // dispatch(setAdmin(user));
+    //signs in
+    let { data, error: SignInError } = await supabase.auth.signInWithPassword({
+      email: CustomerEmail,
+      password: Password,
+      RestOwner: RestOwner,
+    });
+    if (SignInError) {
+      setIsError(SignInError);
+      return;
+    }
 
-    // window.location.replace("http://localhost:5173/admin");
+    //grabs token from supabase
+    const { data: user, error: getUserError } = await supabase.auth.getUser();
+    if (getUserError) {
+      setIsError(getUserError);
+      return;
+    }
+    //sets token in state
+    dispatch(setToken(user));
+    console.log(user);
+
+    if (user) {
+      //if restaurant inject into owner table
+      if (RestOwner == "true") {
+        let { data, error: insertOwnerError } = await supabase
+          .from("Owner")
+          .insert([
+            {
+              OwnerFirstName: CustomerFirstName,
+              OwnerLastName: CustomerLastName,
+              OwnerEmail: CustomerEmail.toLowerCase(),
+              OwnerPhoneNumber: CustomerPhoneNumber,
+            },
+          ]);
+        if (insertOwnerError) {
+          setIsError(insertOwnerError);
+          return;
+        }
+        console.log(data);
+        console.log(insertOwnerError);
+
+        //grabs token from supabase
+        const { data: user } = await supabase.auth.getUser();
+
+        //sets token in state
+        dispatch(setToken(user));
+        console.log(user);
+
+        //sets as owner in state
+        dispatch(setOwner(!isOwner));
+
+        //naivates to restaurant dash
+        return navigate("/restaurantdashboard");
+      }
+
+      //if customer inject into customer table
+      if (RestOwner == "false") {
+        let { data, error: insertCustomerError } = await supabase
+          .from("Customer")
+          .insert([
+            {
+              CustomerFirstName: CustomerFirstName,
+              CustomerLastName: CustomerLastName,
+              CustomerEmail: CustomerEmail.toLowerCase(),
+              CustomerPhoneNumber: CustomerPhoneNumber,
+              Address: Address,
+            },
+          ]);
+        if (insertCustomerError) {
+          setIsError(insertCustomerError);
+          return;
+        }
+        console.log(data);
+        console.log(insertCustomerError);
+
+        //grabs token from supabase
+        const { data: user } = await supabase.auth.getUser();
+
+        //sets token in state
+        dispatch(setToken(user));
+        console.log(user);
+
+        //sets as customer in state
+        dispatch(setCustomer(!isCustomer));
+
+        //naivates to customer dash
+        return navigate("/customerdashboard");
+      }
+    }
+
+    //navigates to signup/login again
+    return navigate("/");
   };
+
+  if (isError) {
+    return (
+      <>
+        <h1>Something went wrong</h1>
+        <pre>{isError?.msg}</pre>
+      </>
+    );
+  }
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-green">
@@ -196,7 +272,10 @@ const Signup = () => {
             <button
               className="bg-green text-gray px-3 text-lg py-1 hover:bg-blue hover:text-black signUpBtn"
               type="button"
-              onClick={() => sendToSupabase(accountDetails)}
+              onClick={(e) => {
+                e.preventDefault();
+                sendToSupabase(accountDetails);
+              }}
             >
               Sign me up, Haas
             </button>
@@ -207,4 +286,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default DashboardSignup;

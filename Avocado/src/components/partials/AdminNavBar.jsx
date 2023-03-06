@@ -10,7 +10,7 @@ const AdminNavBar = () => {
 	};
 
 	return (
-		<div className="w-full md:min-h-screen fixed bottom-0 md:flex md:flex-col md:bg-green md:static">
+		<div className="w-full md:min-h-screen fixed bottom-0 md:flex md:flex-col md:bg-green md:static md:w-[300px]">
 			<div className="bg-green w-full box-border p-3 flex justify-between z-10 relative md:w-[300px] md:z-0 md:p-5">
 				<img src="../logos/avocado_gray.svg" alt="" className="h-[30px]" />
 				<button
@@ -22,12 +22,15 @@ const AdminNavBar = () => {
 			<nav
 				className={
 					"bg-green text-xl text-gray font-bold duration-500 nav fixed w-full z-[9] p-5 text-center md:relative md:z-0 md:w-[300px] md:text-left md:translate-y-0 md:duration-[0ms]" +
-					(show ? " translate-y-[-260px]" : "")
+					(show ? " translate-y-[-330px]" : "")
 					// "md:relative md:w-[300px] md:z-0 md:text-left"
 				}>
 				<ul className="flex flex-col gap-5">
 					<li className="border-b-2 border-gray pb-5">
-						<Link to={"/restaurantinfo"}> My Restaurants</Link>
+						<Link to={"#"}> Reports</Link>
+					</li>
+					<li className="border-b-2 border-gray pb-5">
+						<Link to={"/managerestaurants"}> Manage Restaurants</Link>
 					</li>
 					<li className="border-b-2 border-gray pb-5">
 						<Link to={"/admin"}> My Account</Link>

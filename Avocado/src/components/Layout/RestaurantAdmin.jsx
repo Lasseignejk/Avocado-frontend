@@ -1,65 +1,32 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-import { useDispatch, useSelector } from "react-redux";
-import { setOwner, setCustomer } from "../reducers/DashboardSlice";
-import RestaurantCard from "../partials/RestaurantCard";
+import { useSelector } from "react-redux";
+import RestaurantAdminCard from "./RestaurantAdminCard";
 import AdminNavBar from "../partials/AdminNavBar";
 import { Link } from "react-router-dom";
+import { supabase } from "../../supabase";
 
-const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
-const supabaseKey =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
-const supabase = createClient(supabaseUrl, supabaseKey);
+const RestaurantAdmin = () => {
+	//previously Admin Restraunt
 
-const AdminRestaurant = () => {
+	// * expected behavior *
+	//links to admin's restaurants for editing
+
+	/*
+  To do:
+  Pull data from backend and inject to backened to edit
+  */
+
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
+	const [restToEdit, setRestToEdit] = useState();
 
 	const [restLogo, setRestLogo] = useState("");
 
-	const userDetails = useSelector((state) => state.dashboard.userDetails);
-	const isCustomer = useSelector((state) => state.dashboard.isCustomer);
-	const isOwner = useSelector((state) => state.dashboard.isOwner);
-
-	const userEmail = userDetails[0]?.user?.email;
-	console.log(userEmail);
-
-	useEffect(() => {
-		const fetchUserData = async () => {
-			//searches owner database
-			// Subabase obj: obj = { error, data }
-			// { ownerData: obj['ownerData'] }
-			const { data: ownerData, error: ownerError } = await supabase
-				.from("Owner")
-				.select()
-				.eq("OwnerEmail", userEmail);
-
-			//searches resturants database
-			const { data: customerData, error: customerError } = await supabase
-				.from("Customer")
-				.select()
-				.eq("CustomerEmail", userEmail);
-
-			// console.log("owner:", ownerData);
-			// console.log("customer:", customerData);
-
-			// console.log("owner error:", ownerError);
-			// console.log("customer error:", customerError);
-
-			//checks for customer data and owner error
-			if (ownerError && customerData) {
-				dispatch(setCustomer(!isCustomer));
-			}
-
-			//checks for owner data and customer error
-			else if (customerError && ownerData) {
-				dispatch(setOwner(!isOwner));
-			}
-		};
-		fetchUserData();
-	}, [userEmail]);
+	const userDetails = useSelector(
+		(state) => state?.dashboard?.userDetails[0][0]
+	);
 
 	// Get restaurants by owner ID on reload
 	useEffect(() => {
@@ -70,7 +37,7 @@ const AdminRestaurant = () => {
 				{
 					method: "GET",
 					headers: {
-						userid: 1,
+						userid: userDetails.id,
 					},
 				}
 			);
@@ -79,7 +46,6 @@ const AdminRestaurant = () => {
 				window.alert(response.statusText);
 			} else {
 				const json = await response.json();
-				console.log(json);
 				setRestaurants(json);
 			}
 		};
@@ -91,28 +57,30 @@ const AdminRestaurant = () => {
 		setRestaurantDetails({
 			...restaurantDetails,
 			[e.target.name]: e.target.value,
-			OwnerId: 1,
+			OwnerId: userDetails.id,
 			RestLogo: restLogo,
 		});
 	};
-
+	// sets logo path to state
 	const formatLogoPath = (e) => {
 		let file = e.target.files[0].name;
 		setRestLogo(file);
 	};
 
-	// const uploadImage = async (e) => {
-	// 	let file = e.target.files[0].name;
-	// 	console.log(file);
-	// 	const { data, error } = await supabase.storage
-	// 		.from("restaurant-restlogo")
-	// 		.upload(8 + "/" + file, file);
-	// 	if (data) {
-	// 		console.log(data);
-	// 	} else {
-	// 		console.log(error);
-	// 	}
-	// };
+	const uploadImage = async (e) => {
+		let file = e.target.files[0].name;
+		console.log(file);
+		let id = userDetails.id.toString();
+
+		const { data, error } = await supabase.storage
+			.from("restaurantlogos")
+			.upload(id + "/" + file, file, {});
+		if (data) {
+			console.log(data);
+		} else {
+			console.log(error);
+		}
+	};
 
 	const sendToSupabase = async (restaurantDetails) => {
 		const response = await fetch(
@@ -134,7 +102,13 @@ const AdminRestaurant = () => {
 
 		// const { data, error } = await supabase.storage
 		// 	.from("restaurant-restlogo")
-		// 	.upload(8 + "/" + file, file);
+		// 	.upload(1 + "/" + file, file);
+		// if (data) {
+		// 	console.log(data);
+		// }
+		// if (error) {
+		// 	console.log(error);
+		// }
 	};
 
 	return (
@@ -143,7 +117,7 @@ const AdminRestaurant = () => {
 			<div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20">
 				<div className="flex flex-col">
 					<h1 className="text-center text-4xl font-bold text-green md:text-left">
-						admin name
+						{userDetails.OwnerFirstName}
 					</h1>
 					<h1 className="text-center text-3xl font-bold md:text-left">
 						Manage Restaurants
@@ -153,7 +127,7 @@ const AdminRestaurant = () => {
 				<div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly">
 					{restaurants.map((restaurant, index) => (
 						<Link to="/menuinfo" state={restaurant}>
-							<RestaurantCard restaurant={restaurant} key={index} />
+							<RestaurantAdminCard restaurant={restaurant} key={index} />
 						</Link>
 					))}
 				</div>
@@ -250,7 +224,7 @@ const AdminRestaurant = () => {
 						</div>
 					</form>
 				</div>
-				{/* <form action="">
+				<form action="">
 					<div>
 						<label htmlFor="logo">Logo</label>
 						<input
@@ -261,10 +235,10 @@ const AdminRestaurant = () => {
 							onChange={(e) => uploadImage(e)}
 						/>
 					</div>
-				</form> */}
+				</form>
 			</div>
 		</div>
 	);
 };
 
-export default AdminRestaurant;
+export default RestaurantAdmin;

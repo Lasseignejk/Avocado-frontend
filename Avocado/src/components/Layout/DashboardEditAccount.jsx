@@ -2,19 +2,19 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-const UserAcct = () => {
-  const customer = useSelector((state) => state.customer);
-  const dispatch = useDispatch();
+const DashboardEditAccount = () => {
+  ///previously UserAcct
 
-  const getCustomer = async () => {
-    const response = await fetch("http://localhost:3060/displaycustomer");
-    const json = await response.json();
-    dispatch(setCustomer(json));
-  };
+  // * expected behavior *
+  //Updates user's's account
 
-  useEffect(() => {
-    getCustomer();
-  }, []);
+  /*
+  To do:
+  */
+
+  //hook to query Customer/Owner tables, query in Queries
+  const { data, error } = useUserData();
+  console.log("userdata:", data);
 
   const [accountDetails, setAccountDetails] = useState({});
 
@@ -39,7 +39,7 @@ const UserAcct = () => {
   return (
     <div>
       <div className="flex flex-col gap-5">
-        {customer.map((individual) => (
+        {data.map((individual) => (
           <div>
             <p>{individual.CustomerFirstName}</p>
             <p>{individual.CustomerLastName}</p>
@@ -136,4 +136,4 @@ const UserAcct = () => {
   );
 };
 
-export default UserAcct;
+export default DashboardEditAccount;
