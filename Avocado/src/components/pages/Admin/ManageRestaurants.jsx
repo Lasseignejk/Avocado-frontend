@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import RestaurantAdminCard from "./RestaurantAdminCard";
-import AdminNavBar from "../partials/AdminNavBar";
+import RestaurantAdminCard from "./RestaurantCard";
+import AdminNavBar from "../../partials/AdminNavBar";
 import { Link } from "react-router-dom";
-import { supabase } from "../../supabase";
-import "../Layout/RestaurantAdmin.css";
+import { supabase } from "../../../supabase";
+import "../Admin/ManageRestaurants.css";
 
-import { setRestaurant } from "../reducers/DashboardSlice";
-import RestaurantAdminUpdateRestaurant from "./RestaurantAdminUpdateRestaurant";
+import { setRestaurant } from "../../reducers/DashboardSlice";
+import UpdateRestaurant from "./UpdateRestaurant";
 
-const RestaurantAdmin = () => {
+const ManageRestaurants = () => {
 	const dispatch = useDispatch();
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restName, setRestName] = useState("");
@@ -20,8 +20,6 @@ const RestaurantAdmin = () => {
 	const userDetails = useSelector(
 		(state) => state?.dashboard?.userDetails[0][0]
 	);
-
-	const token = useSelector((state) => state.dashboard.token[0]);
 
 	// Get restaurants by owner ID on reload
 	useEffect(() => {
@@ -105,18 +103,6 @@ const RestaurantAdmin = () => {
 			console.log("restaurant added");
 			setRestName(restaurantDetails.restName);
 		}
-
-		console.log("fetch completed");
-
-		const { data, error } = await supabase.storage
-			.from("restaurantlogos")
-			.upload("34/1" + restLogo, restLogo);
-		if (data) {
-			console.log(data);
-		}
-		if (error) {
-			console.log(error);
-		}
 	};
 
 	return (
@@ -142,11 +128,12 @@ const RestaurantAdmin = () => {
 						</Link>
 					))}
 				</div>
-
-				<RestaurantAdminUpdateRestaurant restaurants={restaurants} />
+				<div className="flex justify-center">
+					<UpdateRestaurant restaurants={restaurants} />
+				</div>
 
 				<div className="flex justify-center">
-					<form className="px-3 flex flex-col gap-2 mb-3 items-center md:mb-5">
+					<form className="px-3 flex flex-col gap-2 mb-3 items-center w-full md:mb-5">
 						<h1 className="text-2xl font-bold text-center">Add a Restuarant</h1>
 						<div className="flex flex-col w-full">
 							<label htmlFor="name" className="font-bold">
@@ -216,18 +203,7 @@ const RestaurantAdmin = () => {
 								onChange={(e) => setFormState(e)}
 							/>
 						</div>
-						<div className="flex flex-col">
-							<label htmlFor="logo" className="font-bold">
-								logo
-							</label>
-							<input
-								type="file"
-								id="logo"
-								name="RestLogo"
-								accept=".png, .jpeg"
-								onChange={(e) => formatLogoPath(e)}
-							/>
-						</div>
+
 						<div className="flex justify-center">
 							<button
 								className="bg-green text-gray text-lg px-5 py-1 duration-200 font-bold hover:bg-dkgreen"
@@ -255,4 +231,4 @@ const RestaurantAdmin = () => {
 	);
 };
 
-export default RestaurantAdmin;
+export default ManageRestaurants;
