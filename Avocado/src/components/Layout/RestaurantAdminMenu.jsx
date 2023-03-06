@@ -45,13 +45,12 @@ const RestaurantAdminMenu = () => {
     getMenu();
   }, [restaurantId]);
 
-
   return (
     <div className="flex">
       <AdminNavBar />
       <div>
         <h1>Edit Menu</h1>
-        {menu.map((item) => (
+        {menu?.map((item) => (
           <RestaurantAdminMenuItem item={item} />
         ))}
       </div>
