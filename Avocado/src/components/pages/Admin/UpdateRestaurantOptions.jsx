@@ -1,11 +1,20 @@
 import React from "react";
-import { setRestaurant } from "../reducers/DashboardSlice";
+import { useDispatch } from "react-redux";
+import { setRestaurant } from "../../reducers/DashboardSlice";
 
-const RestaurantAdminUpdateRestOptions = ({ restaurants }) => {
+const UpdateRestaurantOptions = ({ restaurants }) => {
+	const dispatch = useDispatch();
 	return (
-		<select name="" id="" onChange={() => dispatch(setRestaurant())}>
+		<select
+			className="px-2 mt-5"
+			name="restNames"
+			id=""
+			onChange={(e) => dispatch(setRestaurant(e.target.value * 1))}>
+			<option selected disabled>
+				Please choose a restaurant to edit
+			</option>
 			{restaurants?.map((restaurant, index) => (
-				<option key={index} value={restaurant.id}>
+				<option name="restNames" key={index} value={restaurant.id}>
 					{restaurant.RestName}
 				</option>
 			))}
@@ -13,7 +22,7 @@ const RestaurantAdminUpdateRestOptions = ({ restaurants }) => {
 	);
 };
 
-export default RestaurantAdminUpdateRestOptions;
+export default UpdateRestaurantOptions;
 
 {
 	/* <select name="" id="" onClick={() => dispatch(setRestaurant(restaurant.id))}>
