@@ -1,39 +1,28 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "../pages/Login.css";
-import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
+import { queryIsOwner } from "./Queries";
 
-import {
-	setIsSignedUp,
-	setIsLogginIn,
-	setUserDetails,
-} from "../reducers/DashboardSlice";
-
-//supabase log in
-const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
-const supabaseKey =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from "../../supabase";
+import { setToken, setOwner, setCustomer } from "../reducers/DashboardSlice";
 
 const DashboardLogin = () => {
+	//previously login
+
+	// * expected behavior *
+	//logs user (customer or owner) in, grabs token from supabase, sets token in state, checks supabase to confirm if owner or customer based on email, sets in state if owner or customer
+
+	/*
+  To do:
+  */
+
 	//hooks
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	//selectors
-	const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
-	const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
-	const userDetails = useSelector((state) => state.dashboard.userDetails);
-
 	const [loginDetails, setLoginDetails] = useState({});
-
-	//component logic
-	if (isLogginIn || !isSignedUp) {
-		return null;
-	}
 
 	const setFormState = (e) => {
 		setLoginDetails({
@@ -53,16 +42,33 @@ const DashboardLogin = () => {
 
 		//grabs token from supabase
 		const { data: user } = await supabase.auth.getUser();
+
 		//sets token in state
-		dispatch(setUserDetails(user));
+		dispatch(setToken(user));
 		console.log(user);
 
-		//if token is supplied update component bools
-		if (user) {
-			dispatch(setIsLogginIn(!isLogginIn));
-			dispatch(setIsSignedUp(!isSignedUp));
+		const userEmail = user?.user?.email;
+		console.log(userEmail);
+
+		const owner = await queryIsOwner(userEmail);
+
+		//Restaurants
+		if (owner) {
+			console.log("rest");
+			//sets as owner in state
+			dispatch(setOwner(true));
+			//naivates to restaurant dash
+			return navigate("/restaurantdashboard");
 		}
-		return navigate("/dashboard");
+
+		//Customers
+		if (!owner) {
+			console.log("cust");
+			//sets as customer in state
+			dispatch(setCustomer(true));
+			//naivates to customer dash
+			return navigate("/customerdashboard");
+		}
 	};
 
 	return (
@@ -95,26 +101,7 @@ const DashboardLogin = () => {
 							value={loginDetails.Password ? loginDetails.Password : ""}
 						/>
 					</div>
-					<div className="flex gap-5">
-						<label htmlFor="signIn">Sign in as:</label>
-						<button
-							className="bg-green text-gray w-[70px] cursor-pointer userBtn"
-							type="button"
-							name="RestOwner"
-							id="signIn"
-							value={false}
-							onClick={(e) => setFormState(e)}>
-							Customer
-						</button>
-						<button
-							className="bg-green text-gray w-[60px] cursor-pointer adminBtn"
-							type="button"
-							name="RestOwner"
-							value={true}
-							onClick={(e) => setFormState(e)}>
-							Owner
-						</button>
-					</div>
+
 					<div className="flex justify-center">
 						<button
 							className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
@@ -129,11 +116,7 @@ const DashboardLogin = () => {
 				<div className="text-center font-niveau">
 					<h1 className="text-sm">New to Avocado online ordering?</h1>
 					<p className="text-green text-center text-sm">
-						<button
-							className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
-							onClick={() => dispatch(setIsSignedUp(!isSignedUp))}>
-							Create Account
-						</button>
+						<Link to={"/accountSignUp"}>Create Account</Link>
 					</p>
 				</div>
 			</div>

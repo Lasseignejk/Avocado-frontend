@@ -1,37 +1,32 @@
 import React from "react";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdmin } from "../reducers/AdminSlice";
-import { setCustomer } from "../reducers/CustomerSlice";
-import {
-  setIsSignedUp,
-  setIsLogginIn,
-  setUserDetails,
-} from "../reducers/DashboardSlice";
+
+import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../../supabase";
+import { setToken, setOwner, setCustomer } from "../reducers/DashboardSlice";
 import { redirect, useNavigate } from "react-router-dom";
 
-const supabaseUrl = "https://dwjnomervswgqasgexck.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3am5vbWVydnN3Z3Fhc2dleGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc2MzEyNzAsImV4cCI6MTk5MzIwNzI3MH0.k8hjRQLV9bN_BcG11s_gWJx2NK_AHIXrJPTii7GO4LM";
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 const DashboardSignup = () => {
+  //previously signup
+
+  // * expected behavior *
+  //signs up user, logs in user (customer or owner) in, injects into Owner or Customer database, grabs token from supabase, sets token in state, sets in state if owner or customer
+
+  /*
+  To do:
+  */
+
+  //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const admin = useSelector((state) => state.admin);
-  const customer = useSelector((state) => state.customer);
-
   const [accountDetails, setAccountDetails] = useState({});
+  const [isError, setIsError] = useState(false);
 
-  const isSignedUp = useSelector((state) => state.dashboard.isSignedUp);
-  const isLogginIn = useSelector((state) => state.dashboard.isLogginIn);
-  const userDetails = useSelector((state) => state.dashboard.userDetails);
-
-  if (isSignedUp) {
-    return null;
-  }
+  //selectors
+  const isOwner = useSelector((state) => state.dashboard.isOwner);
+  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
 
   const setFormState = (e) => {
     setAccountDetails({
@@ -56,67 +51,113 @@ const DashboardSignup = () => {
       email: CustomerEmail,
       password: Password,
     });
+    if (signUpError) {
+      setIsError(signUpError);
+      return;
+    }
 
-    //automatically signs them in as well
-    let { data: signInData, error: signInError } =
-      await supabase.auth.signInWithPassword({
-        email: CustomerEmail,
-        password: Password,
-      });
+    //signs in
+    let { data, error: SignInError } = await supabase.auth.signInWithPassword({
+      email: CustomerEmail,
+      password: Password,
+      RestOwner: RestOwner,
+    });
+    if (SignInError) {
+      setIsError(SignInError);
+      return;
+    }
 
     //grabs token from supabase
-    const { data: user } = await supabase.auth.getUser();
-
+    const { data: user, error: getUserError } = await supabase.auth.getUser();
+    if (getUserError) {
+      setIsError(getUserError);
+      return;
+    }
     //sets token in state
-    dispatch(setUserDetails(user));
+    dispatch(setToken(user));
+    console.log(user);
 
-    //turns off component
     if (user) {
-      dispatch(setIsLogginIn(!isLogginIn));
-      console.log(user);
+      //if restaurant inject into owner table
+      if (RestOwner == "true") {
+        let { data, error: insertOwnerError } = await supabase
+          .from("Owner")
+          .insert([
+            {
+              OwnerFirstName: CustomerFirstName,
+              OwnerLastName: CustomerLastName,
+              OwnerEmail: CustomerEmail.toLowerCase(),
+              OwnerPhoneNumber: CustomerPhoneNumber,
+            },
+          ]);
+        if (insertOwnerError) {
+          setIsError(insertOwnerError);
+          return;
+        }
+        console.log(data);
+        console.log(insertOwnerError);
+
+        //grabs token from supabase
+        const { data: user } = await supabase.auth.getUser();
+
+        //sets token in state
+        dispatch(setToken(user));
+        console.log(user);
+
+        //sets as owner in state
+        dispatch(setOwner(!isOwner));
+
+        //naivates to restaurant dash
+        return navigate("/restaurantdashboard");
+      }
 
       //if customer inject into customer table
       if (RestOwner == "false") {
-        let { data, error } = await supabase.from("Customer").insert([
-          {
-            CustomerFirstName: CustomerFirstName,
-            CustomerLastName: CustomerLastName,
-            CustomerEmail: CustomerEmail,
-            CustomerPhoneNumber: CustomerPhoneNumber,
-            Address: Address,
-          },
-        ]);
+        let { data, error: insertCustomerError } = await supabase
+          .from("Customer")
+          .insert([
+            {
+              CustomerFirstName: CustomerFirstName,
+              CustomerLastName: CustomerLastName,
+              CustomerEmail: CustomerEmail.toLowerCase(),
+              CustomerPhoneNumber: CustomerPhoneNumber,
+              Address: Address,
+            },
+          ]);
+        if (insertCustomerError) {
+          setIsError(insertCustomerError);
+          return;
+        }
         console.log(data);
-        console.log(error);
+        console.log(insertCustomerError);
 
+        //grabs token from supabase
         const { data: user } = await supabase.auth.getUser();
-        console.log(user);
-        dispatch(setCustomer(user));
-      } else {
-        //else inject into owner table
-        let { data, error } = await supabase.from("Owner").insert([
-          {
-            OwnerFirstName: CustomerFirstName,
-            OwnerLastName: CustomerLastName,
-            OwnerEmail: CustomerEmail,
-            OwnerPhoneNumber: CustomerPhoneNumber,
-          },
-        ]);
-        console.log(data);
-        console.log(error);
 
-        const { data: user } = await supabase.auth.getUser();
+        //sets token in state
+        dispatch(setToken(user));
         console.log(user);
-        dispatch(setAdmin(user));
+
+        //sets as customer in state
+        dispatch(setCustomer(!isCustomer));
+
+        //naivates to customer dash
+        return navigate("/customerdashboard");
       }
-
-      //navigates to dashboard if signed in
-      return navigate("/dashboard");
     }
 
     //navigates to signup/login again
     return navigate("/");
   };
+
+  if (isError) {
+    return (
+      <>
+        <h1>Something went wrong</h1>
+        <pre>{isError?.msg}</pre>
+      </>
+    );
+  }
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-green">
