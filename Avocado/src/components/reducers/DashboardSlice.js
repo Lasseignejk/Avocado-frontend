@@ -38,8 +38,8 @@ export const DashboardSlice = createSlice({
       state.currentRestaurant.push(...[action.payload]);
     },
     setUserDetails: (state, action) => {
-      state.token = [];
-      state.token.push(...[action.payload]);
+      state.userDetails = [];
+      state.userDetails.push(...[action.payload]);
     },
   },
 });

@@ -10,14 +10,11 @@ const RestaurantDashboard = ({ children }) => {
 
   /*
   Todo:
-  set userdetails to state:
-  const dispatch = useDispatch();
-  dispatch(setUserDetails(data));
   */
 
   //hook to query customer/Owner tables, query in Queries
   const { data, error } = useUserData();
-  console.log("userdata:", data);
+  //data is the user information
 
   if (error) {
     return <h1>There is a problem...</h1>;

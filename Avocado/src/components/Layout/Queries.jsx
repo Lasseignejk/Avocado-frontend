@@ -8,10 +8,12 @@ import { setUserDetails } from "../reducers/DashboardSlice";
 
 //hook to search for email in  customer/owner database
 export function useUserData() {
+  const dispatch = useDispatch();
+
   const token = useSelector((state) => state.dashboard.token);
   const isCustomer = useSelector((state) => state.dashboard.isCustomer);
+  const userDetails = useSelector((state) => state.dashboard.userDetails);
 
-  const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
 
   //parsing email
@@ -29,7 +31,7 @@ export function useUserData() {
         return;
       }
       if (data) {
-        setUserData(data);
+        dispatch(setUserDetails(data));
       }
     };
     if (userEmail) {
@@ -37,13 +39,11 @@ export function useUserData() {
     }
   }, [userEmail]);
 
-  return { data: userData, error };
+  return { data: userDetails, error };
 }
 
 //hook to search for user in  customer/owner database
 export async function queryIsOwner(userEmail) {
-  //const dispatch = useDispatch();
-
   const { data: CustomerData, error: CustomerError } = await supabase
     .from("Customer")
     .select()
@@ -55,12 +55,9 @@ export async function queryIsOwner(userEmail) {
     .eq("OwnerEmail", userEmail);
 
   if (CustomerData.length > 0 && OwnerData.length == 0) {
-    //dispatch(setUserDetails(CustomerData));
     return false;
   }
   if (OwnerData.length > 0 && CustomerData.length == 0) {
-    //dispatch(setUserDetails(OwnerData));
-
     return true;
   }
 }
