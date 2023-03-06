@@ -11,14 +11,10 @@ const CustomerDashboard = ({ children }) => {
 
   /*
   Todo:
-
-  set userdetails to state:
-  const dispatch = useDispatch();
-  dispatch(setUserDetails(data));
   */
 
   const { data, error } = useUserData();
-
+  //data is the user information
   console.log("userdata:", data);
 
   if (error) {

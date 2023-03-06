@@ -10,9 +10,9 @@ import { setUserDetails } from "../reducers/DashboardSlice";
 export function useUserData() {
   const dispatch = useDispatch();
 
-  const token = useSelector((state) => state.dashboard.token);
-  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
-  const userDetails = useSelector((state) => state.dashboard.userDetails);
+  const token = useSelector((state) => state.token);
+  const isCustomer = useSelector((state) => state.isCustomer);
+  const userDetails = useSelector((state) => state.userDetails);
 
   const [error, setError] = useState(null);
 
