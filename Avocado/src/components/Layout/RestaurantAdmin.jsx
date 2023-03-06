@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import RestaurantAdminCard from "./RestaurantAdminCard";
 import AdminNavBar from "../partials/AdminNavBar";
 import { Link } from "react-router-dom";
 import { supabase } from "../../supabase";
 
+import { setRestaurant } from "../reducers/DashboardSlice";
+
 const RestaurantAdmin = () => {
+	const dispatch = useDispatch();
 	//previously Admin Restraunt
 
 	// * expected behavior *
@@ -20,13 +23,13 @@ const RestaurantAdmin = () => {
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
-	const [restToEdit, setRestToEdit] = useState();
-
 	const [restLogo, setRestLogo] = useState("");
 
 	const userDetails = useSelector(
 		(state) => state?.dashboard?.userDetails[0][0]
 	);
+
+	const token = useSelector((state) => state.dashboard.token[0]);
 
 	// Get restaurants by owner ID on reload
 	useEffect(() => {
@@ -41,7 +44,7 @@ const RestaurantAdmin = () => {
 					},
 				}
 			);
-			console.log(response);
+
 			if (!response.ok) {
 				window.alert(response.statusText);
 			} else {
@@ -68,17 +71,30 @@ const RestaurantAdmin = () => {
 	};
 
 	const uploadImage = async (e) => {
-		let file = e.target.files[0].name;
-		console.log(file);
-		let id = userDetails.id.toString();
+		try {
+			if (!e.target.files || e.target.files.length === 0) {
+				throw new Error("You must select an image to upload");
+			}
+			let file = e.target.files[0];
+			console.log(e.target.files[0]);
+			const fileEXT = file.name.split(".").pop();
+			const fileName = file.name.split(".").shift();
+			const filePath = `${fileName}.${fileEXT}`;
+			console.log(fileEXT);
+			console.log(fileName);
+			console.log(filePath);
+			// let id = userDetails.id.toString();
 
-		const { data, error } = await supabase.storage
-			.from("restaurantlogos")
-			.upload(id + "/" + file, file, {});
-		if (data) {
+			const { data, error } = await supabase.storage
+				.from("restaurantlogos")
+				.upload("34/" + filePath, file);
+
+			if (error) {
+				throw error;
+			}
 			console.log(data);
-		} else {
-			console.log(error);
+		} catch (error) {
+			alert(error.message);
 		}
 	};
 
@@ -100,15 +116,15 @@ const RestaurantAdmin = () => {
 
 		console.log("fetch completed");
 
-		// const { data, error } = await supabase.storage
-		// 	.from("restaurant-restlogo")
-		// 	.upload(1 + "/" + file, file);
-		// if (data) {
-		// 	console.log(data);
-		// }
-		// if (error) {
-		// 	console.log(error);
-		// }
+		const { data, error } = await supabase.storage
+			.from("restaurantlogos")
+			.upload("34/1" + restLogo, restLogo);
+		if (data) {
+			console.log(data);
+		}
+		if (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -126,7 +142,10 @@ const RestaurantAdmin = () => {
 
 				<div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly">
 					{restaurants.map((restaurant, index) => (
-						<Link to="/menuinfo" state={restaurant}>
+						<Link
+							to="/menuinfo"
+							state={restaurant}
+							onClick={() => dispatch(setRestaurant(restaurant.id))}>
 							<RestaurantAdminCard restaurant={restaurant} key={index} />
 						</Link>
 					))}
@@ -224,14 +243,14 @@ const RestaurantAdmin = () => {
 						</div>
 					</form>
 				</div>
-				<form action="">
+				<form>
 					<div>
 						<label htmlFor="logo">Logo</label>
 						<input
 							type="file"
 							id="logo"
 							name="RestLogo"
-							accept=".png, .jpeg"
+							accept="image/png, image/jpeg"
 							onChange={(e) => uploadImage(e)}
 						/>
 					</div>
