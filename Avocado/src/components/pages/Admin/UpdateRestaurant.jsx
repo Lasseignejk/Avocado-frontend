@@ -21,11 +21,16 @@ const UpdateRestaurant = ({ restaurants }) => {
 		}
 	};
 	const restaurantId = useSelector(
-		(state) => state.dashboard.currentRestaurant[0]
+		(state) => state?.dashboard?.currentRestaurant[0]
 	);
-	console.log(restaurantId);
+	const userDetails = useSelector(
+		(state) => state?.dashboard?.userDetails[0][0]
+	);
 	const dispatch = useDispatch();
 	const [restToEdit, setRestToEdit] = useState({});
+
+	let name = restToEdit[0]?.RestName;
+	console.log(name);
 
 	useEffect(() => {
 		console.log();
@@ -41,22 +46,23 @@ const UpdateRestaurant = ({ restaurants }) => {
 			);
 
 			if (!response.ok) {
-				window.alert(response.statusText);
+				window.alert(response?.statusText);
 			} else {
-				const json = await response.json();
+				const json = await response?.json();
 				setRestToEdit(json);
+				console.log(json);
 			}
 		};
 		getRestaurant();
-	}, []);
+	}, [restaurantId]);
 
 	const [updateDetails, setUpdateDetails] = useState({});
 	const setUpdateFormState = (e) => {
 		setUpdateDetails({
 			...updateDetails,
 			[e.target.name]: e.target.value,
-			OwnerId: userDetails.id,
-			RestLogo: restLogo,
+			OwnerId: userDetails?.id,
+			// RestLogo: restLogo,
 		});
 	};
 
@@ -82,12 +88,11 @@ const UpdateRestaurant = ({ restaurants }) => {
 								restaurant name
 							</label>
 							<input
-								className="pl-3"
+								className="pl-3 border-2 border-black"
 								type="text"
 								id="name"
 								name="RestName"
-								placeholder="'McDonalds #123'"
-								value={updateDetails.RestName ? updateDetails.RestName : ""}
+								value={name}
 								onChange={(e) => setUpdateFormState(e)}
 							/>
 						</div>
@@ -96,8 +101,7 @@ const UpdateRestaurant = ({ restaurants }) => {
 								phone number
 							</label>
 							<input
-								className="pl-3"
-								placeholder="(123) 123-1234"
+								className="pl-3 border-2 border-black"
 								type="text"
 								id="phone"
 								name="RestPhoneNumber"

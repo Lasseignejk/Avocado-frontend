@@ -133,7 +133,7 @@ const ManageRestaurants = () => {
 				</div>
 
 				<div className="flex justify-center">
-					<form className="px-3 flex flex-col gap-2 mb-3 items-center w-full md:mb-5">
+					<form className="px-3 flex flex-col gap-2 mb-3 items-center w-full md:w-1/2 md:mb-5">
 						<h1 className="text-2xl font-bold text-center">Add a Restuarant</h1>
 						<div className="flex flex-col w-full">
 							<label htmlFor="name" className="font-bold">
