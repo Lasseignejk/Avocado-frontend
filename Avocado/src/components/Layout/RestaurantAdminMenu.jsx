@@ -15,42 +15,45 @@ const RestaurantAdminMenu = () => {
 
   //searches for menu items by restaurant id (in state) in menuitems database
 
-  // const [menu, setMenu] = useState();
+  const restaurantId = useSelector(
+    (state) => state.dashboard.currentRestaurant[0]
+  );
 
-  // useEffect(() => {
-  // 	console.log();
-  // 	const getRestaurants = async () => {
-  // 		const response = await fetch(
-  // 			"http://localhost:3060/admin/restaurant/getmenu",
-  // 			{
-  // 				method: "GET",
-  // 				headers: {
-  // 					userid: userDetails.id,
-  // 				},
-  // 			}
-  // 		);
-  // 		console.log(response);
-  // 		if (!response.ok) {
-  // 			window.alert(response.statusText);
-  // 		} else {
-  // 			const json = await response.json();
-  // 			setRestaurants(json);
-  // 		}
-  // 	};
-  // 	getRestaurants();
-  // }, [restName]);
+  const [menu, setMenu] = useState();
 
-  const userDetails = useSelector((state) => state);
-  console.log(userDetails);
+  useEffect(() => {
+    console.log();
+    const getMenu = async () => {
+      const response = await fetch(
+        "http://localhost:3060/admin/restaurant/getmenu",
+        {
+          method: "GET",
+          headers: {
+            restid: restaurantId,
+          },
+        }
+      );
+      console.log(response);
+      if (!response.ok) {
+        window.alert(response.statusText);
+      } else {
+        const json = await response.json();
+        setMenu(json);
+        console.log(json);
+      }
+    };
+    getMenu();
+  }, [restaurantId]);
+
 
   return (
     <div className="flex">
       <AdminNavBar />
       <div>
         <h1>Edit Menu</h1>
-        {/* {menu.map((item) => (
+        {menu.map((item) => (
           <RestaurantAdminMenuItem item={item} />
-        ))} */}
+        ))}
       </div>
       <RestaurantAdminNewMenuItem />
     </div>
