@@ -8,6 +8,7 @@ const RestaurantAdminNewMenuItem = () => {
     (state) => state.dashboard.currentRestaurant[0]
   );
   console.log("restaurant id: ", restaurantId);
+  console.log(typeof restaurantId);
 
   ///previously new menu item
 
@@ -74,14 +75,17 @@ const RestaurantAdminNewMenuItem = () => {
       RestId: restaurantId,
     };
     console.log(dataTosend);
-    const data = await fetch("http://localhost:3060/addtomenu", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataTosend),
-    });
-    console.log(data);
+    const data = await fetch(
+      "http://localhost:3060/admin/restaurant/addtomenu",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataTosend),
+      }
+    );
+    console.log("data from front", data);
   };
 
   return (
