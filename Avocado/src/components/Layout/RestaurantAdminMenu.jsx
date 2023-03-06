@@ -45,6 +45,7 @@ const RestaurantAdminMenu = () => {
     getMenu();
   }, [restaurantId]);
 
+
   return (
     <div className="flex">
       <AdminNavBar />
