@@ -5,21 +5,13 @@ import RestaurantAdminCard from "./RestaurantAdminCard";
 import AdminNavBar from "../partials/AdminNavBar";
 import { Link } from "react-router-dom";
 import { supabase } from "../../supabase";
+import "../Layout/RestaurantAdmin.css";
 
 import { setRestaurant } from "../reducers/DashboardSlice";
+import RestaurantAdminUpdateRestaurant from "./RestaurantAdminUpdateRestaurant";
 
 const RestaurantAdmin = () => {
 	const dispatch = useDispatch();
-	//previously Admin Restraunt
-
-	// * expected behavior *
-	//links to admin's restaurants for editing
-
-	/*
-  To do:
-  Pull data from backend and inject to backened to edit
-  */
-
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
@@ -150,6 +142,9 @@ const RestaurantAdmin = () => {
 						</Link>
 					))}
 				</div>
+
+				<RestaurantAdminUpdateRestaurant restaurants={restaurants} />
+
 				<div className="flex justify-center">
 					<form className="px-3 flex flex-col gap-2 mb-3 items-center md:mb-5">
 						<h1 className="text-2xl font-bold text-center">Add a Restuarant</h1>
