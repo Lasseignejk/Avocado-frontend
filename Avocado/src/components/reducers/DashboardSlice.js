@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isOwner: false,
   isCustomer: false,
-  token: [],
+  tokenID: "",
+  userEmail: "",
   userDetails: [],
   currentMenu: [],
   currentRestaurant: [],
 };
+console.log("initalstate 12:", initialState);
 
 export const DashboardSlice = createSlice({
   name: "dashboard",
@@ -26,8 +28,10 @@ export const DashboardSlice = createSlice({
       state.isCustomer = action.payload;
     },
     setToken: (state, action) => {
-      state.token = [];
-      state.token.push(...[action.payload]);
+      console.log("initalstate 31:", initialState);
+      console.log("payload 32", action.payload);
+      state.tokenID = action.payload.id;
+      state.userEmail = action.payload.email;
     },
     setMenu: (state, action) => {
       state.currentMenu = [];
