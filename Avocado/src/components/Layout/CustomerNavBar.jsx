@@ -3,6 +3,16 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const CustomerNavBar = () => {
+  //previously AdminNavBar (re-used for Customer here)
+
+  // * expected behavior *
+  //showcases all options for Customer
+
+  /*
+  To do:
+  Update for Customer
+  */
+
   const [show, setShow] = useState("false");
 
   const toggleNav = () => {
@@ -40,29 +50,6 @@ const CustomerNavBar = () => {
         </ul>
       </nav>
     </div>
-
-    // <div className="bg-green md:w-[300px] md:h-screen p-5 flex flex-col gap-5">
-    // 	// <img src="../logos/avocado_gray.svg" alt="" />
-    // 	//{" "}
-    // 	<div>
-    // 		//{" "}
-    // 		<ul className="flex flex-col gap-5 text-gray font-bold text-xl">
-    // 			//{" "}
-    // 			<li className="border-b-2 border-gray pb-5">
-    // 				// <Link to={"/restaurantinfo"}> My Restaurants</Link>
-    // 				//{" "}
-    // 			</li>
-    // 			//{" "}
-    // 			<li>
-    // 				// <Link to={"/admin"}> My Account</Link>
-    // 				//{" "}
-    // 			</li>
-    // 			//{" "}
-    // 		</ul>
-    // 		//{" "}
-    // 	</div>
-    // 	//{" "}
-    // </div>
   );
 };
 

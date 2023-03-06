@@ -1,10 +1,54 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 const DashboardEditAccount = () => {
+  ///previously UserAcct
+
+  // * expected behavior *
+  //Updates user's's account
+
+  /*
+  To do:
+  */
+
+  //hook to query Customer/Owner tables, query in Queries
+  const { data, error } = useUserData();
+  console.log("userdata:", data);
+
+  const [accountDetails, setAccountDetails] = useState({});
+
+  const setFormState = (e) => {
+    setAccountDetails({
+      ...accountDetails,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // const updateUserAccount = async (accountDetails) => {
+  // 	const data = await fetch("http://localhost:3060/update", {
+  // 		method: "POST",
+  // 		headers: {
+  // 			"Content-Type": "application/json",
+  // 		},
+  // 		body: JSON.stringify(accountDetails),
+  // 	});
+  // 	console.log(accountDetails);
+  // };
+
   return (
     <div>
+      <div className="flex flex-col gap-5">
+        {data.map((individual) => (
+          <div>
+            <p>{individual.CustomerFirstName}</p>
+            <p>{individual.CustomerLastName}</p>
+            <p>{individual.CustomerEmail}</p>
+          </div>
+        ))}
+      </div>
       <form>
-        <h1>Edit Account</h1>
+        <h1>User Account</h1>
         <div>
           <label htmlFor="firstName">First Name</label>
           <input
@@ -80,8 +124,11 @@ const DashboardEditAccount = () => {
           />
         </div>
         <div>
-          <button type="button" onClick={() => sendToSupabase(accountDetails)}>
-            SUBMIT
+          <button
+            type="button"
+            onClick={() => updateUserAccount(accountDetails)}
+          >
+            Update Account
           </button>
         </div>
       </form>

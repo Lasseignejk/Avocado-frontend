@@ -3,6 +3,16 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const RestaurantNavBar = () => {
+  //previously NavBar
+
+  // * expected behavior *
+  //Holds NavBar and other partials/components wanted
+
+  /*
+  To do:
+  Add in link to "/restaurantdashboard"
+  */
+
   const [show, setShow] = useState("false");
 
   const toggleNav = () => {
@@ -29,10 +39,12 @@ const RestaurantNavBar = () => {
       >
         <ul className="flex flex-col gap-5">
           <li className="border-b-2 border-gray pb-5">
-            <Link to={"/restaurantinfo"}> My Restaurants</Link>
+            {/*RestaurantAdmin*/}
+            <Link to={"/myrestaurants"}> My Restaurants</Link>
           </li>
           <li className="border-b-2 border-gray pb-5">
-            <Link to={"/admin"}> My Account</Link>
+            {/*RestrauntAdminAccount*/}
+            <Link to={"/myadminaccount"}> My Account</Link>
           </li>
           <li>
             <Link to={"#"}> Logout</Link>
@@ -40,29 +52,6 @@ const RestaurantNavBar = () => {
         </ul>
       </nav>
     </div>
-
-    // <div className="bg-green md:w-[300px] md:h-screen p-5 flex flex-col gap-5">
-    // 	// <img src="../logos/avocado_gray.svg" alt="" />
-    // 	//{" "}
-    // 	<div>
-    // 		//{" "}
-    // 		<ul className="flex flex-col gap-5 text-gray font-bold text-xl">
-    // 			//{" "}
-    // 			<li className="border-b-2 border-gray pb-5">
-    // 				// <Link to={"/restaurantinfo"}> My Restaurants</Link>
-    // 				//{" "}
-    // 			</li>
-    // 			//{" "}
-    // 			<li>
-    // 				// <Link to={"/admin"}> My Account</Link>
-    // 				//{" "}
-    // 			</li>
-    // 			//{" "}
-    // 		</ul>
-    // 		//{" "}
-    // 	</div>
-    // 	//{" "}
-    // </div>
   );
 };
 

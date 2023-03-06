@@ -4,14 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from "../../supabase";
-import {
-  setUserDetails,
-  setOwner,
-  setCustomer,
-} from "../reducers/DashboardSlice";
+import { setToken, setOwner, setCustomer } from "../reducers/DashboardSlice";
 import { redirect, useNavigate } from "react-router-dom";
 
 const DashboardSignup = () => {
+  //previously signup
+
+  // * expected behavior *
+  //signs up user, logs in user (customer or owner) in, injects into Owner or Customer database, grabs token from supabase, sets token in state, sets in state if owner or customer
+
+  /*
+  To do:
+  */
+
   //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -69,7 +74,7 @@ const DashboardSignup = () => {
       return;
     }
     //sets token in state
-    dispatch(setUserDetails(user));
+    dispatch(setToken(user));
     console.log(user);
 
     if (user) {
@@ -96,7 +101,7 @@ const DashboardSignup = () => {
         const { data: user } = await supabase.auth.getUser();
 
         //sets token in state
-        dispatch(setUserDetails(user));
+        dispatch(setToken(user));
         console.log(user);
 
         //sets as owner in state
@@ -130,7 +135,7 @@ const DashboardSignup = () => {
         const { data: user } = await supabase.auth.getUser();
 
         //sets token in state
-        dispatch(setUserDetails(user));
+        dispatch(setToken(user));
         console.log(user);
 
         //sets as customer in state

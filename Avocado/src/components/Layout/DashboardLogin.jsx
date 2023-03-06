@@ -1,19 +1,23 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "../pages/Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { redirect, useNavigate } from "react-router-dom";
 import { queryIsOwner } from "./Queries";
 
 import { supabase } from "../../supabase";
-import {
-  setUserDetails,
-  setOwner,
-  setCustomer,
-} from "../reducers/DashboardSlice";
+import { setToken, setOwner, setCustomer } from "../reducers/DashboardSlice";
 
 const DashboardLogin = () => {
+  //previously login
+
+  // * expected behavior *
+  //logs user (customer or owner) in, grabs token from supabase, sets token in state, checks supabase to confirm if owner or customer based on email, sets in state if owner or customer
+
+  /*
+  To do:
+  */
+
   //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +44,7 @@ const DashboardLogin = () => {
     const { data: user } = await supabase.auth.getUser();
 
     //sets token in state
-    dispatch(setUserDetails(user));
+    dispatch(setToken(user));
     console.log(user);
 
     const userEmail = user?.user?.email;
