@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import RestaurantAdminNewMenuItem from "./RestaurantAdminNewMenuItem";
 import AdminNavBar from "../partials/AdminNavBar";
 import { supabase } from "../../supabase";
+import RestaurantAdminMenuItem from "./RestaurantAdminMenuItem";
+import { useSelector } from "react-redux";
 
 const RestaurantAdminMenu = () => {
   ///previously AdminMenu
@@ -9,20 +11,46 @@ const RestaurantAdminMenu = () => {
   // * expected behavior *
   //Lists options to choose for admin
 
-  /*
-  To do:
-  */
+  /* To do: */
 
   //searches for menu items by restaurant id (in state) in menuitems database
-  //query in Queries
-  const { data, error } = useMenuData(id);
-  console.log("menudata:", data);
+
+  // const [menu, setMenu] = useState();
+
+  // useEffect(() => {
+  // 	console.log();
+  // 	const getRestaurants = async () => {
+  // 		const response = await fetch(
+  // 			"http://localhost:3060/admin/restaurant/getmenu",
+  // 			{
+  // 				method: "GET",
+  // 				headers: {
+  // 					userid: userDetails.id,
+  // 				},
+  // 			}
+  // 		);
+  // 		console.log(response);
+  // 		if (!response.ok) {
+  // 			window.alert(response.statusText);
+  // 		} else {
+  // 			const json = await response.json();
+  // 			setRestaurants(json);
+  // 		}
+  // 	};
+  // 	getRestaurants();
+  // }, [restName]);
+
+  const userDetails = useSelector((state) => state);
+  console.log(userDetails);
 
   return (
     <div className="flex">
       <AdminNavBar />
       <div>
         <h1>Edit Menu</h1>
+        {/* {menu.map((item) => (
+          <RestaurantAdminMenuItem item={item} />
+        ))} */}
       </div>
       <RestaurantAdminNewMenuItem />
     </div>
