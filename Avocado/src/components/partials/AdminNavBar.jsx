@@ -39,6 +39,7 @@ const AdminNavBar = () => {
 					</li>
 					<li>
 						<button
+							type="button"
 							onClick={(e) => {
 								signOut();
 							}}>
