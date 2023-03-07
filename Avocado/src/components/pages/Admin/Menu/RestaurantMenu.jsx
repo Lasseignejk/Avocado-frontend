@@ -15,9 +15,7 @@ const RestaurantMenu = () => {
 
 	//searches for menu items by restaurant id (in state) in menuitems database
 
-	const restaurantId = useSelector(
-		(state) => state.dashboard.currentRestaurant[0]
-	);
+	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
 
 	const [menu, setMenu] = useState();
 

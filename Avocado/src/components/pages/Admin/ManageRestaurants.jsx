@@ -18,9 +18,7 @@ const ManageRestaurants = () => {
 	const [restLogo, setRestLogo] = useState("");
 	const [toggle, setToggle] = useState(true);
 
-	const userDetails = useSelector(
-		(state) => state?.dashboard?.userDetails[0][0]
-	);
+	const userDetails = useSelector((state) => state?.userDetails[0][0]);
 
 	// Get restaurants by owner ID on reload
 	useEffect(() => {
@@ -55,39 +53,6 @@ const ManageRestaurants = () => {
 			RestLogo: restLogo,
 		});
 	};
-	// sets logo path to state
-	const formatLogoPath = (e) => {
-		let file = e.target.files[0].name;
-		setRestLogo(file);
-	};
-
-	const uploadImage = async (e) => {
-		try {
-			if (!e.target.files || e.target.files.length === 0) {
-				throw new Error("You must select an image to upload");
-			}
-			let file = e.target.files[0];
-			console.log(e.target.files[0]);
-			const fileEXT = file.name.split(".").pop();
-			const fileName = file.name.split(".").shift();
-			const filePath = `${fileName}.${fileEXT}`;
-			console.log(fileEXT);
-			console.log(fileName);
-			console.log(filePath);
-			// let id = userDetails.id.toString();
-
-			const { data, error } = await supabase.storage
-				.from("restaurantlogos")
-				.upload("34/" + filePath, file);
-
-			if (error) {
-				throw error;
-			}
-			console.log(data);
-		} catch (error) {
-			alert(error.message);
-		}
-	};
 
 	const sendToSupabase = async (restaurantDetails) => {
 		const response = await fetch(
@@ -104,15 +69,16 @@ const ManageRestaurants = () => {
 			console.log("restaurant added");
 			setRestName(restaurantDetails.restName);
 		}
+		setRestaurantDetails({ OwnerId: userDetails.id });
 	};
 
 	return (
 		<div className="mb-[55px] md:flex md:mb-0">
 			<AdminNavBar />
 			<div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20">
-				<div className="flex flex-col">
+				<div className="flex flex-col gap-3">
 					<h1 className="text-center text-4xl font-bold text-green md:text-left">
-						{userDetails.OwnerFirstName}
+						Welcome, {userDetails?.OwnerFirstName}
 					</h1>
 					<h1 className="text-center text-3xl font-bold md:text-left">
 						Manage Restaurants
@@ -129,16 +95,18 @@ const ManageRestaurants = () => {
 						</Link>
 					))}
 				</div>
-				<div className="flex justify-center">
-					<UpdateRestaurant
-						restaurants={restaurants}
-						toggle={toggle}
-						setToggle={setToggle}
-					/>
-				</div>
+				{restaurants.length > 0 && (
+					<div className="flex justify-center">
+						<UpdateRestaurant
+							restaurants={restaurants}
+							toggle={toggle}
+							setToggle={setToggle}
+						/>
+					</div>
+				)}
 
 				<div className="flex justify-center">
-					<form className="px-3 flex flex-col gap-2 mb-3 items-center w-full md:w-1/2 md:mb-5">
+					<form className="px-3 flex flex-col gap-3 mb-3 items-center w-full md:w-1/2 md:mb-5">
 						<h1 className="text-2xl font-bold text-center">Add a Restuarant</h1>
 						<div className="flex flex-col w-full">
 							<label htmlFor="name" className="font-bold">
@@ -219,18 +187,6 @@ const ManageRestaurants = () => {
 						</div>
 					</form>
 				</div>
-				<form>
-					<div>
-						<label htmlFor="logo">Logo</label>
-						<input
-							type="file"
-							id="logo"
-							name="RestLogo"
-							accept="image/png, image/jpeg"
-							onChange={(e) => uploadImage(e)}
-						/>
-					</div>
-				</form>
 			</div>
 		</div>
 	);

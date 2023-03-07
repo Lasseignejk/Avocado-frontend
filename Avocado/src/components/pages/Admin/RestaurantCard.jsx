@@ -12,12 +12,18 @@ const RestaurantAdminCard = ({ restaurant }) => {
   */
 
 	return (
-		<div className="font-niveau px-3 flex pt-3 gap-3 hover:bg-blue duration-200 ease-in md:w-[400px] md:py-3">
-			<img
-				src={restaurant.RestLogo}
-				alt="logo"
-				className="md:w-[100px] md:h-[100px] md:border-2 md:border-black"
-			/>
+		<div className="font-niveau px-3 flex pt-3 gap-3 hover:bg-blue md:hover:-translate-y-1 duration-200 ease-in md:w-[400px] md:py-3">
+			<div className="flex items-center w-[50px] h-[50px] md:w-[100px] md:h-[100px] box-border">
+				<img
+					src={
+						restaurant.RestLogo
+							? restaurant.RestLogo
+							: "../items/menu_placeholder.svg"
+					}
+					alt="logo"
+					className=""
+				/>
+			</div>
 			<div>
 				<h1 className="font-bold text-2xl">{restaurant.RestName}</h1>
 				<h1>{restaurant.RestLocation}</h1>
