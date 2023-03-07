@@ -16,6 +16,7 @@ const ManageRestaurants = () => {
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
 	const [restLogo, setRestLogo] = useState("");
+	const [toggle, setToggle] = useState(true);
 
 	const userDetails = useSelector(
 		(state) => state?.dashboard?.userDetails[0][0]
@@ -43,7 +44,7 @@ const ManageRestaurants = () => {
 			}
 		};
 		getRestaurants();
-	}, [restName]);
+	}, [restName, toggle]);
 
 	// Add a Restaurant
 	const setFormState = (e) => {
@@ -129,7 +130,11 @@ const ManageRestaurants = () => {
 					))}
 				</div>
 				<div className="flex justify-center">
-					<UpdateRestaurant restaurants={restaurants} />
+					<UpdateRestaurant
+						restaurants={restaurants}
+						toggle={toggle}
+						setToggle={setToggle}
+					/>
 				</div>
 
 				<div className="flex justify-center">

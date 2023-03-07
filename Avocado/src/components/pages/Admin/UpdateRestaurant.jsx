@@ -4,11 +4,16 @@ import { setRestaurant } from "../../reducers/DashboardSlice";
 import "../Admin/ManageRestaurants.css";
 import UpdateRestaurantOptions from "../Admin/UpdateRestaurantOptions";
 
-const UpdateRestaurant = ({ restaurants }) => {
+const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 	const modal = document.querySelector(".modal");
+	const infoDiv = document.querySelector(".infoDiv");
 
 	const openModal = () => {
 		modal.style.display = "block";
+	};
+
+	const openInfoDiv = () => {
+		infoDiv.style.display = "block";
 	};
 
 	const closeModal = () => {
@@ -29,9 +34,6 @@ const UpdateRestaurant = ({ restaurants }) => {
 	const dispatch = useDispatch();
 	const [restToEdit, setRestToEdit] = useState({});
 
-	let name = restToEdit[0]?.RestName;
-	console.log(name);
-
 	useEffect(() => {
 		console.log();
 		const getRestaurant = async () => {
@@ -49,21 +51,45 @@ const UpdateRestaurant = ({ restaurants }) => {
 				window.alert(response?.statusText);
 			} else {
 				const json = await response?.json();
+
 				setRestToEdit(json);
-				console.log(json);
 			}
 		};
 		getRestaurant();
-	}, [restaurantId]);
+	}, [restaurantId, toggle]);
 
 	const [updateDetails, setUpdateDetails] = useState({});
 	const setUpdateFormState = (e) => {
 		setUpdateDetails({
 			...updateDetails,
 			[e.target.name]: e.target.value,
-			OwnerId: userDetails?.id,
+			id: restaurantId,
 			// RestLogo: restLogo,
 		});
+	};
+
+	const updateRestaurant = async (updateDetails) => {
+		const checkDetails = (updateDetails) => {
+			const filteredObject = Object.fromEntries(
+				Object.entries(updateDetails).filter(([key, value]) => value !== "")
+			);
+			setUpdateDetails(filteredObject);
+		};
+		checkDetails(updateDetails);
+
+		const response = await fetch(
+			"http://localhost:3060/admin/restaurant/updaterestaurant",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(updateDetails),
+			}
+		);
+
+		setToggle(!toggle);
+		setUpdateDetails({ id: restaurantId });
 	};
 
 	return (
@@ -81,7 +107,16 @@ const UpdateRestaurant = ({ restaurants }) => {
 						onClick={() => closeModal()}>
 						&times;
 					</span>
-					<UpdateRestaurantOptions restaurants={restaurants} />
+					<UpdateRestaurantOptions
+						restaurants={restaurants}
+						openInfoDiv={openInfoDiv}
+					/>
+					<div className="infoDiv">
+						<h1 className="text-lg">{restToEdit[0]?.RestName}</h1>
+						<p>{restToEdit[0]?.RestHours}</p>
+						<p>{restToEdit[0]?.RestLocation}</p>
+						<p>{restToEdit[0]?.RestPhoneNumber}</p>
+					</div>
 					<form>
 						<div className="flex flex-col w-full">
 							<label htmlFor="name" className="font-bold">
@@ -92,7 +127,7 @@ const UpdateRestaurant = ({ restaurants }) => {
 								type="text"
 								id="name"
 								name="RestName"
-								value={name}
+								value={updateDetails.RestName ? updateDetails.RestName : ""}
 								onChange={(e) => setUpdateFormState(e)}
 							/>
 						</div>
@@ -112,6 +147,42 @@ const UpdateRestaurant = ({ restaurants }) => {
 								}
 								onChange={(e) => setUpdateFormState(e)}
 							/>
+						</div>
+						<div className="flex flex-col w-full">
+							<label htmlFor="location" className="font-bold">
+								address
+							</label>
+							<input
+								className="pl-3"
+								type="text"
+								id="location"
+								name="RestLocation"
+								value={
+									updateDetails.RestLocation ? updateDetails.RestLocation : ""
+								}
+								onChange={(e) => setUpdateFormState(e)}
+							/>
+						</div>
+						<div className="flex flex-col w-full">
+							<label htmlFor="hours" className="font-bold">
+								hours
+							</label>
+							<input
+								className="pl-3"
+								type="text"
+								id="hours"
+								name="RestHours"
+								value={updateDetails.RestHours ? updateDetails.RestHours : ""}
+								onChange={(e) => setUpdateFormState(e)}
+							/>
+						</div>
+						<div>
+							<button
+								type="button"
+								className="bg-green text-gray px-3 py-1"
+								onClick={() => updateRestaurant(updateDetails)}>
+								Update
+							</button>
 						</div>
 					</form>
 				</div>
