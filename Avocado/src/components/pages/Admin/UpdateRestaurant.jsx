@@ -35,7 +35,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 		console.log();
 		const getRestaurant = async () => {
 			const response = await fetch(
-				"http://localhost:3060/admin/restaurant/getonerestaurant",
+				import.meta.env.VITE_BACKEND + "/admin/restaurant/getonerestaurant",
 				{
 					method: "GET",
 					headers: {
@@ -74,7 +74,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 		checkDetails(updateDetails);
 
 		const response = await fetch(
-			"http://localhost:3060/admin/restaurant/updaterestaurant",
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/updaterestaurant",
 			{
 				method: "POST",
 				headers: {
@@ -129,7 +129,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 		console.log(logoPath);
 
 		const response = await fetch(
-			"http://localhost:3060/admin/restaurant/updaterestaurant",
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/updaterestaurant",
 			{
 				method: "POST",
 				headers: {
