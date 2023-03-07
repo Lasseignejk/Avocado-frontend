@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useSignOut } from "../Layout/Queries";
 
 const AdminNavBar = () => {
+	const signOut = useSignOut();
 	const [show, setShow] = useState(true);
 
 	const toggleNav = () => {
@@ -36,7 +38,13 @@ const AdminNavBar = () => {
 						<Link to={"/admin"}> My Account</Link>
 					</li>
 					<li>
-						<Link to={"#"}> Logout</Link>
+						<button
+							type="button"
+							onClick={(e) => {
+								signOut();
+							}}>
+							Logout
+						</button>
 					</li>
 				</ul>
 			</nav>
