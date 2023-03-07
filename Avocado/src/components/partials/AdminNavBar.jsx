@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const AdminNavBar = () => {
-	const [show, setShow] = useState("false");
+	const [show, setShow] = useState(true);
 
 	const toggleNav = () => {
 		setShow(!show);
@@ -22,7 +22,7 @@ const AdminNavBar = () => {
 			<nav
 				className={
 					"bg-green text-xl text-gray font-bold duration-500 nav fixed w-full z-[9] p-5 text-center md:relative md:z-0 md:w-[300px] md:text-left md:translate-y-0 md:duration-[0ms]" +
-					(show ? " translate-y-[-330px]" : "")
+					(show ? "" : " translate-y-[-330px]")
 					// "md:relative md:w-[300px] md:z-0 md:text-left"
 				}>
 				<ul className="flex flex-col gap-5">

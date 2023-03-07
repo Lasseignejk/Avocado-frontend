@@ -4,9 +4,7 @@ import { useSelector } from "react-redux";
 const RestaurantAddMenuItemForm = () => {
 	const [newItem, setNewItem] = useState({});
 
-	const restaurantId = useSelector(
-		(state) => state.dashboard.currentRestaurant[0]
-	);
+	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
 	console.log("restaurant id: ", restaurantId);
 	console.log(typeof restaurantId);
 
