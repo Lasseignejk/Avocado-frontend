@@ -2,19 +2,21 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { setRestaurant } from "../../reducers/DashboardSlice";
 
-const UpdateRestaurantOptions = ({ restaurants }) => {
+const UpdateRestaurantOptions = ({ restaurants, openInfoDiv }) => {
 	const dispatch = useDispatch();
 	return (
 		<select
-			className="px-2 mt-5"
+			className=" mt-5 w-[250px] h-[30px]"
 			name="restNames"
+			defaultValue={"Please choose a restaurant to edit"}
 			id=""
+			onClick={() => openInfoDiv()}
 			onChange={(e) => dispatch(setRestaurant(e.target.value * 1))}>
-			<option selected disabled>
+			<option disabled className="">
 				Please choose a restaurant to edit
 			</option>
 			{restaurants?.map((restaurant, index) => (
-				<option name="restNames" key={index} value={restaurant.id}>
+				<option name="restNames" className="" key={index} value={restaurant.id}>
 					{restaurant.RestName}
 				</option>
 			))}
