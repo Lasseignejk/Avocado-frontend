@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useSignOut } from "./Queries";
 
 const RestaurantNavBar = () => {
+  const signOut = useSignOut();
   //previously NavBar
 
   // * expected behavior *
@@ -47,7 +49,15 @@ const RestaurantNavBar = () => {
             <Link to={"/myadminaccount"}> My Account</Link>
           </li>
           <li>
-            <Link to={"#"}> Logout</Link>
+            <button
+              className="bg-green text-gray px-3 text-lg py-1 hover:bg-blue hover:text-black signUpBtn"
+              type="button"
+              onClick={(e) => {
+                signOut();
+              }}
+            >
+              Log out
+            </button>
           </li>
         </ul>
       </nav>

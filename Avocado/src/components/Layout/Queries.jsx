@@ -1,23 +1,33 @@
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
-import { useDispatch } from "react-redux";
-import { setUserDetails } from "../reducers/DashboardSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserDetails, setLogOut } from "../reducers/DashboardSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
 //Customer hooks for querying supabase for specific rows
 
 //hook to search for email in  customer/owner database
+
+export function useSignOut() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  return async () => {
+    dispatch(setLogOut());
+    localStorage.clear();
+    let { error } = await supabase.auth.signOut();
+    navigate("/");
+  };
+}
+
 export function useUserData() {
   const dispatch = useDispatch();
 
-  const token = useSelector((state) => state.dashboard.token);
-  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
-  const userDetails = useSelector((state) => state.dashboard.userDetails);
+  const isCustomer = useSelector((state) => state.isCustomer);
+  const userDetails = useSelector((state) => state.userDetails);
+  const userEmail = useSelector((state) => state.userEmail);
 
   const [error, setError] = useState(null);
-
-  //parsing email
-  const userEmail = token[0]?.user?.email;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,27 +42,28 @@ export function useUserData() {
       }
       if (data) {
         dispatch(setUserDetails(data));
+        console.log("userdetails", data);
       }
     };
     if (userEmail) {
       fetchUserData();
     }
-  }, [userEmail]);
+  }, [userEmail, isCustomer]);
 
   return { data: userDetails, error };
 }
 
 //hook to search for user in  customer/owner database
-export async function queryIsOwner(userEmail) {
+export async function queryIsOwner(email) {
   const { data: CustomerData, error: CustomerError } = await supabase
     .from("Customer")
     .select()
-    .eq("CustomerEmail", userEmail);
+    .eq("CustomerEmail", email);
 
   const { data: OwnerData, error: OwnerError } = await supabase
     .from("Owner")
     .select()
-    .eq("OwnerEmail", userEmail);
+    .eq("OwnerEmail", email);
 
   if (CustomerData.length > 0 && OwnerData.length == 0) {
     return false;

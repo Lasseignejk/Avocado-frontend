@@ -1,10 +1,13 @@
 import RestaurantNavBar from "./RestaurantNavBar";
 import { useUserData } from "./Queries";
-import { useDispatch } from "react-redux";
-import { setUserDetails } from "../reducers/DashboardSlice";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
+import { setOwner, setUserDetails } from "../reducers/DashboardSlice";
+import { supabase } from "../../supabase";
 
 const RestaurantDashboard = ({ children }) => {
+  const dispatch = useDispatch();
+
   // * expected behavior *
   //Holds NavBar and other partials/components wanted
 
@@ -16,9 +19,6 @@ const RestaurantDashboard = ({ children }) => {
   const { data, error } = useUserData();
   //data is the user information
 
-  if (error) {
-    return <h1>There is a problem...</h1>;
-  }
   return (
     <>
       <RestaurantNavBar />
