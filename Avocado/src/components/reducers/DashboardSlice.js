@@ -5,7 +5,7 @@ const initialState = {
   isCustomer: false,
   tokenID: "",
   userEmail: "",
-  userDetails: [],
+  userDetails: [{ OwnerFirstName: "", CustomerFirstName: "" }],
   currentMenu: [],
   currentRestaurant: [],
 };

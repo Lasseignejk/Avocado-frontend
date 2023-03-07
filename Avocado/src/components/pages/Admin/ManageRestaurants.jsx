@@ -18,7 +18,7 @@ const ManageRestaurants = () => {
 	const [restLogo, setRestLogo] = useState("");
 	const [toggle, setToggle] = useState(true);
 
-	const userDetails = useSelector((state) => state?.userDetails[0][0]);
+	const userDetails = useSelector((state) => state?.userDetails[0]);
 
 	// Get restaurants by owner ID on reload
 	useEffect(() => {
