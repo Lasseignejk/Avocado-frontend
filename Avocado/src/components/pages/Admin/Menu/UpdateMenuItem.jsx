@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import "../ManageRestaurants.css";
 
 const UpdateMenuItem = ({ item, setOpenModal }) => {
   const [updateItem, setUpdateItem] = useState({});
-  const restaurantId = useSelector((state) => state.currentRestaurant[0]);
-  console.log("restaurant id: ", restaurantId);
-
   const setFormState = (e) => {
     setUpdateItem({
       ...updateItem,
@@ -43,7 +39,6 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
       ItemAvailable: available,
       ItemDinner: dinner,
       ItemLunch: lunch,
-      RestId: restaurantId,
       id: item.id,
     };
     console.log("Data to send: ", dataTosend);
