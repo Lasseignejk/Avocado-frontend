@@ -1,28 +1,22 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import RestaurantAdminCard from "./RestaurantAdminCard";
-import AdminNavBar from "../partials/AdminNavBar";
+import { useDispatch, useSelector } from "react-redux";
+import RestaurantAdminCard from "./RestaurantCard";
+import AdminNavBar from "../../partials/AdminNavBar";
 import { Link } from "react-router-dom";
-import { supabase } from "../../supabase";
+import { supabase } from "../../../supabase";
+import "../Admin/ManageRestaurants.css";
 
-const RestaurantAdmin = () => {
-	//previously Admin Restraunt
+import { setRestaurant } from "../../reducers/DashboardSlice";
+import UpdateRestaurant from "./UpdateRestaurant";
 
-	// * expected behavior *
-	//links to admin's restaurants for editing
-
-	/*
-  To do:
-  Pull data from backend and inject to backened to edit
-  */
-
+const ManageRestaurants = () => {
+	const dispatch = useDispatch();
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
-	const [restToEdit, setRestToEdit] = useState();
-
 	const [restLogo, setRestLogo] = useState("");
+	const [toggle, setToggle] = useState(true);
 
 	const userDetails = useSelector(
 		(state) => state?.dashboard?.userDetails[0][0]
@@ -41,7 +35,7 @@ const RestaurantAdmin = () => {
 					},
 				}
 			);
-			console.log(response);
+
 			if (!response.ok) {
 				window.alert(response.statusText);
 			} else {
@@ -50,7 +44,7 @@ const RestaurantAdmin = () => {
 			}
 		};
 		getRestaurants();
-	}, [restName]);
+	}, [restName, toggle]);
 
 	// Add a Restaurant
 	const setFormState = (e) => {
@@ -68,17 +62,30 @@ const RestaurantAdmin = () => {
 	};
 
 	const uploadImage = async (e) => {
-		let file = e.target.files[0].name;
-		console.log(file);
-		let id = userDetails.id.toString();
+		try {
+			if (!e.target.files || e.target.files.length === 0) {
+				throw new Error("You must select an image to upload");
+			}
+			let file = e.target.files[0];
+			console.log(e.target.files[0]);
+			const fileEXT = file.name.split(".").pop();
+			const fileName = file.name.split(".").shift();
+			const filePath = `${fileName}.${fileEXT}`;
+			console.log(fileEXT);
+			console.log(fileName);
+			console.log(filePath);
+			// let id = userDetails.id.toString();
 
-		const { data, error } = await supabase.storage
-			.from("restaurantlogos")
-			.upload(id + "/" + file, file, {});
-		if (data) {
+			const { data, error } = await supabase.storage
+				.from("restaurantlogos")
+				.upload("34/" + filePath, file);
+
+			if (error) {
+				throw error;
+			}
 			console.log(data);
-		} else {
-			console.log(error);
+		} catch (error) {
+			alert(error.message);
 		}
 	};
 
@@ -97,18 +104,6 @@ const RestaurantAdmin = () => {
 			console.log("restaurant added");
 			setRestName(restaurantDetails.restName);
 		}
-
-		console.log("fetch completed");
-
-		// const { data, error } = await supabase.storage
-		// 	.from("restaurant-restlogo")
-		// 	.upload(1 + "/" + file, file);
-		// if (data) {
-		// 	console.log(data);
-		// }
-		// if (error) {
-		// 	console.log(error);
-		// }
 	};
 
 	return (
@@ -126,13 +121,24 @@ const RestaurantAdmin = () => {
 
 				<div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly">
 					{restaurants.map((restaurant, index) => (
-						<Link to="/menuinfo" state={restaurant}>
+						<Link
+							to="/menuinfo"
+							state={restaurant}
+							onClick={() => dispatch(setRestaurant(restaurant.id))}>
 							<RestaurantAdminCard restaurant={restaurant} key={index} />
 						</Link>
 					))}
 				</div>
 				<div className="flex justify-center">
-					<form className="px-3 flex flex-col gap-2 mb-3 items-center md:mb-5">
+					<UpdateRestaurant
+						restaurants={restaurants}
+						toggle={toggle}
+						setToggle={setToggle}
+					/>
+				</div>
+
+				<div className="flex justify-center">
+					<form className="px-3 flex flex-col gap-2 mb-3 items-center w-full md:w-1/2 md:mb-5">
 						<h1 className="text-2xl font-bold text-center">Add a Restuarant</h1>
 						<div className="flex flex-col w-full">
 							<label htmlFor="name" className="font-bold">
@@ -202,18 +208,7 @@ const RestaurantAdmin = () => {
 								onChange={(e) => setFormState(e)}
 							/>
 						</div>
-						<div className="flex flex-col">
-							<label htmlFor="logo" className="font-bold">
-								logo
-							</label>
-							<input
-								type="file"
-								id="logo"
-								name="RestLogo"
-								accept=".png, .jpeg"
-								onChange={(e) => formatLogoPath(e)}
-							/>
-						</div>
+
 						<div className="flex justify-center">
 							<button
 								className="bg-green text-gray text-lg px-5 py-1 duration-200 font-bold hover:bg-dkgreen"
@@ -224,14 +219,14 @@ const RestaurantAdmin = () => {
 						</div>
 					</form>
 				</div>
-				<form action="">
+				<form>
 					<div>
 						<label htmlFor="logo">Logo</label>
 						<input
 							type="file"
 							id="logo"
 							name="RestLogo"
-							accept=".png, .jpeg"
+							accept="image/png, image/jpeg"
 							onChange={(e) => uploadImage(e)}
 						/>
 					</div>
@@ -241,4 +236,4 @@ const RestaurantAdmin = () => {
 	);
 };
 
-export default RestaurantAdmin;
+export default ManageRestaurants;
