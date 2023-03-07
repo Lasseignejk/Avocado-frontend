@@ -73,7 +73,7 @@ const RestaurantAddMenuItemForm = () => {
     };
     console.log(dataTosend);
     const data = await fetch(
-      "http://localhost:3060/admin/restaurant/addtomenu",
+      import.meta.env.VITE_BACKEND + "/admin/restaurant/addtomenu",
       {
         method: "POST",
         headers: {

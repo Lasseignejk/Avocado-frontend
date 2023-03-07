@@ -8,13 +8,6 @@ import { useSelector } from "react-redux";
 const RestaurantMenu = () => {
   ///previously AdminMenu
 
-  // * expected behavior *
-  //Lists options to choose for admin
-
-  /* To do: */
-
-  //searches for menu items by restaurant id (in state) in menuitems database
-
   const restaurantId = useSelector((state) => state.currentRestaurant[0]);
 
   const [menu, setMenu] = useState();
