@@ -37,6 +37,15 @@ export const DashboardSlice = createSlice({
       state.userDetails = [];
       state.userDetails.push(...[action.payload]);
     },
+    setLogOut: (state, action) => {
+      state.isOwner = false;
+      state.isCustomer = false;
+      state.tokenID = "";
+      state.userEmail = "";
+      state.userDetails = [];
+      state.currentMenu = [];
+      state.currentRestaurant = [];
+    },
   },
 });
 
@@ -47,6 +56,7 @@ export const {
   setMenu,
   setRestaurant,
   setUserDetails,
+  setLogOut,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

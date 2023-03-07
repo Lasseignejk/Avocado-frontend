@@ -1,11 +1,24 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserDetails } from "../reducers/DashboardSlice";
+import { setUserDetails, setLogOut } from "../reducers/DashboardSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
 //Customer hooks for querying supabase for specific rows
 
 //hook to search for email in  customer/owner database
+
+export function useSignOut() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  return async () => {
+    dispatch(setLogOut());
+    localStorage.clear();
+    let { error } = await supabase.auth.signOut();
+    navigate("/");
+  };
+}
 
 export function useUserData() {
   const dispatch = useDispatch();
