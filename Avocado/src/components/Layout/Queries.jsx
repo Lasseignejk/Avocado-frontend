@@ -3,6 +3,43 @@ import { supabase } from "../../supabase";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../reducers/DashboardSlice";
 
+//Customer hooks for querying supabase for specific rows
+
+//hook to search for email in  customer/owner database
+
+export function useUserData() {
+  const dispatch = useDispatch();
+
+  const isCustomer = useSelector((state) => state.isCustomer);
+  const userDetails = useSelector((state) => state.userDetails);
+  const userEmail = useSelector((state) => state.userEmail);
+
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data, error } = await supabase
+        .from(isCustomer ? "Customer" : "Owner")
+        .select()
+        .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
+
+      if (error) {
+        setError(error);
+        return;
+      }
+      if (data) {
+        dispatch(setUserDetails(data));
+        console.log("userdetails", data);
+      }
+    };
+    if (userEmail) {
+      fetchUserData();
+    }
+  }, [userEmail, isCustomer]);
+
+  return { data: userDetails, error };
+}
+
 //hook to search for user in  customer/owner database
 export async function queryIsOwner(email) {
   const { data: CustomerData, error: CustomerError } = await supabase
@@ -16,51 +53,11 @@ export async function queryIsOwner(email) {
     .eq("OwnerEmail", email);
 
   if (CustomerData.length > 0 && OwnerData.length == 0) {
-    dispatch(setCustomer(true));
     return false;
   }
   if (OwnerData.length > 0 && CustomerData.length == 0) {
-    dispatch(setOwner(true));
     return true;
   }
-}
-
-//Customer hooks for querying supabase for specific rows
-
-//hook to search for email in  customer/owner database
-
-export function useUserData() {
-  const dispatch = useDispatch();
-
-  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
-  const userDetails = useSelector((state) => state.dashboard.userDetails);
-  const email = useSelector((state) => state.dashboard.userEmail);
-
-  const [error, setError] = useState(null);
-
-  //parsing email
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { data, error } = await supabase
-        .from(isCustomer ? "Customer" : "Owner")
-        .select()
-        .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", email);
-
-      if (error) {
-        setError(error);
-        return;
-      }
-      if (data) {
-        dispatch(setUserDetails(data));
-      }
-    };
-    if (email) {
-      fetchUserData();
-    }
-  }, [email]);
-
-  return { data: userDetails, error };
 }
 
 /*

@@ -9,20 +9,22 @@ import { supabase } from "../../supabase";
 import { setToken, setOwner, setCustomer } from "../reducers/DashboardSlice";
 
 const DashboardLogin = () => {
-  //previously login
-
-  // * expected behavior *
-  //logs user (customer or owner) in, grabs token from supabase, sets token in state, checks supabase to confirm if owner or customer based on email, sets in state if owner or customer
-
-  /*
-  To do:
-  */
-
-  //hooks
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const userEmail = useSelector((state) => state.userEmail);
 
   const [loginDetails, setLoginDetails] = useState({});
+  const token = useSelector((state) => state.tokenID);
+  const isCustomer = useSelector((state) => state.isCustomer);
+  const isOwner = useSelector((state) => state.isOwner);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token && isCustomer) {
+      return navigate("/customerdashboard");
+    } else if (token && isOwner) {
+      return navigate("/restaurantdashboard");
+    }
+  }, []);
 
   const setFormState = (e) => {
     setLoginDetails({
@@ -41,17 +43,18 @@ const DashboardLogin = () => {
 
     //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
-    console.log("dispatching setToken", user.user);
 
     //sets token in state
     dispatch(setToken(user.user));
 
-    const owner = await queryIsOwner();
-    console.log("owner 55", owner);
+    //checks if owner/customer
+    const owner = await queryIsOwner(user.user.email);
+
+    console.log("owner:", owner);
     //Restaurants
     if (owner) {
       //sets as owner in state
-      //dispatch(setOwner(true));
+      dispatch(setOwner(true));
       //naivates to restaurant dash
       return navigate("/restaurantdashboard");
     }
@@ -59,7 +62,7 @@ const DashboardLogin = () => {
     //Customers
     if (!owner) {
       //sets as customer in state
-      //dispatch(setCustomer(true));
+      dispatch(setCustomer(true));
       //naivates to customer dash
       return navigate("/customerdashboard");
     }

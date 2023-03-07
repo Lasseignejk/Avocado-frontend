@@ -15,12 +15,6 @@ export const DashboardSlice = createSlice({
   name: "dashboard",
   initialState,
   reducers: {
-    setCustomerLayout: (state, action) => {
-      state.customerLayout = action.payload;
-    },
-    setRestaurantLayout: (state, action) => {
-      state.restaurantLayout = action.payload;
-    },
     setOwner: (state, action) => {
       state.isOwner = action.payload;
     },
@@ -28,8 +22,6 @@ export const DashboardSlice = createSlice({
       state.isCustomer = action.payload;
     },
     setToken: (state, action) => {
-      console.log("initalstate 31:", initialState);
-      console.log("payload 32", action.payload);
       state.tokenID = action.payload.id;
       state.userEmail = action.payload.email;
     },
@@ -44,15 +36,6 @@ export const DashboardSlice = createSlice({
     setUserDetails: (state, action) => {
       state.userDetails = [];
       state.userDetails.push(...[action.payload]);
-    },
-    setSignOut: (state, action) => {
-      state.isOwner = false;
-      state.isCustomer = false;
-      state.token = [];
-      state.userDetails = [];
-      state.currentMenu = [];
-      state.currentRestaurant = [];
-      localStorage.removeItem("token");
     },
   },
 });

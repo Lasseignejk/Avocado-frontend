@@ -25,8 +25,8 @@ const DashboardSignup = () => {
   const [isError, setIsError] = useState(false);
 
   //selectors
-  const isOwner = useSelector((state) => state.dashboard.isOwner);
-  const isCustomer = useSelector((state) => state.dashboard.isCustomer);
+  const isOwner = useSelector((state) => state.isOwner);
+  const isCustomer = useSelector((state) => state.isCustomer);
 
   const setFormState = (e) => {
     setAccountDetails({
@@ -51,6 +51,7 @@ const DashboardSignup = () => {
       email: CustomerEmail,
       password: Password,
     });
+
     if (signUpError) {
       setIsError(signUpError);
       return;
@@ -62,20 +63,19 @@ const DashboardSignup = () => {
       password: Password,
       RestOwner: RestOwner,
     });
+
     if (SignInError) {
       setIsError(SignInError);
       return;
     }
 
     //grabs token from supabase
-    const { data: user, error: getUserError } = await supabase.auth.getUser();
-    if (getUserError) {
-      setIsError(getUserError);
-      return;
-    }
+    const { data: user } = await supabase.auth.getUser();
+
+    console.log("token", user);
     //sets token in state
-    dispatch(setToken(user));
-    console.log(user);
+    dispatch(setToken(user.user));
+    console.log("set token", user.user.email);
 
     if (user) {
       //if restaurant inject into owner table
@@ -96,13 +96,6 @@ const DashboardSignup = () => {
         }
         console.log(data);
         console.log(insertOwnerError);
-
-        //grabs token from supabase
-        const { data: user } = await supabase.auth.getUser();
-
-        //sets token in state
-        dispatch(setToken(user));
-        console.log(user);
 
         //sets as owner in state
         dispatch(setOwner(!isOwner));
@@ -130,13 +123,6 @@ const DashboardSignup = () => {
         }
         console.log(data);
         console.log(insertCustomerError);
-
-        //grabs token from supabase
-        const { data: user } = await supabase.auth.getUser();
-
-        //sets token in state
-        dispatch(setToken(user));
-        console.log(user);
 
         //sets as customer in state
         dispatch(setCustomer(!isCustomer));
