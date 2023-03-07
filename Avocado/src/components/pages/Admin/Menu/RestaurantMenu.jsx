@@ -23,7 +23,7 @@ const RestaurantMenu = () => {
     console.log();
     const getMenu = async () => {
       const response = await fetch(
-        "http://localhost:3060/admin/restaurant/getmenu",
+        import.meta.env.VITE_BACKEND + "/admin/restaurant/getmenu",
         {
           method: "GET",
           headers: {
