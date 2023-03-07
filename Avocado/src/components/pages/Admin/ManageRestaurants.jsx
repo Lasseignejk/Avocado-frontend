@@ -25,7 +25,7 @@ const ManageRestaurants = () => {
 		console.log();
 		const getRestaurants = async () => {
 			const response = await fetch(
-				"http://localhost:3060/admin/restaurant/getrestaurants",
+				import.meta.env.VITE_BACKEND + "/admin/restaurant/getrestaurants",
 				{
 					method: "GET",
 					headers: {
@@ -56,7 +56,7 @@ const ManageRestaurants = () => {
 
 	const sendToSupabase = async (restaurantDetails) => {
 		const response = await fetch(
-			"http://localhost:3060/admin/restaurant/addrest",
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/addrest",
 			{
 				method: "POST",
 				headers: {
