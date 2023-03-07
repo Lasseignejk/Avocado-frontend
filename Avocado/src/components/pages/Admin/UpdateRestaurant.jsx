@@ -145,7 +145,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 	return (
 		<>
 			<button
-				className="bg-green px-3 py-1 text-gray openModal w-13/4 text-xl font-bold hover:bg-dkgreen duration-200 ease-in md:w-1/3"
+				className="bg-green px-3 py-1 text-gray openModal w-3/4 text-xl font-bold hover:bg-dkgreen duration-200 ease-in md:w-1/2"
 				onClick={() => openModal()}>
 				Update a restaurant's information
 			</button>
