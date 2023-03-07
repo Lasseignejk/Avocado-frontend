@@ -6,8 +6,8 @@ const initialState = {
   tokenID: "",
   userEmail: "",
   userDetails: [{ OwnerFirstName: "", CustomerFirstName: "" }],
-  currentMenu: [],
-  currentRestaurant: [],
+  currentMenu: [{ ItemName: "" }],
+  currentRestaurant: [{ RestName: "" }],
 };
 console.log("initalstate 12:", initialState);
 
@@ -42,9 +42,9 @@ export const DashboardSlice = createSlice({
       state.isCustomer = false;
       state.tokenID = "";
       state.userEmail = "";
-      state.userDetails = [];
-      state.currentMenu = [];
-      state.currentRestaurant = [];
+      (state.userDetails = [{ OwnerFirstName: "", CustomerFirstName: "" }]),
+        (state.currentMenu = [{ ItemName: "" }]);
+      state.currentRestaurant = [{ RestName: "" }];
     },
   },
 });
