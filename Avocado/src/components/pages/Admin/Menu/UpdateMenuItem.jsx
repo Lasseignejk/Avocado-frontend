@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { supabase } from "../../../../supabase";
 import "../ManageRestaurants.css";
 
 const UpdateMenuItem = ({ item, setOpenModal }) => {
@@ -53,6 +54,20 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
       }
     );
     console.log("UPDATE: ", data);
+  };
+
+  const deleteItem = async () => {
+    const { data, error } = await supabase
+      .from("MenuItems")
+      .delete()
+      .eq("id", item.id);
+
+    if (error) {
+      console.log("error here: ", error);
+    }
+    if (data) {
+      console.log("data here: ", data);
+    }
   };
 
   return (
@@ -190,7 +205,7 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
           <button
             className="bg-green text-gray tracking-widest py-1 px-2"
             type="button"
-            onClick={() => console.log("delete item")}
+            onClick={() => deleteItem()}
           >
             DELETE
           </button>
