@@ -4,6 +4,8 @@ import { setRestaurant } from "../../reducers/DashboardSlice";
 import "../Admin/ManageRestaurants.css";
 import UpdateRestaurantOptions from "../Admin/UpdateRestaurantOptions";
 import { supabase } from "../../../supabase";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 	const modal = document.querySelector(".modal");
@@ -27,7 +29,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 		}
 	};
 	const restaurantId = useSelector((state) => state?.currentRestaurant[0]);
-	const userDetails = useSelector((state) => state?.userDetails[0][0]);
+	const userDetails = useSelector((state) => state?.userDetails[0]);
 	const dispatch = useDispatch();
 	const [restToEdit, setRestToEdit] = useState({});
 
@@ -86,6 +88,10 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 
 		setToggle(!toggle);
 		setUpdateDetails({ id: restaurantId });
+		toast.success("Restaurant Updated!", {
+			position: toast.POSITION.TOP_CENTER,
+			icon: <img src="../../logos/icon_green.svg" alt="" />,
+		});
 	};
 
 	const uploadImage = async (e) => {
@@ -105,7 +111,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 
 		try {
 			if (!e.target.files || e.target.files.length === 0) {
-				throw new Error("You must select an image to upload");
+				toast("You must select an image to upload");
 			}
 
 			const { data, error } = await supabase.storage
@@ -114,6 +120,12 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 
 			if (error) {
 				throw error;
+			}
+			if (data) {
+				toast.success("Photo uploaded!", {
+					position: toast.POSITION.TOP_CENTER,
+					icon: <img src="../../logos/icon_green.svg" alt="" />,
+				});
 			}
 			console.log(data);
 		} catch (error) {
@@ -142,6 +154,54 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 		setToggle(!toggle);
 	};
 
+	const deleteToast = ({ closeToast, toastProps }) => (
+		<div>
+			You are about to delete your restaurant! All data will be gone forever!
+			Are you sure you want to proceed?
+			<div className="flex justify-between mt-3">
+				<button
+					type="button"
+					className="bg-[#b8241a] px-3 py-1 text-gray"
+					onClick={() => deleteRestaurant()}>
+					DELETE
+				</button>
+				<button
+					type="button"
+					className="bg-green px-3 py-1 text-gray"
+					onClick={closeToast}>
+					CANCEL
+				</button>
+			</div>
+		</div>
+	);
+
+	const displayDelete = () => {
+		toast.warning(deleteToast);
+	};
+
+	const deleteRestaurant = async () => {
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/deleterestaurant",
+			{
+				method: "DELETE",
+				headers: {
+					restid: restaurantId,
+				},
+			}
+		);
+	};
+
+	// const response = await fetch(
+	// 		import.meta.env.VITE_BACKEND + "/admin/restaurant/updaterestaurant",
+	// 		{
+	// 			method: "POST",
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 			body: JSON.stringify(updateDetails),
+	// 		}
+	// 	);
+
 	return (
 		<>
 			<button
@@ -153,10 +213,11 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 			<div className="modal">
 				<div className="modal-content relative w-[80%] flex flex-col gap-3 sm:w-[500px] md:mt-[5%]">
 					<span
-						className="close absolute top-0 right-[10px]"
+						className="close absolute top-0 right-[10px] h-[10px]"
 						onClick={() => closeModal()}>
 						&times;
 					</span>
+					<ToastContainer draggablePercent={60} />
 					<div className="flex justify-center">
 						<UpdateRestaurantOptions
 							restaurants={restaurants}
@@ -165,9 +226,9 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 					</div>
 					<div className="infoDiv">
 						<h1 className="text-lg">{restToEdit[0]?.RestName}</h1>
-						<p>{restToEdit[0]?.RestHours}</p>
-						<p>{restToEdit[0]?.RestLocation}</p>
 						<p>{restToEdit[0]?.RestPhoneNumber}</p>
+						<p>{restToEdit[0]?.RestLocation}</p>
+						<p>{restToEdit[0]?.RestHours}</p>
 					</div>
 					<form className="flex flex-col gap-3 items-center">
 						<div className="flex flex-col w-full">
@@ -231,9 +292,9 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 						<div>
 							<button
 								type="button"
-								className="bg-green text-gray px-3 py-1"
+								className="bg-green text-gray px-3 py-1 font-bold"
 								onClick={() => updateRestaurant(updateDetails)}>
-								Update
+								UPDATE
 							</button>
 						</div>
 						<div className="flex flex-col w-full">
@@ -241,12 +302,21 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 								Add a logo
 							</label>
 							<input
+								className="w-1/2"
 								type="file"
 								id="logo"
 								name="RestLogo"
 								accept="image/png, image/jpeg"
 								onChange={(e) => uploadImage(e)}
 							/>
+						</div>
+						<div className="mt-5">
+							<button
+								type="button"
+								className="bg-[#b8241a] font-bold text-gray px-3 py-1"
+								onClick={() => displayDelete()}>
+								DELETE RESTAURANT
+							</button>
 						</div>
 					</form>
 				</div>
