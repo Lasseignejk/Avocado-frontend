@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isOwner: false,
   isCustomer: false,
+  isGuest: false,
   tokenID: "",
   userEmail: "",
   userDetails: [{ OwnerFirstName: "", CustomerFirstName: "" }],
@@ -22,6 +23,9 @@ export const DashboardSlice = createSlice({
     },
     setCustomer: (state, action) => {
       state.isCustomer = action.payload;
+    },
+    setGuest: (state, action) => {
+      state.isGuest = action.payload;
     },
     setToken: (state, action) => {
       state.tokenID = action.payload.id;
@@ -96,6 +100,7 @@ export const {
   setUserDetails,
   setLogOut,
   setLocation,
+  setGuest,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

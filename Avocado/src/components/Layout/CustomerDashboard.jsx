@@ -7,6 +7,7 @@ import {
   setCustomer,
   setUserDetails,
   setLocation,
+  setGuest,
 } from "../reducers/DashboardSlice";
 
 import CustomerNavBar from "./CustomerNavBar";
@@ -19,30 +20,21 @@ const CustomerDashboard = ({ children }) => {
   const userDetails = useSelector((state) => state.userDetails);
   const userEmail = useSelector((state) => state.userEmail);
   const [restaurants, setRestaurants] = useState();
+  const isGuest = useSelector((state) => state.isGuest);
 
   useEffect(() => {
     dispatch(setLocation(location.pathname));
   }, [location.pathname]);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { data, error } = await supabase
-        .from(isCustomer ? "Customer" : "Owner")
-        .select()
-        .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
+  let firstName;
 
-      if (error) {
-        setError(error);
-        return;
-      }
-      if (data) {
-        dispatch(setUserDetails(data[0]));
-      }
-    };
-    if (userEmail) {
-      fetchUserData();
-    }
-  }, [userEmail, isCustomer]);
+  if (!isGuest) {
+    useEffect(() => {
+      const fetchUserData = async () => {
+        const { data, error } = await supabase
+          .from(isCustomer ? "Customer" : "Owner")
+          .select()
+          .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
 
   useEffect(() => {
     console.log();
@@ -65,7 +57,25 @@ const CustomerDashboard = ({ children }) => {
   }, []);
   //data is the user information
   const { CustomerFirstName } = userDetails[0];
+        if (error) {
+          setError(error);
+          return;
+        }
+        if (data) {
+          dispatch(setUserDetails(data[0]));
+        }
+      };
+      if (userEmail) {
+        fetchUserData();
+      }
+    }, [userEmail, isCustomer]);
 
+    //data is the user information
+    const { CustomerFirstName } = userDetails[0];
+    firstName = CustomerFirstName;
+  } else {
+    firstName = "Guest";
+  }
   return (
     <>
       <div className="mb-[55px] md:flex md:mb-0">
@@ -73,10 +83,10 @@ const CustomerDashboard = ({ children }) => {
         <div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20">
           <div className="flex flex-col gap-3">
             <h1 className="text-center text-4xl font-bold text-green md:text-left">
-              Welcome, {CustomerFirstName}
+              Welcome, {firstName}
             </h1>
             <h1 className="text-center text-3xl font-bold md:text-left">
-              Customer Dashboard
+              Guest/Customer Dashboard
             </h1>
           </div>
         </div>
