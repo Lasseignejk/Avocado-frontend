@@ -6,7 +6,7 @@ import BOH from "./components/pages/BOH";
 import Login from "./components/pages/Login";
 import Menu from "./components/pages/Menu";
 import Signup from "./components/pages/Signup";
-import UserAcct from "./components/pages/UserAcct";
+import UserAcct from "./components/pages/Customer/UserAcct";
 import AdminNavTest from "./components/pages/AdminNavTest";
 
 import DashboardLogin from "./components/Layout/DashboardLogin";
