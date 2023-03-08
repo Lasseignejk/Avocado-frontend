@@ -9,7 +9,7 @@ import {
   setLocation,
   setGuest,
 } from "../reducers/DashboardSlice";
-
+import CustomerRestaurantCard from "./CustomerRestaurantCard";
 import CustomerNavBar from "./CustomerNavBar";
 
 const CustomerDashboard = ({ children }) => {
@@ -21,20 +21,6 @@ const CustomerDashboard = ({ children }) => {
   const userEmail = useSelector((state) => state.userEmail);
   const [restaurants, setRestaurants] = useState();
   const isGuest = useSelector((state) => state.isGuest);
-
-  useEffect(() => {
-    dispatch(setLocation(location.pathname));
-  }, [location.pathname]);
-
-  let firstName;
-
-  if (!isGuest) {
-    useEffect(() => {
-      const fetchUserData = async () => {
-        const { data, error } = await supabase
-          .from(isCustomer ? "Customer" : "Owner")
-          .select()
-          .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
 
   useEffect(() => {
     console.log();
@@ -55,8 +41,23 @@ const CustomerDashboard = ({ children }) => {
     };
     getRestaurants();
   }, []);
-  //data is the user information
-  const { CustomerFirstName } = userDetails[0];
+
+  useEffect(() => {
+    dispatch(setLocation(location.pathname));
+  }, [location.pathname]);
+
+  let firstName;
+
+  if (!isGuest) {
+    useEffect(() => {
+      const fetchUserData = async () => {
+        const { data, error } = await supabase
+          .from(isCustomer ? "Customer" : "Owner")
+          .select()
+          .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
+
+        //data is the user information
+        const { CustomerFirstName } = userDetails[0];
         if (error) {
           setError(error);
           return;
@@ -88,6 +89,11 @@ const CustomerDashboard = ({ children }) => {
             <h1 className="text-center text-3xl font-bold md:text-left">
               Guest/Customer Dashboard
             </h1>
+            <div>
+              {restaurants?.map((restaurant) => (
+                <CustomerRestaurantCard />
+              ))}
+            </div>
           </div>
         </div>
       </div>
