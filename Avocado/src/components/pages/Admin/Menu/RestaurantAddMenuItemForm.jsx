@@ -101,13 +101,20 @@ const RestaurantAddMenuItemForm = () => {
         </div>
         <div className="flex flex-col">
           <label htmlFor="ItemType">Item Type</label>
-          <input
+          <select
             type="text"
             id="ItemType"
             name="ItemType"
             onChange={(e) => setFormState(e)}
             value={newItem.ItemType ? newItem.ItemType : ""}
-          />
+          >
+            <option>Appetizer</option>
+            <option>Salad</option>
+            <option>Soup</option>
+            <option>Main</option>
+            <option>Dessert</option>
+            <option>Drink</option>
+          </select>
         </div>
         <div className="flex flex-col">
           <label htmlFor="ItemPrice">Price</label>
@@ -121,8 +128,8 @@ const RestaurantAddMenuItemForm = () => {
         </div>
         <div className="flex flex-col">
           <label htmlFor="ItemDescription">Item Description</label>
-          <input
-            type="textarea"
+          <textarea
+            rows="3"
             id="ItemDescription"
             name="ItemDescription"
             onChange={(e) => setFormState(e)}
