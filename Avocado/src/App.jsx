@@ -18,6 +18,7 @@ import DashboardSignup from "./components/Layout/DashboardSignup";
 import ManageRestaurants from "./components/pages/Admin/ManageRestaurants";
 import RestaurantAdminMenu from "./components/pages/Admin/Menu/RestaurantMenu";
 import LoggedInAuthGaurd from "./components/Layout/LoggedInAuthGaurd";
+import CustomerAuthGaurd from "./components/Layout/CustomerAuthGaurd";
 
 function App() {
   return (
@@ -25,10 +26,22 @@ function App() {
       <Routes>
         <Route path="/" element={<DashboardLogin />} />
         <Route path="/accountSignUp" element={<DashboardSignup />} />
-        <Route path="/customerDashboard" element={<CustomerDashboard />} />
+        <Route
+          path="/customerDashboard"
+          element={
+            /*Navigate to "/" based on token*/
+            <LoggedInAuthGaurd>
+              {/*Navigate to "/" based on token*/}
+              <CustomerAuthGaurd>
+                <CustomerDashboard />
+              </CustomerAuthGaurd>
+            </LoggedInAuthGaurd>
+          }
+        />
         <Route
           path="/restaurantDashboard"
           element={
+            /*Navigate to "/" based on token*/
             <LoggedInAuthGaurd>
               <RestaurantDashboard />
             </LoggedInAuthGaurd>

@@ -1,17 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useSignOut } from "../Layout/Queries";
 
 const CustomerNavBar = () => {
-  //previously AdminNavBar (re-used for Customer here)
-
-  // * expected behavior *
-  //showcases all options for Customer
-
-  /*
-  To do:
-  Update for Customer
-  */
+  const signOut = useSignOut();
 
   const [show, setShow] = useState("false");
 

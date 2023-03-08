@@ -1,18 +1,31 @@
-import CustomerNavBar from "./CustomerNavBar";
-import { useDispatch, useSelector } from "react-redux";
-import { useUserData } from "./Queries";
-import { setCustomer, setUserDetails } from "../reducers/DashboardSlice";
-import { supabase } from "../../supabase";
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { supabase } from "../../supabase";
+
+import { useUserData } from "./Queries";
+import {
+  setCustomer,
+  setUserDetails,
+  setLocation,
+} from "../reducers/DashboardSlice";
+
+import CustomerNavBar from "./CustomerNavBar";
 
 const CustomerDashboard = ({ children }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const [error, setError] = useState(null);
 
   const isCustomer = useSelector((state) => state.isCustomer);
   const userDetails = useSelector((state) => state.userDetails);
   const userEmail = useSelector((state) => state.userEmail);
 
-  const [error, setError] = useState(null);
+  useEffect(() => {
+    dispatch(setLocation(location.pathname));
+  }, [location.pathname]);
 
   useEffect(() => {
     const fetchUserData = async () => {
