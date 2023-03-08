@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import CustomerMenuItem from "./CustomerMenuItem";
+import CustomerMenuItem from "../../Layout/CustomerMenuItem";
 
 const CustomerMenu = () => {
   //previously menu

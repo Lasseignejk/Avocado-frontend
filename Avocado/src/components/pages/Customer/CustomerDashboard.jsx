@@ -1,7 +1,7 @@
 import CustomerNavBar from "./CustomerNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useUserData } from "./Queries";
-import CustomerMenu from "./CustomerMenu";
+import CustomerMenu from "../pages/Customer/CustomerMenu";
 import { setCustomer, setUserDetails } from "../reducers/DashboardSlice";
 import { supabase } from "../../supabase";
 import React, { useState, useEffect } from "react";
