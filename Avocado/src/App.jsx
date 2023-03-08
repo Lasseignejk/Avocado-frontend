@@ -17,8 +17,10 @@ import DashboardSignup from "./components/Layout/DashboardSignup";
 
 import ManageRestaurants from "./components/pages/Admin/ManageRestaurants";
 import RestaurantAdminMenu from "./components/pages/Admin/Menu/RestaurantMenu";
+
 import LoggedInAuthGaurd from "./components/Layout/LoggedInAuthGaurd";
 import CustomerAuthGaurd from "./components/Layout/CustomerAuthGaurd";
+import RestaurantAuthGaurd from "./components/Layout/RestaurantAuthGaurd";
 
 function App() {
   return (
@@ -29,21 +31,20 @@ function App() {
         <Route
           path="/customerDashboard"
           element={
-            /*Navigate to "/" based on token*/
             <LoggedInAuthGaurd>
-              {/*Navigate to "/" based on token*/}
-              <CustomerAuthGaurd>
-                <CustomerDashboard />
-              </CustomerAuthGaurd>
+              {/*<RestaurantAuthGaurd>*/}
+              <CustomerDashboard />
+              {/*</RestaurantAuthGaurd>*/}
             </LoggedInAuthGaurd>
           }
         />
         <Route
           path="/restaurantDashboard"
           element={
-            /*Navigate to "/" based on token*/
             <LoggedInAuthGaurd>
+              {/*<CustomerAuthGaurd>*/}
               <RestaurantDashboard />
+              {/*</CustomerAuthGaurd>*/}
             </LoggedInAuthGaurd>
           }
         />

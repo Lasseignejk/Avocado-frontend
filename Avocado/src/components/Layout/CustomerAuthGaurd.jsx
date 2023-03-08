@@ -8,16 +8,13 @@ const CustomerAuthGaurd = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log("customerauth", location);
-
   useEffect(() => {
     if (isCustomer) {
-      if (location.pathname != "/customerdashboard") {
+      if (location != "/customerdashboard") {
         navigate("/customerdashboard");
       }
     }
-    console.log(location);
-  }, [location.pathname]);
+  }, [location]);
   return children;
 };
 

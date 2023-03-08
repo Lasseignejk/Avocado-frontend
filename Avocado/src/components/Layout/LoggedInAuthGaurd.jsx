@@ -7,7 +7,6 @@ const LoggedInAuthGaurd = ({ children }) => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
 
   useEffect(() => {
     if (location.pathname != "/" && tokenID.length == 0) {
@@ -15,7 +14,6 @@ const LoggedInAuthGaurd = ({ children }) => {
 
       navigate("/");
     }
-    console.log(tokenID.length);
   }, [tokenID]);
   return children;
 };
