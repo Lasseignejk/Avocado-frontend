@@ -21,6 +21,7 @@ const CustomerDashboard = ({ children }) => {
   const userEmail = useSelector((state) => state.userEmail);
   const [restaurants, setRestaurants] = useState();
   const isGuest = useSelector((state) => state.isGuest);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     console.log();
@@ -91,7 +92,7 @@ const CustomerDashboard = ({ children }) => {
             </h1>
             <div>
               {restaurants?.map((restaurant) => (
-                <CustomerRestaurantCard />
+                <CustomerRestaurantCard restaurant={restaurant} />
               ))}
             </div>
           </div>
