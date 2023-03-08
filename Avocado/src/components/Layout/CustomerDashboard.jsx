@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase";
 import { useUserData } from "./Queries";
 import {
@@ -23,7 +23,6 @@ const CustomerDashboard = ({ children }) => {
   const isGuest = useSelector((state) => state.isGuest);
   const dashboardCart = useSelector((state) => state.cart);
 
-  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     console.log();
@@ -93,7 +92,9 @@ const CustomerDashboard = ({ children }) => {
             </h1>
             <div>
               {restaurants?.map((restaurant) => (
-                <CustomerRestaurantCard restaurant={restaurant} />
+                <Link to="/restaurantmenu">
+                  <CustomerRestaurantCard restaurant={restaurant} />
+                </Link>
               ))}
             </div>
           </div>
