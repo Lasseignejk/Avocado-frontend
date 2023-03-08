@@ -21,6 +21,8 @@ const CustomerDashboard = ({ children }) => {
   const userEmail = useSelector((state) => state.userEmail);
   const [restaurants, setRestaurants] = useState();
   const isGuest = useSelector((state) => state.isGuest);
+  const dashboardCart = useSelector((state) => state.cart);
+
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
@@ -47,6 +49,7 @@ const CustomerDashboard = ({ children }) => {
     dispatch(setLocation(location.pathname));
   }, [location.pathname]);
 
+  //logic to check for owner/customer if logged in
   let firstName;
 
   if (!isGuest) {
@@ -57,8 +60,6 @@ const CustomerDashboard = ({ children }) => {
           .select()
           .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
 
-        //data is the user information
-        const { CustomerFirstName } = userDetails[0];
         if (error) {
           setError(error);
           return;
