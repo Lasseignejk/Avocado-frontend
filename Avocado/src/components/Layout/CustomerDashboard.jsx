@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { supabase } from "../../supabase";
-
 import { useUserData } from "./Queries";
 import {
   setCustomer,
@@ -17,12 +15,11 @@ import CustomerNavBar from "./CustomerNavBar";
 const CustomerDashboard = ({ children }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-
   const [error, setError] = useState(null);
-
   const isCustomer = useSelector((state) => state.isCustomer);
   const userDetails = useSelector((state) => state.userDetails);
   const userEmail = useSelector((state) => state.userEmail);
+  const [restaurants, setRestaurants] = useState();
   const isGuest = useSelector((state) => state.isGuest);
 
   useEffect(() => {
@@ -39,6 +36,27 @@ const CustomerDashboard = ({ children }) => {
           .select()
           .eq(isCustomer ? "CustomerEmail" : "OwnerEmail", userEmail);
 
+  useEffect(() => {
+    console.log();
+    const getRestaurants = async () => {
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND + "/admin/restaurant/displayrest",
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        window.alert(response.statusText);
+      } else {
+        const json = await response.json();
+        setRestaurants(json);
+      }
+    };
+    getRestaurants();
+  }, []);
+  //data is the user information
+  const { CustomerFirstName } = userDetails[0];
         if (error) {
           setError(error);
           return;
