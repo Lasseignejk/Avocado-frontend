@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useSignOut } from "../Layout/Queries";
 
 const CustomerNavBar = () => {
-  const signOut = useSignOut();
-
   const [show, setShow] = useState("false");
 
   const toggleNav = () => {
