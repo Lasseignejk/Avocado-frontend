@@ -36,7 +36,6 @@ function App() {
         />
         <Route path="*" element={<Error />} />
         <Route path="/myrestaurants" element={<ManageRestaurants />} />
-        <Route path="/myadminaccount" element={<DashboardEditAccount />} />
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/admin" element={<Admin />} />

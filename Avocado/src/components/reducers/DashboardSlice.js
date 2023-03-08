@@ -8,6 +8,8 @@ const initialState = {
   userDetails: [{ OwnerFirstName: "", CustomerFirstName: "" }],
   currentMenu: [{ ItemName: "" }],
   currentRestaurant: [{ RestName: "" }],
+  cartOpen: false,
+  cart: [""],
 };
 console.log("initalstate 12:", initialState);
 
@@ -45,6 +47,39 @@ export const DashboardSlice = createSlice({
       state.userDetails = [{ OwnerFirstName: "", CustomerFirstName: "" }];
       state.currentMenu = [{ ItemName: "" }];
       state.currentRestaurant = [{ RestName: "" }];
+    },
+    setCartOpen: (state, action) => {
+      state.cartOpen = action.payload;
+    },
+    addCart: (state, action) => {
+      //if already exists in cart, add to amount
+      const found = state.cart.find((elem) => elem.id === action.payload.id);
+      if (found != undefined) {
+        found.amount++;
+      } else {
+        state.cart.push(action.payload);
+      }
+    },
+    clearCart: (state) => {
+      //revert to empty
+      state.cart = [];
+    },
+    removeCart: (state, action) => {
+      //filter out items from cart
+      state.cart = state.cart.filter((elem) => elem.id != action.payload.id);
+    },
+    removeItem: (state, action) => {
+      //if exists in cart, remove from amount
+      const found = state.cart.find((elem) => elem.id === action.payload.id);
+      if (found != undefined) {
+        if (found.amount > 1) {
+          found.amount--;
+        } else {
+          state.cart = state.cart.filter(
+            (elem) => elem.id != action.payload.id
+          );
+        }
+      }
     },
   },
 });
