@@ -10,9 +10,8 @@ const initialState = {
   currentRestaurant: [{ RestName: "" }],
   cartOpen: false,
   cart: [""],
-
+  location: "/",
 };
-console.log("initalstate 12:", initialState);
 
 export const DashboardSlice = createSlice({
   name: "dashboard",
@@ -82,17 +81,21 @@ export const DashboardSlice = createSlice({
         }
       }
     },
+    setLocation: (state, action) => {
+      state.location = action.payload;
+    },
   },
 });
 
 export const {
-	setOwner,
-	setCustomer,
-	setToken,
-	setMenu,
-	setRestaurant,
-	setUserDetails,
-	setLogOut,
+  setOwner,
+  setCustomer,
+  setToken,
+  setMenu,
+  setRestaurant,
+  setUserDetails,
+  setLogOut,
+  setLocation,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CustomerAuthGaurd = ({ children }) => {
   const isCustomer = useSelector((state) => state.isCustomer);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/restaurantdashboard" && !isCustomer) {
-      history.push("/customerdashboard");
+    if (isCustomer) {
+      if (location != "/customerdashboard") {
+        navigate("/customerdashboard");
+      }
     }
-    console.log(location);
-  }, [location.pathname]);
+  }, [location]);
   return children;
 };
 

@@ -1,22 +1,30 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { redirect, useNavigate } from "react-router-dom";
-import { queryIsOwner } from "./Queries";
-
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { supabase } from "../../supabase";
-import { setToken, setOwner, setCustomer } from "../reducers/DashboardSlice";
+import {
+  setToken,
+  setOwner,
+  setCustomer,
+  setLocation,
+} from "../reducers/DashboardSlice";
+import { queryIsOwner } from "./Queries";
 
 const DashboardLogin = () => {
   const dispatch = useDispatch();
-  const userEmail = useSelector((state) => state.userEmail);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [loginDetails, setLoginDetails] = useState({});
+
   const token = useSelector((state) => state.tokenID);
   const isCustomer = useSelector((state) => state.isCustomer);
   const isOwner = useSelector((state) => state.isOwner);
-  const navigate = useNavigate();
+  const userEmail = useSelector((state) => state.userEmail);
+
+  useEffect(() => {
+    dispatch(setLocation(location.pathname));
+  }, [location.pathname]);
 
   useEffect(() => {
     if (token && isCustomer) {
