@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
 import "../ManageRestaurants.css";
 
-const UpdateMenuItem = ({ item, setOpenModal }) => {
+const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
   const [updateItem, setUpdateItem] = useState({});
 
   useEffect(() => {
@@ -73,6 +73,7 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
         body: JSON.stringify(dataTosend),
       }
     );
+    setOpenModal(false);
     console.log("UPDATE: ", data);
   };
 
@@ -88,6 +89,7 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
     if (data) {
       console.log("data here: ", data);
     }
+    setOpenModal(false);
   };
 
   return (
