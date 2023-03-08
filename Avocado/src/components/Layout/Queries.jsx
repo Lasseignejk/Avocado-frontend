@@ -16,7 +16,6 @@ export function useSignOut() {
     dispatch(setLogOut());
     localStorage.clear();
     let { error } = await supabase.auth.signOut();
-    navigate("/");
   };
 }
 

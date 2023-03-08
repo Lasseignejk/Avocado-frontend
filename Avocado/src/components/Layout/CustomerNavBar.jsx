@@ -45,7 +45,14 @@ const CustomerNavBar = () => {
             <Link to={"/UserAcct"}> My Account</Link>
           </li>
           <li>
-            <Link to={"#"}> Logout</Link>
+            <button
+              type="button"
+              onClick={(e) => {
+                signOut();
+              }}
+            >
+              Logout
+            </button>{" "}
           </li>
         </ul>
       </nav>
