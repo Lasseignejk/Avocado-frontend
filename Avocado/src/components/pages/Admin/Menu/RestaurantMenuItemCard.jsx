@@ -3,7 +3,7 @@ import placeholder from "/items/menu_placeholder.png";
 import "../ManageRestaurants.css";
 import UpdateMenuItem from "./UpdateMenuItem";
 
-const RestaurantMenuItemCard = ({ item }) => {
+const RestaurantMenuItemCard = ({ item, setMenu }) => {
   const [openModal, setOpenModal] = useState(false);
   return (
     <div className="flex-col">
@@ -31,6 +31,7 @@ const RestaurantMenuItemCard = ({ item }) => {
             className="fixed"
             item={item}
             setOpenModal={setOpenModal}
+            setMenu={setMenu}
           />
         )}
       </div>

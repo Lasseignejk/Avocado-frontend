@@ -28,16 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<DashboardLogin />} />
         <Route path="/accountSignUp" element={<DashboardSignup />} />
-        <Route
-          path="/customerDashboard"
-          element={
-            <LoggedInAuthGaurd>
-              {/*<RestaurantAuthGaurd>*/}
-              <CustomerDashboard />
-              {/*</RestaurantAuthGaurd>*/}
-            </LoggedInAuthGaurd>
-          }
-        />
+        <Route path="/customerDashboard" element={<CustomerDashboard />} />
         <Route
           path="/restaurantDashboard"
           element={

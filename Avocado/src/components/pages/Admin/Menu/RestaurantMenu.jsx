@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import RestaurantAdminNewMenuItem from "./RestaurantAddMenuItemForm";
+import RestaurantAddMenuItemForm from "./RestaurantAddMenuItemForm";
 import AdminNavBar from "../../../partials/AdminNavBar";
 import { supabase } from "../../../../supabase";
-import RestaurantAdminMenuItem from "./RestaurantMenuItemCard";
+import RestaurantMenuItemCard from "./RestaurantMenuItemCard";
 import { useSelector } from "react-redux";
 
 const RestaurantMenu = () => {
@@ -39,15 +39,15 @@ const RestaurantMenu = () => {
   return (
     <div className="mb-[55px] md:flex md:mb-0 justify-start">
       <AdminNavBar />
-      <div>
-        <h1>Edit Menu</h1>
-        <div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-3">
+      <div className="">
+        <h1 className="font-bold text-center">Edit Menu</h1>
+        <div className="flex flex-col justify-evenly md:flex-row md:flex-wrap md:justify-evenly gap-3">
           {menu?.map((item) => (
-            <RestaurantAdminMenuItem item={item} />
+            <RestaurantMenuItemCard setMenu={setMenu} item={item} />
           ))}
         </div>
       </div>
-      <RestaurantAdminNewMenuItem />
+      <RestaurantAddMenuItemForm />
     </div>
   );
 };
