@@ -109,7 +109,7 @@ const DashboardLogin = () => {
 
           <div className="flex justify-center">
             <button
-              className=" text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
+              className="text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
               onClick={(e) => {
                 e.preventDefault();
                 sendToSupabase(loginDetails);
@@ -121,6 +121,16 @@ const DashboardLogin = () => {
         </form>
         <div className="text-center font-niveau">
           <h1 className="text-sm">New to Avocado online ordering?</h1>
+          <p className="bg-green text-center text-white text-sm">
+            <Link
+              to={"/customerdashboard"}
+              onClick={(e) => {
+                setGuest(true);
+              }}
+            >
+              Continue as guest
+            </Link>
+          </p>
           <p className="text-green text-center text-sm">
             <Link to={"/accountSignUp"}>Create Account</Link>
           </p>
