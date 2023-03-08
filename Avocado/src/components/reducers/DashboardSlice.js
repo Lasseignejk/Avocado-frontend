@@ -42,8 +42,8 @@ export const DashboardSlice = createSlice({
       state.isCustomer = false;
       state.tokenID = "";
       state.userEmail = "";
-      (state.userDetails = [{ OwnerFirstName: "", CustomerFirstName: "" }]),
-        (state.currentMenu = [{ ItemName: "" }]);
+      state.userDetails = [{ OwnerFirstName: "", CustomerFirstName: "" }];
+      state.currentMenu = [{ ItemName: "" }];
       state.currentRestaurant = [{ RestName: "" }];
     },
   },
