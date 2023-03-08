@@ -10,6 +10,7 @@ const initialState = {
   currentRestaurant: [{ RestName: "" }],
   cartOpen: false,
   cart: [""],
+
 };
 console.log("initalstate 12:", initialState);
 
@@ -85,13 +86,13 @@ export const DashboardSlice = createSlice({
 });
 
 export const {
-  setOwner,
-  setCustomer,
-  setToken,
-  setMenu,
-  setRestaurant,
-  setUserDetails,
-  setLogOut,
+	setOwner,
+	setCustomer,
+	setToken,
+	setMenu,
+	setRestaurant,
+	setUserDetails,
+	setLogOut,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;
