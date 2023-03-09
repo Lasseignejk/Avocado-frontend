@@ -164,7 +164,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 			className="updateItemModal fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay"
 			// onClick={() => setOpenModal(false)}
 		>
-			<div className="w-[80%] sm:w-[500px]">
+			<div className="w-[80%] sm:w-[600px]">
 				<div className="flex flex-col">
 					<form className=" bg-gray flex flex-col gap-2 font-niveau font-bold p-4">
 						<div className="w-full flex justify-end items-center">
@@ -184,7 +184,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 								X
 							</button> */}
 						</div>
-						<div className="flex flex-col gap-5 sm:flex-row">
+						<div className="flex flex-col gap-5 sm:flex-row sm:pl-10">
 							<div className="w-[300] flex flex-col gap-3">
 								<div className="flex flex-col">
 									<label htmlFor="ItemName" className="text-lg">
@@ -329,7 +329,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 								</div>
 							</div>
 						</div>
-						<div className="flex justify-end gap-4">
+						<div className="flex justify-center gap-4 mt-5">
 							<button
 								className="bg-green text-gray tracking-widest py-1 px-3 hover:bg-dkgreen flex justify-between items-center gap-3 duration-200 ease-in rounded-full"
 								type="button"
@@ -347,7 +347,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 								</button>
 							</div>
 						</div>
-						<div className="flex flex-col">
+						<div className="flex flex-col md:pl-10">
 							<label htmlFor="ItemImg">Add an image</label>
 							<input
 								type="file"
