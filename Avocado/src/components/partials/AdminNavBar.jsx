@@ -3,28 +3,44 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSignOut } from "../Layout/Queries";
 import AdminNavBarLinks from "./AdminNavBarLinks";
+import { FaChartBar, FaStoreAlt, FaUserAlt, FaAngleUp } from "react-icons/fa";
+import { GoSignOut } from "react-icons/go";
 
 const AdminNavBar = () => {
-  const signOut = useSignOut();
-  const [show, setShow] = useState(true);
-  const [spin, setSpin] = useState(true);
+	const signOut = useSignOut();
+	const [show, setShow] = useState(true);
+	const [spin, setSpin] = useState(true);
 
-  const toggleNav = () => {
-    setShow(!show);
-    setSpin(!spin);
-  };
+	const toggleNav = () => {
+		setShow(!show);
+		setSpin(!spin);
+	};
 
-  const adminLinks = [
-    { title: "Reports", path: "/reports", src: "../../items/reports.svg" },
-    {
-      title: "Manage Restaurants",
-      path: "/myrestaurants",
-      src: "../../items/manage.svg",
-    },
-    { title: "My Account", path: "/admin", src: "../../items/account.svg" },
-  ];
+	const adminLinks = [
+		{
+			title: "Reports",
+			path: "/reports",
+			src: (
+				<FaChartBar className="text-gray font-2xl w-[30px] hidden lg:block" />
+			),
+		},
+		{
+			title: "Manage Restaurants",
+			path: "/myrestaurants",
+			src: (
+				<FaStoreAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
+			),
+		},
+		{
+			title: "My Account",
+			path: "/admin",
+			src: (
+				<FaUserAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
+			),
+		},
+	];
 
-  const linkLength = adminLinks.length + 1;
+	const linkLength = adminLinks.length + 1;
 
 	return (
 		<div
@@ -35,11 +51,17 @@ const AdminNavBar = () => {
 				<button
 					className="w-[30px] h-[30px] bg-green lg:hidden "
 					onClick={() => toggleNav()}>
-					<img
+					<FaAngleUp
+						className={
+							"duration-200 ease-in text-2xl text-gray" +
+							(spin ? " rotate-180" : "")
+						}
+					/>
+					{/* <img
 						src="../items/expand_more.svg"
 						alt=""
 						className={"duration-200 ease-in" + (spin ? " rotate-180" : "")}
-					/>
+					/> */}
 				</button>
 			</div>
 			<nav
@@ -52,15 +74,16 @@ const AdminNavBar = () => {
 
 					<li className="border-b-2 border-gray pb-5 lg:border-none">
 						<button
-							className="lg:bg-dkgreen lg:px-3 lg:py-1 lg:rounded-full lg:text-gray lg:w-[140px] lg:flex lg:gap-3"
+							className="flex items-center lg:bg-dkgreen lg:px-3 lg:py-1 lg:rounded-full lg:text-gray lg:w-[140px] lg:flex lg:gap-3"
 							type="button"
 							onClick={(e) => {
 								signOut();
 							}}>
-							<img
+							<GoSignOut className="hidden lg:block md:w-[30px] text-gray text-2xl" />
+							{/* <img
 								src="../../items/logout.svg"
 								className="hidden lg:block md:w-[30px]"
-							/>{" "}
+							/>{" "} */}
 							Logout
 						</button>
 					</li>

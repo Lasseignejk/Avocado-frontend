@@ -199,7 +199,7 @@ const RestaurantAddMenuItemForm = () => {
 						value={newItem.ItemCookTime ? newItem.ItemCookTime : ""}
 					/>
 				</div>
-				<div className="flex flex-col">
+				{/* <div className="flex flex-col">
 					<label htmlFor="ItemImg">Item image URL</label>
 					<input
 						type="text"
@@ -208,10 +208,10 @@ const RestaurantAddMenuItemForm = () => {
 						onChange={(e) => setFormState(e)}
 						value={newItem.ItemImg ? newItem.ItemImg : ""}
 					/>
-				</div>
-				<div>
+				</div> */}
+				<div className="flex justify-center">
 					<button
-						className="bg-green text-gray tracking-widest py-1 px-2"
+						className="bg-green text-gray tracking-widest py-1 px-3 rounded-full hover:bg-dkgreen duration-200 ease-in"
 						type="button"
 						onClick={() => sendToSupabase()}>
 						SUBMIT
