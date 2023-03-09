@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import MenuItem from "../../partials/MenuItem";
-import placeholder from "/items/menu_placeholder.svg";
+import placeholder from "/items/restaurant_placeholder.svg";
 import Cart from "../../partials/Cart";
+import CustomerNavBar from "../../partials/CustomerNavBar";
 
 const Menu = () => {
   const location = useLocation();
   const restuarant = location.state;
-  console.log(restuarant);
   const cart = useSelector((state) => state.cart);
+  console.log(restuarant);
 
   const [menu, setMenu] = useState();
 
@@ -38,6 +39,7 @@ const Menu = () => {
 
   return (
     <div className="flex">
+      <CustomerNavBar />
       <div className="flex flex-col gap-8">
         <div className="flex gap-4 justify-center">
           <div>

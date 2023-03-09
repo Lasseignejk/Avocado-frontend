@@ -20,7 +20,7 @@ const MenuItem = ({ item }) => {
         <h1>{item.ItemName}</h1>
         <h1>{item.ItemType}</h1>
         <h1>{item.ItemDescription}</h1>
-        <h1>{item.ItemPrice}</h1>
+        <h1>${item.ItemPrice}</h1>
       </div>
       <div>
         <button
