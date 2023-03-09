@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
 import "../ManageRestaurants.css";
 import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 	const [updateItem, setUpdateItem] = useState({});
+	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
+	const userDetails = useSelector((state) => state?.userDetails[0]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -92,6 +97,68 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 		setOpenModal(false);
 	};
 
+	const uploadImage = async (e) => {
+		let file = e.target.files[0];
+		console.log(file);
+		const fileEXT = file.name.split(".").pop();
+		const fileName = file.name.split(".").shift();
+		const filePath = `${fileName}.${fileEXT}`;
+		const id = userDetails.id.toString();
+		const uploadPath =
+			"user" +
+			id +
+			"/" +
+			"rest" +
+			restaurantId.toString() +
+			"/menuItem_" +
+			filePath;
+
+		try {
+			if (!e.target.files || e.target.files.length === 0) {
+				toast("You must select an image to upload");
+			}
+
+			const { data, error } = await supabase.storage
+				.from("menuitems")
+				.upload(uploadPath, file);
+
+			if (error) {
+				throw error;
+			}
+			if (data) {
+				toast.success("Photo uploaded!", {
+					position: toast.POSITION.TOP_CENTER,
+					icon: <img src="../../logos/icon_green.svg" alt="" />,
+				});
+			}
+			console.log(data);
+		} catch (error) {
+			alert(error.message);
+		}
+
+		const imgPath = {
+			ItemImg:
+				"https://dwjnomervswgqasgexck.supabase.co/storage/v1/object/public/menuitems/" +
+				uploadPath,
+			id: item.id,
+		};
+		console.log(item.id);
+		console.log(imgPath);
+
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/updatemenuitem",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(imgPath),
+			}
+		);
+
+		setToggle(!toggle);
+	};
+
 	return (
 		<div
 			className="updateItemModal fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay"
@@ -106,6 +173,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 								onClick={() => setOpenModal(false)}>
 								&times;
 							</span>
+							<ToastContainer draggablePercent={60} />
 						</div>
 						<div className="flex justify-between">
 							<h1 className="text-xl">Edit {updateItem.ItemName}</h1>
@@ -259,16 +327,6 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 										}
 									/>
 								</div>
-								<div className="flex flex-col">
-									<label htmlFor="ItemImg">Item image URL</label>
-									<input
-										type="text"
-										id="ItemImg"
-										name="ItemImg"
-										onChange={(e) => setFormState(e)}
-										value={updateItem.ItemImg ? updateItem.ItemImg : ""}
-									/>
-								</div>
 							</div>
 						</div>
 						<div className="flex justify-end gap-4">
@@ -288,6 +346,15 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 									DELETE
 								</button>
 							</div>
+						</div>
+						<div className="flex flex-col">
+							<label htmlFor="ItemImg">Add an image</label>
+							<input
+								type="file"
+								id="ItemImg"
+								name="ItemImg"
+								onChange={(e) => uploadImage(e)}
+							/>
 						</div>
 					</form>
 				</div>
