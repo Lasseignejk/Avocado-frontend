@@ -17,6 +17,7 @@ import DashboardSignup from "./components/Layout/DashboardSignup";
 
 import ManageRestaurants from "./components/pages/Admin/ManageRestaurants";
 import RestaurantAdminMenu from "./components/pages/Admin/Menu/RestaurantMenu";
+import Reports from "./components/Layout/Reports";
 
 import LoggedInAuthGaurd from "./components/Layout/LoggedInAuthGaurd";
 import CustomerAuthGaurd from "./components/Layout/CustomerAuthGaurd";
@@ -29,6 +30,8 @@ function App() {
         <Route path="/" element={<DashboardLogin />} />
         <Route path="/accountSignUp" element={<DashboardSignup />} />
         <Route path="/customerDashboard" element={<CustomerDashboard />} />
+        <Route path="/reports" element={<Reports />} />
+
         <Route
           path="/restaurantDashboard"
           element={
