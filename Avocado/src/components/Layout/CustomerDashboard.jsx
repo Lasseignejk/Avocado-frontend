@@ -90,11 +90,12 @@ const CustomerDashboard = ({ children }) => {
             <h1 className="text-center text-3xl font-bold md:text-left">
               Guest/Customer Dashboard
             </h1>
-            <div>
+            <div className="flex flex-wrap gap-3">
               {restaurants?.map((restaurant, index) => (
                 <Link
-                  to="/restaurantmenu"
-                  onClick={() => dispa(setRestaurant(restaurant))}
+                  to="/menu"
+                  state={restaurant}
+                  onClick={() => dispatch(setRestaurant(restaurant))}
                 >
                   <CustomerRestaurantCard restaurant={restaurant} key={index} />
                 </Link>
