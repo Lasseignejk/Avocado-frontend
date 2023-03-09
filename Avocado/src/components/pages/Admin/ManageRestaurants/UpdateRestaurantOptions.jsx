@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setRestaurant } from "../../reducers/DashboardSlice";
+import { setRestaurant } from "../../../reducers/DashboardSlice";
 
 const UpdateRestaurantOptions = ({ restaurants, openInfoDiv }) => {
 	const dispatch = useDispatch();
