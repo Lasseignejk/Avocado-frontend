@@ -61,19 +61,19 @@ const RestaurantMenu = () => {
 	}, [restaurantId]);
 
 	return (
-		<div className="mb-[55px] md:flex md:mb-0 justify-start">
+		<div className="mb-[55px] lg:flex lg:mb-0 justify-start">
 			<AdminNavBar />
-			<div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20 md:flex-row  justify-between">
+			<div className="flex flex-col gap-10 pt-3 lg:w-full lg:px-16 lg:pt-20 lg:flex-row  justify-between">
 				<div>
 					<div className="flex flex-col gap-3">
-						<h1 className="text-center text-4xl font-bold text-green md:text-left">
+						<h1 className="text-center text-4xl font-bold text-green lg:text-left">
 							{restToEdit[0]?.RestName}
 						</h1>
-						<h1 className="text-center text-3xl font-bold md:text-left">
+						<h1 className="text-center text-3xl font-bold lg:text-left">
 							Edit Menu
 						</h1>
 					</div>
-					<div className="flex flex-col justify-evenly md:flex-row md:flex-wrap md:justify-evenly gap-3">
+					<div className="flex flex-col items-center lg:flex-row lg:flex-wrap gap-3 lg:justify-center">
 						{menu?.map((item) => (
 							<RestaurantMenuItemCard setMenu={setMenu} item={item} />
 						))}
