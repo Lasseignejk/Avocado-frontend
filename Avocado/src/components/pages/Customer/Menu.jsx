@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import MenuItem from "../../partials/MenuItem";
-import placeholder from "../../../../public/items/menu_placeholder.svg";
+import placeholder from "/items/menu_placeholder.svg";
+import Cart from "../../partials/Cart";
 
 const Menu = () => {
   const location = useLocation();
@@ -36,26 +37,31 @@ const Menu = () => {
   }, [restuarant.id]);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex gap-4 justify-center">
-        <div>
-          <img
-            className="h-20"
-            src={restuarant.RestLogo ? restuarant.RestLogo : placeholder}
-            alt=""
-          />
+    <div className="flex">
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-4 justify-center">
+          <div>
+            <img
+              className="h-20"
+              src={restuarant.RestLogo ? restuarant.RestLogo : placeholder}
+              alt=""
+            />
+          </div>
+          <div>
+            <h1 className="font-bold">{restuarant.RestName}</h1>
+            <h1>{restuarant.RestLocation}</h1>
+            <h1>{restuarant.RestPhoneNumber}</h1>
+            <h1>{restuarant.RestHours}</h1>
+          </div>
         </div>
-        <div>
-          <h1 className="font-bold">{restuarant.RestName}</h1>
-          <h1>{restuarant.RestLocation}</h1>
-          <h1>{restuarant.RestPhoneNumber}</h1>
-          <h1>{restuarant.RestHours}</h1>
+        <div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-3">
+          {menu?.map((item) => (
+            <MenuItem item={item} />
+          ))}
         </div>
       </div>
-      <div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-3">
-        {menu?.map((item) => (
-          <MenuItem item={item} />
-        ))}
+      <div>
+        <Cart />
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const initialState = {
   currentMenu: [{ ItemName: "" }],
   currentRestaurant: [{ RestName: "" }],
   cartOpen: false,
-  cart: [""],
+  cart: [],
   location: "/",
 };
 
@@ -101,6 +101,11 @@ export const {
   setLogOut,
   setLocation,
   setGuest,
+  setCartOpen,
+  addCart,
+  clearCart,
+  removeItem,
+  removeCart,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

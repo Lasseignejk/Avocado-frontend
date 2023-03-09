@@ -8,7 +8,7 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
 
   return (
-    <div>
+    <div className="w-[400px]">
       <div>
         <h1>Your Order</h1>
       </div>
