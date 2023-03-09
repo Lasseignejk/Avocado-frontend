@@ -85,14 +85,28 @@ const ManageRestaurants = () => {
 					</h1>
 				</div>
 
-				<div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly">
+				<div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:justify-evenly">
 					{restaurants.map((restaurant, index) => (
-						<Link
-							to="/menuinfo"
-							state={restaurant}
-							onClick={() => dispatch(setRestaurant(restaurant.id))}>
-							<RestaurantAdminCard restaurant={restaurant} key={index} />
-						</Link>
+						<div className="md:pr-3 md:flex duration-200 ease-in md:hover:-translate-y-1  md:hover:bg-blue">
+							<div className="duration-200 ease-in flex-col gap-2  md:flex-row">
+								<Link
+									to="/menuinfo"
+									state={restaurant}
+									onClick={() => dispatch(setRestaurant(restaurant.id))}>
+									<RestaurantAdminCard restaurant={restaurant} key={index} />
+								</Link>
+							</div>
+							<div className="flex justify-evenly md:items-center md:flex-col md:w-[60px]">
+								<button
+									className="hover:bg-green duration-200 ease-in px-3 py-2 rounded-full md:w-[60px] md:flex md:justify-center"
+									onClick={() => openModal()}>
+									<img src="../../items/settings.svg" className="w-[30px]" />
+								</button>
+								<button className="hover:bg-[#b8241a] duration-200 ease-in px-3 py-2 rounded-full md:w-[60px] md:flex md:justify-center">
+									<img src="../../items/delete.svg" className="w-[30px]" />
+								</button>
+							</div>
+						</div>
 					))}
 				</div>
 				{restaurants.length > 0 && (

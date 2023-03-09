@@ -191,17 +191,6 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 		);
 	};
 
-	// const response = await fetch(
-	// 		import.meta.env.VITE_BACKEND + "/admin/restaurant/updaterestaurant",
-	// 		{
-	// 			method: "POST",
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 			},
-	// 			body: JSON.stringify(updateDetails),
-	// 		}
-	// 	);
-
 	return (
 		<>
 			<button
