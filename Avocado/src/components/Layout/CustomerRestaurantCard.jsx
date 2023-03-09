@@ -1,5 +1,5 @@
 import React from "react";
-import placeholder from "/items/menu_placeholder.png";
+import placeholder from "/items/restaurant_placeholder.svg";
 
 const CustomerRestaurantCard = ({ restaurant, index }) => {
   //previously RestaurantCard (re-used for customer here)
