@@ -86,7 +86,7 @@ const RestaurantAddMenuItemForm = () => {
 	};
 
 	return (
-		<div className="w-[300px] h-fit bg-gray flex flex-col items-center p-5 gap-10">
+		<div className="w-[300px] bg-gray flex flex-col items-center p-5 gap-10">
 			<form className="flex flex-col gap-5 font-niveau font-bold">
 				<h1 className="text-2xl font-bold text-center">Add a New Item</h1>
 				<div className="flex flex-col">

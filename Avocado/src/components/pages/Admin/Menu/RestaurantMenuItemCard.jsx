@@ -6,8 +6,8 @@ import UpdateMenuItem from "./UpdateMenuItem";
 const RestaurantMenuItemCard = ({ item, setMenu }) => {
 	const [openModal, setOpenModal] = useState(false);
 	return (
-		<div className="flex-col">
-			<div className="font-niveau px-3 flex py-3 gap-3 hover:bg-blue md:hover:-translate-y-1 duration-200 ease-in md:w-[350px] md:py-3 shadow-md justify-between">
+		<div className="flex-col w-[350px]">
+			<div className="font-niveau px-3 flex py-3 gap-3 hover:bg-blue md:hover:-translate-y-1 duration-200 ease-in w-full md:py-3 shadow-md justify-between">
 				<div className="flex gap-3">
 					<img
 						className="w-20 h-20"
