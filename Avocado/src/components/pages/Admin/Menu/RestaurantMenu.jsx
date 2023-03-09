@@ -63,7 +63,7 @@ const RestaurantMenu = () => {
 	return (
 		<div className="mb-[55px] md:flex md:mb-0 justify-start">
 			<AdminNavBar />
-			<div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20 md:flex-row">
+			<div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20 md:flex-row  justify-between">
 				<div>
 					<div className="flex flex-col gap-3">
 						<h1 className="text-center text-4xl font-bold text-green md:text-left">
