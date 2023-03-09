@@ -96,7 +96,7 @@ const ManageRestaurants = () => {
 
 				<div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:justify-evenly">
 					{restaurants.map((restaurant, index) => (
-						<div className="md:pr-3 md:flex duration-200 ease-in md:hover:-translate-y-1  md:hover:bg-blue md:shadow-md">
+						<div className="bg-ltgray md:pr-3 md:flex duration-200 ease-in md:hover:-translate-y-1  md:hover:bg-blue md:shadow-md">
 							<div className="duration-200 ease-in flex-col gap-2  md:flex-row">
 								<Link
 									to="/menuinfo"
@@ -193,10 +193,10 @@ const ManageRestaurants = () => {
 
 						<div className="flex justify-center">
 							<button
-								className="bg-green text-gray text-lg px-5 py-1 duration-200 font-bold hover:bg-dkgreen"
+								className="bg-green text-gray text-lg px-5 py-1 duration-200 font-bold hover:bg-dkgreen rounded-full tracking-widest"
 								type="button"
 								onClick={() => sendToSupabase(restaurantDetails)}>
-								Add my restaurant
+								SUBMIT
 							</button>
 						</div>
 					</form>
