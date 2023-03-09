@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSignOut } from "../Layout/Queries";
 import AdminNavBarLinks from "./AdminNavBarLinks";
-import { FaChartBar, FaStoreAlt, FaUserAlt, FaAngleUp } from "react-icons/fa";
+import {
+	FaChartBar,
+	FaStoreAlt,
+	FaUserAlt,
+	FaAngleUp,
+	FaReceipt,
+} from "react-icons/fa";
 import { GoSignOut } from "react-icons/go";
 
 const AdminNavBar = () => {
@@ -38,6 +44,13 @@ const AdminNavBar = () => {
 				<FaUserAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
 			),
 		},
+		{
+			title: "BOH",
+			path: "/BOH",
+			src: (
+				<FaReceipt className="text-gray font-2xl w-[30px] hidden lg:block" />
+			),
+		},
 	];
 
 	const linkLength = adminLinks.length + 1;
@@ -67,12 +80,13 @@ const AdminNavBar = () => {
 			<nav
 				className={
 					"bg-green text-xl text-gray font-bold duration-500 nav fixed w-full z-[9] p-5 text-center lg:relative lg:z-0 lg:w-[300px] lg:text-left lg:translate-y-0 lg:duration-[0ms]" +
-					(show ? "" : " translate-y-[-340px]")
+					(show ? "" : " translate-y-[-410px]")
+					// (show ? "" : " translate-y-[-340px]")
 				}>
 				<ul className="flex flex-col gap-5">
 					<AdminNavBarLinks links={adminLinks} />
 
-					<li className="border-b-2 border-gray pb-5 lg:border-none">
+					<li className="border-b-2 border-gray pb-5 lg:border-none flex justify-center">
 						<button
 							className="flex items-center lg:bg-dkgreen lg:px-3 lg:py-1 lg:rounded-full lg:text-gray lg:w-[140px] lg:flex lg:gap-3"
 							type="button"
