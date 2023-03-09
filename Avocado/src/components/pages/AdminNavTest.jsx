@@ -1,10 +1,12 @@
 import React from "react";
 import AdminNavBar from "../partials/AdminNavBar";
+import CustomerNavBar from "../partials/CustomerNavBar";
 
 const AdminNavTest = () => {
 	return (
-		<div className="mb-[55px] md:flex md:mb-0">
-			<AdminNavBar />
+		<div className="mb-[55px] md:flex md:flex-col md:mb-0">
+			{/* <AdminNavBar /> */}
+			<CustomerNavBar />
 			<div>
 				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta iure
 				totam repellendus minima voluptates beatae tempore necessitatibus
