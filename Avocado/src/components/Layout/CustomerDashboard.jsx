@@ -8,6 +8,7 @@ import {
   setUserDetails,
   setLocation,
   setGuest,
+  setRestaurant,
 } from "../reducers/DashboardSlice";
 import CustomerRestaurantCard from "./CustomerRestaurantCard";
 import CustomerNavBar from "./CustomerNavBar";
@@ -22,7 +23,6 @@ const CustomerDashboard = ({ children }) => {
   const [restaurants, setRestaurants] = useState();
   const isGuest = useSelector((state) => state.isGuest);
   const dashboardCart = useSelector((state) => state.cart);
-
 
   useEffect(() => {
     console.log();
@@ -91,9 +91,12 @@ const CustomerDashboard = ({ children }) => {
               Guest/Customer Dashboard
             </h1>
             <div>
-              {restaurants?.map((restaurant) => (
-                <Link to="/restaurantmenu">
-                  <CustomerRestaurantCard restaurant={restaurant} />
+              {restaurants?.map((restaurant, index) => (
+                <Link
+                  to="/restaurantmenu"
+                  onClick={() => dispa(setRestaurant(restaurant))}
+                >
+                  <CustomerRestaurantCard restaurant={restaurant} key={index} />
                 </Link>
               ))}
             </div>
