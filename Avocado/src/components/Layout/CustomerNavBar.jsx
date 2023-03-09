@@ -5,7 +5,7 @@ import { useSignOut } from "../Layout/Queries";
 
 const CustomerNavBar = () => {
   const [show, setShow] = useState("false");
-
+const signOut = useSignOut();
   const toggleNav = () => {
     setShow(!show);
   };
@@ -30,20 +30,20 @@ const CustomerNavBar = () => {
       >
         <ul className="flex flex-col gap-5">
           <li className="border-b-2 border-gray pb-5">
-            <Link to={"/restaurantinfo"}> My Restaurants</Link>
+            <Link to={"/CustomerDashboard"}> My Restaurants</Link>
           </li>
           <li className="border-b-2 border-gray pb-5">
             <Link to={"/UserAcct"}> My Account</Link>
           </li>
           <li>
-            <button
-              type="button"
+            <Link
+              to={"/CustomerDashboard"}
               onClick={(e) => {
                 signOut();
               }}
             >
               Logout
-            </button>{" "}
+            </Link>
           </li>
         </ul>
       </nav>
