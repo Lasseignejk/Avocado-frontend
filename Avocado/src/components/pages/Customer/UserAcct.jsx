@@ -7,7 +7,7 @@ import CustomerNavBar from "../../Layout/CustomerNavBar";
 const UserAcct = () => {
   const userDetails = useSelector((state) => state?.userDetails[0]);
   const dispatch = useDispatch();
-  console.log(userDetails);
+  
 
   const [updateDetails, setupdateDetails] = useState({});
 
@@ -20,7 +20,7 @@ const UserAcct = () => {
   };
 
   const updateUserAccount = async (updateDetails) => {
-    console.log(updateDetails);
+    
     const data = await fetch("http://localhost:3060/customer/updateCust", {
       method: "POST",
       headers: {
@@ -28,8 +28,7 @@ const UserAcct = () => {
       },
       body: JSON.stringify(updateDetails),
     });
-    console.log(data);
-  };
+    };
 
   return (
     <div className="mb-[55px] md:flex md:mb-0">
@@ -46,7 +45,7 @@ const UserAcct = () => {
           <h1>User Account</h1>
 
           <div>
-            <label htmlFor="lastName">First Name</label>
+            <label htmlFor="firstName">First Name</label>
             <input
               type="text"
               id="firstName"
