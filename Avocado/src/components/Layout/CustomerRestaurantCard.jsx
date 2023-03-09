@@ -1,7 +1,7 @@
 import React from "react";
 import placeholder from "/items/menu_placeholder.png";
 
-const CustomerRestaurantCard = ({ restaurant }) => {
+const CustomerRestaurantCard = ({ restaurant, index }) => {
   //previously RestaurantCard (re-used for customer here)
 
   // * expected behavior *

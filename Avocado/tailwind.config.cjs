@@ -14,6 +14,7 @@ module.exports = {
       gray: "#efebe4",
       dkgreen: "#145a3c",
       dkgray: "#d2d2c8",
+      ltgray: "#fffbf7",
     },
     extend: {},
   },
