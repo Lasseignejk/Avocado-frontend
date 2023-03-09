@@ -13,7 +13,7 @@ const CustomerRestaurantCard = ({ restaurant, index }) => {
   */
 
   return (
-    <div className="font-niveau px-3 flex pt-3 gap-3 hover:bg-blue md:hover:-translate-y-1 duration-200 ease-in md:w-[400px] md:py-3">
+    <div className="bg-ltgray font-niveau px-3 flex pt-3 gap-3 hover:bg-dkgray md:hover:-translate-y-1 duration-200 ease-in md:w-[400px] md:py-3">
       <img
         className="h-20"
         src={restaurant.RestLogo ? restaurant.RestLogo : placeholder}

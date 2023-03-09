@@ -4,7 +4,7 @@ import AdminMenu from "./components/pages/AdminMenu";
 import AdminRestaurant from "./components/pages/AdminRestaurant";
 import BOH from "./components/pages/BOH";
 import Login from "./components/pages/Login";
-import Menu from "./components/pages/Menu";
+import Menu from "./components/pages/Customer/Menu";
 import Signup from "./components/pages/Signup";
 import UserAcct from "./components/pages/Customer/UserAcct";
 import AdminNavTest from "./components/pages/AdminNavTest";
@@ -44,7 +44,7 @@ function App() {
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/order" element={<Menu />} />
+        <Route path="/menu" element={<Menu />} />
         <Route path="/BOH" element={<BOH />} />
         <Route path="/account" element={<UserAcct />} />
         <Route path="/restaurantinfo" element={<AdminRestaurant />} />
