@@ -96,7 +96,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 			className="fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay"
 			// onClick={() => setOpenModal(false)}
 		>
-			<div className="w-[80%]">
+			<div className="w-[80%] md:w-[50%]">
 				<form className=" bg-gray flex flex-col gap-5 font-niveau font-bold p-4">
 					<div className="flex justify-between">
 						<h1>Edit Item</h1>
