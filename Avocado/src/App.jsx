@@ -15,7 +15,7 @@ import CustomerDashboard from "./components/Layout/CustomerDashboard";
 import RestaurantDashboard from "./components/Layout/RestaurantDashboard";
 import DashboardSignup from "./components/Layout/DashboardSignup";
 
-import ManageRestaurants from "./components/pages/Admin/ManageRestaurants";
+import ManageRestaurants from "./components/pages/Admin/ManageRestaurants/ManageRestaurants";
 import RestaurantAdminMenu from "./components/pages/Admin/Menu/RestaurantMenu";
 import Reports from "./components/Layout/Reports";
 
