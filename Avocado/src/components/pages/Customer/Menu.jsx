@@ -8,6 +8,7 @@ const Menu = () => {
   const location = useLocation();
   const restuarant = location.state;
   console.log(restuarant);
+  const cart = useSelector((state) => state.cart);
 
   const [menu, setMenu] = useState();
 
