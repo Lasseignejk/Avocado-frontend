@@ -5,26 +5,26 @@ import { useSignOut } from "../Layout/Queries";
 import AdminNavBarLinks from "./AdminNavBarLinks";
 
 const AdminNavBar = () => {
-	const signOut = useSignOut();
-	const [show, setShow] = useState(true);
-	const [spin, setSpin] = useState(true);
+  const signOut = useSignOut();
+  const [show, setShow] = useState(true);
+  const [spin, setSpin] = useState(true);
 
-	const toggleNav = () => {
-		setShow(!show);
-		setSpin(!spin);
-	};
+  const toggleNav = () => {
+    setShow(!show);
+    setSpin(!spin);
+  };
 
-	const adminLinks = [
-		{ title: "Reports", path: "#", src: "../../items/reports.svg" },
-		{
-			title: "Manage Restaurants",
-			path: "/myrestaurants",
-			src: "../../items/manage.svg",
-		},
-		{ title: "My Account", path: "/admin", src: "../../items/account.svg" },
-	];
+  const adminLinks = [
+    { title: "Reports", path: "/reports", src: "../../items/reports.svg" },
+    {
+      title: "Manage Restaurants",
+      path: "/myrestaurants",
+      src: "../../items/manage.svg",
+    },
+    { title: "My Account", path: "/admin", src: "../../items/account.svg" },
+  ];
 
-	const linkLength = adminLinks.length + 1;
+  const linkLength = adminLinks.length + 1;
 
 	return (
 		<div
