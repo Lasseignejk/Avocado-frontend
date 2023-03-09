@@ -96,6 +96,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 
 	const uploadImage = async (e) => {
 		let file = e.target.files[0];
+		console.log(file);
 		const fileEXT = file.name.split(".").pop();
 		const fileName = file.name.split(".").shift();
 		const filePath = `${fileName}.${fileEXT}`;
