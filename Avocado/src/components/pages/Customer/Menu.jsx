@@ -6,6 +6,7 @@ import placeholder from "/items/restaurant_placeholder.svg";
 import Cart from "../../partials/Cart";
 import CustomerNavBar from "../../partials/CustomerNavBar";
 
+
 const Menu = () => {
   const location = useLocation();
   const restuarant = location.state;

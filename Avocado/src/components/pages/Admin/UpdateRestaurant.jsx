@@ -195,13 +195,13 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 	return (
 		<>
 			<button
-				className="bg-green px-3 py-1 text-gray openModal w-3/4 text-xl font-bold hover:bg-dkgreen duration-200 ease-in md:w-1/2"
+				className="bg-green px-3 py-1 text-gray openModal w-3/4 text-xl font-bold hover:bg-dkgreen duration-200 ease-in md:w-1/2 tracking-widest rounded-full"
 				onClick={() => openModal()}>
 				Update a restaurant's information
 			</button>
 
 			<div className="modal">
-				<div className="modal-content relative w-[80%] flex flex-col gap-3 sm:w-[500px] md:mt-[5%]">
+				<div className="modal-content bg-gray relative w-[80%] flex flex-col gap-3 sm:w-[500px] md:mt-[5%]">
 					<span
 						className="close absolute top-0 right-[10px] h-[10px]"
 						onClick={() => closeModal()}>
@@ -226,7 +226,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 								restaurant name
 							</label>
 							<input
-								className="pl-3 border-2 border-black"
+								className="pl-1"
 								type="text"
 								id="name"
 								name="RestName"
@@ -239,7 +239,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 								phone number
 							</label>
 							<input
-								className="pl-3 border-2 border-black"
+								className="pl-1"
 								type="text"
 								id="phone"
 								name="RestPhoneNumber"
@@ -256,7 +256,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 								address
 							</label>
 							<input
-								className="pl-3 border-2 border-black"
+								className="pl-1"
 								type="text"
 								id="location"
 								name="RestLocation"
@@ -271,7 +271,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 								hours
 							</label>
 							<input
-								className="pl-3 border-2 border-black"
+								className="pl-1"
 								type="text"
 								id="hours"
 								name="RestHours"
@@ -282,7 +282,7 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 						<div>
 							<button
 								type="button"
-								className="bg-green text-gray px-3 py-1 font-bold"
+								className="bg-green text-gray tracking-widest px-3 py-1 font-bold rounded-full"
 								onClick={() => updateRestaurant(updateDetails)}>
 								UPDATE
 							</button>
@@ -302,10 +302,11 @@ const UpdateRestaurant = ({ restaurants, toggle, setToggle }) => {
 						</div>
 						<div className="mt-5">
 							<button
+								className="bg-[#b8241a] text-gray tracking-widest py-1 px-3 rounded-full hover:bg-dkgreen flex justify-between items-center gap-1 font-bold"
 								type="button"
-								className="bg-[#b8241a] font-bold text-gray px-3 py-1"
 								onClick={() => displayDelete()}>
-								DELETE RESTAURANT
+								<img src="../../items/delete.svg" className="w-[30px]" />
+								DELETE
 							</button>
 						</div>
 					</form>

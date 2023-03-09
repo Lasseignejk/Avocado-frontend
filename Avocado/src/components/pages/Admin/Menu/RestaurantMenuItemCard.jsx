@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import placeholder from "/items/menu_placeholder.png";
 import "../ManageRestaurants.css";
 import UpdateMenuItem from "./UpdateMenuItem";
+import { FaCog } from "react-icons/fa";
 
 const RestaurantMenuItemCard = ({ item, setMenu }) => {
   const [openModal, setOpenModal] = useState(false);

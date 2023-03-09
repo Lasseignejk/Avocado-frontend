@@ -65,7 +65,7 @@ const RestaurantMenu = () => {
 			<AdminNavBar />
 			<div className="flex flex-col gap-10 pt-3 lg:w-full lg:px-16 lg:pt-20 lg:flex-row  justify-between">
 				<div>
-					<div className="flex flex-col gap-3">
+					<div className="flex flex-col gap-3 mb-5">
 						<h1 className="text-center text-4xl font-bold text-green lg:text-left">
 							{restToEdit[0]?.RestName}
 						</h1>
