@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
 import "../ManageRestaurants.css";
+import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
 
 const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 	const [updateItem, setUpdateItem] = useState({});
@@ -93,162 +94,203 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 
 	return (
 		<div
-			className="fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay"
+			className="updateItemModal fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay"
 			// onClick={() => setOpenModal(false)}
 		>
-			<div className="w-[80%] md:w-[50%]">
-				<form className=" bg-gray flex flex-col gap-5 font-niveau font-bold p-4">
-					<div className="flex justify-between">
-						<h1>Edit Item</h1>
-						<button
-							className="bg-green text-gray tracking-widest py-1 px-2 hover:bg-dkgreen"
-							onClick={() => setOpenModal(false)}>
-							X
-						</button>
-					</div>
-					<div className="flex gap-4">
-						<div className="w-[300]">
-							<div className="flex flex-col">
-								<label htmlFor="ItemName">Item</label>
-								<input
-									type="text"
-									id="ItemName"
-									name="ItemName"
-									onChange={(e) => setFormState(e)}
-									value={updateItem.ItemName ? updateItem.ItemName : ""}
-								/>
+			<div className="w-[80%] sm:w-[500px]">
+				<div className="flex flex-col">
+					<form className=" bg-gray flex flex-col gap-2 font-niveau font-bold p-4">
+						<div className="w-full flex justify-end items-center">
+							<span
+								className=" text-2xl h-[30px] w-[30px] flex items-center justify-center hover:text-green ease-in duration-200 hover:cursor-pointer"
+								onClick={() => setOpenModal(false)}>
+								&times;
+							</span>
+						</div>
+						<div className="flex justify-between">
+							<h1 className="text-xl">Edit {updateItem.ItemName}</h1>
+
+							{/* <button
+								className="bg-green text-gray tracking-widest py-1 px-2 hover:bg-dkgreen"
+								onClick={() => setOpenModal(false)}>
+								X
+							</button> */}
+						</div>
+						<div className="flex flex-col gap-5 sm:flex-row">
+							<div className="w-[300] flex flex-col gap-3">
+								<div className="flex flex-col">
+									<label htmlFor="ItemName" className="text-lg">
+										Item
+									</label>
+									<input
+										className="pl-1"
+										type="text"
+										id="ItemName"
+										name="ItemName"
+										onChange={(e) => setFormState(e)}
+										value={updateItem.ItemName ? updateItem.ItemName : ""}
+									/>
+								</div>
+								<div className="flex flex-col">
+									<label htmlFor="ItemType" className="text-lg">
+										Item Type
+									</label>
+									<select
+										className="py-1"
+										type="text"
+										id="ItemType"
+										name="ItemType"
+										onChange={(e) => setFormState(e)}
+										value={updateItem.ItemType ? updateItem.ItemType : ""}>
+										<option>Appetizer</option>
+										<option>Salad</option>
+										<option>Soup</option>
+										<option>Main</option>
+										<option>Dessert</option>
+										<option>Drink</option>
+									</select>
+								</div>
+								<div className="flex flex-col">
+									<label htmlFor="ItemPrice" className="text-lg">
+										Price
+									</label>
+									<div className="flex gap-1">
+										<span>$</span>
+										<input
+											className="pl-1"
+											type="text"
+											id="ItemPrice"
+											name="ItemPrice"
+											onChange={(e) => setFormState(e)}
+											value={updateItem.ItemPrice ? updateItem.ItemPrice : ""}
+										/>
+									</div>
+								</div>
+								<div className="flex flex-col">
+									<label htmlFor="ItemDescription" className="text-lg">
+										Item Description
+									</label>
+									<textarea
+										className="pl-1"
+										rows="3"
+										id="ItemDescription"
+										name="ItemDescription"
+										onChange={(e) => setFormState(e)}
+										value={
+											updateItem.ItemDescription
+												? updateItem.ItemDescription
+												: ""
+										}
+									/>
+								</div>
 							</div>
-							<div className="flex flex-col">
-								<label htmlFor="ItemType">Item Type</label>
-								<select
-									type="text"
-									id="ItemType"
-									name="ItemType"
-									onChange={(e) => setFormState(e)}
-									value={updateItem.ItemType ? updateItem.ItemType : ""}>
-									<option>Appetizer</option>
-									<option>Salad</option>
-									<option>Soup</option>
-									<option>Main</option>
-									<option>Dessert</option>
-									<option>Drink</option>
-								</select>
-							</div>
-							<div className="flex flex-col">
-								<label htmlFor="ItemPrice">Price</label>
-								<input
-									type="text"
-									id="ItemPrice"
-									name="ItemPrice"
-									onChange={(e) => setFormState(e)}
-									value={updateItem.ItemPrice ? updateItem.ItemPrice : ""}
-								/>
-							</div>
-							<div className="flex flex-col">
-								<label htmlFor="ItemDescription">Item Description</label>
-								<textarea
-									rows="3"
-									id="ItemDescription"
-									name="ItemDescription"
-									onChange={(e) => setFormState(e)}
-									value={
-										updateItem.ItemDescription ? updateItem.ItemDescription : ""
-									}
-								/>
+							<div className="flex flex-col gap-3">
+								<div className="flex flex-row gap-6">
+									<div className="flex gap-2">
+										<label htmlFor="ItemBreakfast">Breakfast</label>
+										<input
+											className="hover:cursor-pointer"
+											type="checkbox"
+											id="ItemBreakfast"
+											name="ItemBreakfast"
+											checked={breakfast}
+											onChange={toggleBreakfast}
+										/>
+									</div>
+									<div className="flex gap-2">
+										<label htmlFor="ItemLunch">Lunch</label>
+										<input
+											className="hover:cursor-pointer"
+											type="checkbox"
+											id="ItemLunch"
+											name="ItemLunch"
+											checked={lunch}
+											onChange={toggleLunch}
+										/>
+									</div>
+									<div className="flex gap-2">
+										<label htmlFor="ItemDinner">Dinner</label>
+										<input
+											className="hover:cursor-pointer"
+											type="checkbox"
+											id="ItemDinner"
+											name="ItemDinner"
+											checked={dinner}
+											onChange={toggleDinner}
+										/>
+									</div>
+								</div>
+								<div className="flex flex-row justify-evenly">
+									<div className="flex gap-2">
+										<label htmlFor="ItemAvailable">Available?</label>
+										<input
+											className="hover:cursor-pointer"
+											type="checkbox"
+											id="ItemAvailable"
+											name="ItemAvailable"
+											checked={available}
+											onChange={toggleAvailable}
+										/>
+									</div>
+									<div className="flex gap-2">
+										<label htmlFor="ItemIsPopular">Popular?</label>
+										<input
+											className="hover:cursor-pointer"
+											type="checkbox"
+											id="ItemIsPopular"
+											name="ItemIsPopular"
+											checked={popular}
+											onChange={togglePopular}
+										/>
+									</div>
+								</div>
+								<div className="flex flex-col">
+									<label htmlFor="ItemCookTime" className="text-lg">
+										Cooking Time
+									</label>
+									<input
+										className="pl-1"
+										type="text"
+										id="ItemCookTime"
+										name="ItemCookTime"
+										onChange={(e) => setFormState(e)}
+										value={
+											updateItem.ItemCookTime ? updateItem.ItemCookTime : ""
+										}
+									/>
+								</div>
+								<div className="flex flex-col">
+									<label htmlFor="ItemImg">Item image URL</label>
+									<input
+										type="text"
+										id="ItemImg"
+										name="ItemImg"
+										onChange={(e) => setFormState(e)}
+										value={updateItem.ItemImg ? updateItem.ItemImg : ""}
+									/>
+								</div>
 							</div>
 						</div>
-						<div>
-							<div className="flex flex-row gap-6">
-								<div className="flex gap-2">
-									<label htmlFor="ItemBreakfast">Breakfast</label>
-									<input
-										type="checkbox"
-										id="ItemBreakfast"
-										name="ItemBreakfast"
-										checked={breakfast}
-										onChange={toggleBreakfast}
-									/>
-								</div>
-								<div className="flex gap-2">
-									<label htmlFor="ItemLunch">Lunch</label>
-									<input
-										type="checkbox"
-										id="ItemLunch"
-										name="ItemLunch"
-										checked={lunch}
-										onChange={toggleLunch}
-									/>
-								</div>
-								<div className="flex gap-2">
-									<label htmlFor="ItemDinner">Dinner</label>
-									<input
-										type="checkbox"
-										id="ItemDinner"
-										name="ItemDinner"
-										checked={dinner}
-										onChange={toggleDinner}
-									/>
-								</div>
-							</div>
-							<div className="flex flex-row gap-6">
-								<div className="flex gap-2">
-									<label htmlFor="ItemAvailable">Available?</label>
-									<input
-										type="checkbox"
-										id="ItemAvailable"
-										name="ItemAvailable"
-										checked={available}
-										onChange={toggleAvailable}
-									/>
-								</div>
-								<div className="flex gap-2">
-									<label htmlFor="ItemIsPopular">Popular?</label>
-									<input
-										type="checkbox"
-										id="ItemIsPopular"
-										name="ItemIsPopular"
-										checked={popular}
-										onChange={togglePopular}
-									/>
-								</div>
-							</div>
-							<div className="flex flex-col">
-								<label htmlFor="ItemCookTime">Cooking Time</label>
-								<input
-									type="text"
-									id="ItemCookTime"
-									name="ItemCookTime"
-									onChange={(e) => setFormState(e)}
-									value={updateItem.ItemCookTime ? updateItem.ItemCookTime : ""}
-								/>
-							</div>
-							<div className="flex flex-col">
-								<label htmlFor="ItemImg">Item image URL</label>
-								<input
-									type="text"
-									id="ItemImg"
-									name="ItemImg"
-									onChange={(e) => setFormState(e)}
-									value={updateItem.ItemImg ? updateItem.ItemImg : ""}
-								/>
+						<div className="flex justify-end gap-4">
+							<button
+								className="bg-green text-gray tracking-widest py-1 px-3 hover:bg-dkgreen flex justify-between items-center gap-3 duration-200 ease-in rounded-full"
+								type="button"
+								onClick={() => sendItemUpdate()}>
+								<FaCheck />
+								UPDATE
+							</button>
+							<div className="">
+								<button
+									className="bg-[#b8241a] text-gray tracking-widest py-1 px-3 hover:bg-[#992017] flex justify-between items-center gap-3 duration-200 ease-in rounded-full"
+									type="button"
+									onClick={() => deleteItem()}>
+									<FaRegTrashAlt />
+									DELETE
+								</button>
 							</div>
 						</div>
-					</div>
-					<div className="flex justify-end gap-4">
-						<button
-							className="bg-green text-gray tracking-widest py-1 px-2 hover:bg-dkgreen"
-							type="button"
-							onClick={() => sendItemUpdate()}>
-							UPDATE
-						</button>
-						<button
-							className="bg-green text-gray tracking-widest py-1 px-2 hover:bg-dkgreen"
-							type="button"
-							onClick={() => deleteItem()}>
-							DELETE
-						</button>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
 	);
