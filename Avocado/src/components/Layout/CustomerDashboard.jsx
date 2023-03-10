@@ -13,7 +13,7 @@ import {
 import CustomerRestaurantCard from "./CustomerRestaurantCard";
 import CustomerNavBar from "../partials/CustomerNavBar";
 
-const CustomerDashboard = ({ children }) => {
+const CustomerDashboard = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -43,15 +43,14 @@ const CustomerDashboard = ({ children }) => {
       }
     };
     getRestaurants();
-  }, []);
+  }, [isGuest]);
 
   useEffect(() => {
     dispatch(setLocation(location.pathname));
-  }, [location.pathname]);
+  }, [location.pathname, isGuest]);
 
   //logic to check for owner/customer if logged in
   let firstName;
-  console.log("custdash", isGuest);
 
   if (!isGuest) {
     useEffect(() => {
@@ -72,7 +71,7 @@ const CustomerDashboard = ({ children }) => {
       if (userEmail) {
         fetchUserData();
       }
-    }, [userEmail, isCustomer]);
+    }, [userEmail, isCustomer, isGuest]);
 
     //data is the user information
     const { CustomerFirstName } = userDetails[0];

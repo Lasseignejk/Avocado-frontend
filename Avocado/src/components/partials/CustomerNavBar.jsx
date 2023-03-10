@@ -16,7 +16,6 @@ const CustomerNavBar = () => {
   };
 
   const isGuest = useSelector((state) => state.isGuest);
-  console.log(isGuest);
 
   const Customerlinks = [
     { title: "Restaurants", path: "#", src: "../../items/restaurant.svg" },
@@ -37,10 +36,7 @@ const CustomerNavBar = () => {
     },
   ];
 
-  useEffect(() => {
-    if (isGuest) {
-    }
-  }, [isGuest]);
+  useEffect(() => {}, [isGuest]);
 
   return (
     <div
