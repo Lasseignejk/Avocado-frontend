@@ -8,7 +8,7 @@ const RestaurantMenuItemCard = ({ item, setMenu }) => {
 	const [openModal, setOpenModal] = useState(false);
 	return (
 		<div className="flex-col w-[350px]">
-			<div className="bg-ltgray font-niveau px-3 flex py-3 gap-3 hover:bg-blue md:hover:-translate-y-1 duration-200 ease-in w-full md:py-3 shadow-md justify-between">
+			<div className="bg-ltgray font-niveau px-3 flex py-3 gap-3 duration-200 ease-in w-full md:py-3 shadow-md justify-between rounded-xl">
 				<div className="flex gap-3">
 					<img
 						className="w-20 h-20"
@@ -21,11 +21,13 @@ const RestaurantMenuItemCard = ({ item, setMenu }) => {
 						<h1>{item?.ItemType}</h1>
 					</div>
 				</div>
-				<button
-					className="bg-green px-1 text-gray text-xl font-bold hover:bg-dkgreen duration-200 ease-in"
-					onClick={() => setOpenModal(true)}>
-					Edit
-				</button>
+				<div className="grid place-items-center">
+					<button
+						className="px-1 text-gray text-xl font-bold duration-200 ease-in w-[50px] h-[50px] grid place-items-center rounded-full hover:bg-green"
+						onClick={() => setOpenModal(true)}>
+						<FaCog className="text-dkgray text-2xl" />
+					</button>
+				</div>
 			</div>
 			<div>
 				{openModal && (

@@ -11,7 +11,7 @@ import {
   setRestaurant,
 } from "../reducers/DashboardSlice";
 import CustomerRestaurantCard from "./CustomerRestaurantCard";
-import CustomerNavBar from "./CustomerNavBar";
+import CustomerNavBar from "../partials/CustomerNavBar";
 
 const CustomerDashboard = ({ children }) => {
   const dispatch = useDispatch();

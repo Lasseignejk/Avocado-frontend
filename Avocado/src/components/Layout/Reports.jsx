@@ -15,51 +15,205 @@ import CustomerNavBar from "./CustomerNavBar";
 
 const Reports = ({ children }) => {
   const isOwner = useSelector((state) => state.isOwner);
+  const userDetails = useSelector((state) => state.userDetails);
+
   const [layout, setLayout] = useState(null);
   const [dataArray, setDataArray] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [allRestrauntsByOwner, setRestaurants] = useState(null);
+  const [allRestrauntsByOwnerName, setAllRestrauntsByOwnerName] =
+    useState(null);
 
   if (isOwner) {
     useEffect(() => {
       const fetchUserData = async () => {
-        const { data, error } = await supabase.from("Order").select("*");
+        const { id } = userDetails[0];
 
-        if (error) {
-          setError(error);
+        const { data: restrauntsByOwnerData, error: errorByOwnerData } =
+          await supabase.from("Restaurant").select().eq("OwnerId", id);
+
+        if (errorByOwnerData) {
+          setError(errorByOwnerData);
           return;
         }
-        if (data) {
-          console.log(data);
-          let createdAt = data.map((a) => a.created_at);
-          let CustomerId = data.map((a) => a.CustomerId);
-          let IsDelivery = data.map((a) => a.IsDelivery);
-          let IsPickup = data.map((a) => a.IsPickup);
-          let OrderTotal = data.map((a) => a.OrderTotal);
-          let TotalItems = data.map((a) => a.TotalItems);
-          let xArray = OrderTotal;
-          let yArray = TotalItems;
 
-          let dataArray = [
+        //reports
+
+        if (restrauntsByOwnerData) {
+          //all restraunts data by owner
+          setRestaurants(restrauntsByOwnerData);
+
+          let restaurantNames = restrauntsByOwnerData.map((a) => a.RestName);
+          let restaurantIds = restrauntsByOwnerData.map((a) => a.id);
+
+          //all restaurants names by owner
+          setAllRestrauntsByOwnerName(restaurantNames);
+
+          //number of restaurants
+          const numberOfRestraunts = restrauntsByOwnerData.length;
+
+          //order for that specifc restaurant (currently hard coded in)
+          let restId = 48;
+
+          ///BAR GRAPH
+
+          const { data: orderData, error: orderError } = await supabase
+            .from("Order")
+            .select()
+            .eq("RestaurantId", restId);
+
+          if (orderError) {
+            setError(orderError);
+            return;
+          }
+
+          if (orderData) {
+            //console.log(orderData);
+          }
+
+          //all unique days items were purchased
+          let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
+          DatePurchased = [...new Set(DatePurchased)];
+
+          console.log(
+            "sort",
+            DatePurchased.sort((a, b) => a - b)
+          );
+
+          //arrays for totals by day
+          let days = [];
+          let totals = [];
+          let totalItemsPerDay = [];
+
+          //daily totals
+          for (let i = 0; i < DatePurchased.length; i++) {
+            days.push(DatePurchased[i]);
+            let total = 0;
+            let totalItemsCount = 0;
+            for (let elem of orderData) {
+              if (elem.DatePurchased == DatePurchased[i]) {
+                total += elem.OrderTotal;
+                totalItemsCount += elem.TotalItems;
+              }
+            }
+            totals.push(total);
+            totalItemsPerDay.push(totalItemsCount);
+          }
+          let monthlyAmountMade = totals.reduce((a, b) => a + b);
+
+          var data = [
             {
-              x: xArray,
-              y: yArray,
-              mode: "markers",
-              type: "scatter",
+              x: days,
+              y: totals,
+              type: "bar",
             },
           ];
-          setDataArray(dataArray);
 
           let layout = {
-            xaxis: { range: [0, 100], title: "Total amount spent" },
-            yaxis: { range: [0, 100], title: "Total items bought" },
-            title: "Items bought per amount spent",
+            xaxis: { title: "Dates" },
+            yaxis: { title: "Total Puchased" },
+            title: "Lifetime Totals: $" + monthlyAmountMade,
           };
-          setLayout(layout);
 
-          setIsLoaded(true);
-          Plotly.newPlot("myPlot", dataArray, layout);
+          Plotly.newPlot("myDivOne", data, layout);
+
+          //////PIE CHART
+
+          //all menu items by restaurant
+          const { data: menuData, error: menuError } = await supabase
+            .from("MenuItems")
+            .select()
+            .eq("RestId", restId);
+
+          //All breakfast items by restaurant
+          let itemBreak = menuData.map((a) => [a.ItemBreakfast]).length;
+          let itemLun = menuData.map((a) => [a.itemLunch]).length;
+          let itemDin = menuData.map((a) => [a.itemDinner]).length;
+
+          let piedata = [
+            {
+              values: [itemBreak, itemLun, itemDin],
+              labels: ["Breakfast", "Lunch", "Dinner"],
+              type: "pie",
+            },
+          ];
+
+          var pielayout = {
+            height: 400,
+            width: 500,
+          };
+
+          Plotly.newPlot("myDivTwo", piedata, pielayout);
+
+          /////TABLE GRAPH
+
+          //most popular items
+
+          let popularItems = menuData
+            .map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
+            .filter((n) => n);
+
+          let tabledata = [
+            {
+              type: "table",
+              header: {
+                values: [["<b>Popular Items:</b>"]],
+                align: "center",
+                height: 30,
+                fill: { color: "green" },
+                font: { family: "Niveau", size: 20, color: "white" },
+              },
+              cells: {
+                values: popularItems,
+                align: "center",
+                height: 30,
+
+                font: {
+                  family: "Niveau",
+                  size: 18,
+                  color: "green",
+                },
+              },
+            },
+          ];
+
+          Plotly.newPlot("myDivThree", tabledata);
+
+          ///LINE GRAPH
+
+          var linedata = {
+            x: days,
+            y: totalItemsPerDay,
+            mode: "lines",
+          };
+
+          var linelayout = {
+            title: "Amount of items ordered per day",
+          };
+
+          Plotly.newPlot("myDivFour", [linedata], linelayout);
+
+          ///NEW GRAPH
+
+          console.log(orderData);
+
+          ///end of await function
+
+          if (menuError) {
+            setError(menuError);
+            return;
+          }
+
+          if (menuData) {
+            //console.log("menu data", menuData);
+          }
+
+          //Table
         }
       };
+
       fetchUserData();
     }, [isOwner]);
   }
@@ -73,7 +227,10 @@ const Reports = ({ children }) => {
             <h1 className="text-center text-3xl font-bold md:text-left">
               Reports
             </h1>
-            <div id="myPlot" className="w-full"></div>
+            <div id="myDivOne" className="w-[70vw]"></div>
+            <div id="myDivTwo" className="w-[70vw]"></div>
+            <div id="myDivThree" className="w-[70vh]"></div>
+            <div id="myDivFour" className="w-[90vh]"></div>
           </div>
         </div>
       </div>

@@ -164,19 +164,19 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 			className="updateItemModal fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay"
 			// onClick={() => setOpenModal(false)}
 		>
-			<div className="w-[80%] sm:w-[600px]">
+			<div className="w-[80%] sm:w-[600px] overflow-auto">
 				<div className="flex flex-col">
-					<form className=" bg-gray flex flex-col gap-2 font-niveau font-bold p-4">
-						<div className="w-full flex justify-end items-center">
+					<form className=" bg-ltgray flex flex-col gap-2 font-niveau font-bold p-4">
+						<div className="w-full flex justify-end items-center relative">
 							<span
-								className=" text-2xl h-[30px] w-[30px] flex items-center justify-center hover:text-green ease-in duration-200 hover:cursor-pointer"
+								className="absolute top-[-15px] right-[-15px] text-2xl h-[30px] w-[30px] flex items-center justify-center hover:text-green ease-in duration-200 hover:cursor-pointer"
 								onClick={() => setOpenModal(false)}>
 								&times;
 							</span>
 							<ToastContainer draggablePercent={60} />
 						</div>
-						<div className="flex justify-between">
-							<h1 className="text-xl">Edit {updateItem.ItemName}</h1>
+						<div className="flex justify-center">
+							<h1 className="text-2xl">Edit {updateItem.ItemName}</h1>
 
 							{/* <button
 								className="bg-green text-gray tracking-widest py-1 px-2 hover:bg-dkgreen"
@@ -184,14 +184,14 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 								X
 							</button> */}
 						</div>
-						<div className="flex flex-col gap-5 sm:flex-row sm:pl-10">
+						<div className="flex flex-col gap-5 sm:flex-row sm:px-5 sm:justify-between">
 							<div className="w-[300] flex flex-col gap-3">
 								<div className="flex flex-col">
-									<label htmlFor="ItemName" className="text-lg">
+									<label htmlFor="ItemName" className="text-lg tracking-wide">
 										Item
 									</label>
 									<input
-										className="pl-1"
+										className="bg-ltgray border-black border-b-2 pl-1 focus:border-none w-full font-thin"
 										type="text"
 										id="ItemName"
 										name="ItemName"
@@ -200,32 +200,33 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 									/>
 								</div>
 								<div className="flex flex-col">
-									<label htmlFor="ItemType" className="text-lg">
+									<label htmlFor="ItemType" className="text-lg tracking-wide">
 										Item Type
 									</label>
 									<select
-										className="py-1"
+										className="bg-ltgray border-black border-b-2 pl-1 py-1 focus:border-none w-full font-thin"
 										type="text"
 										id="ItemType"
 										name="ItemType"
 										onChange={(e) => setFormState(e)}
 										value={updateItem.ItemType ? updateItem.ItemType : ""}>
 										<option>Appetizer</option>
-										<option>Salad</option>
-										<option>Soup</option>
-										<option>Main</option>
 										<option>Dessert</option>
 										<option>Drink</option>
+										<option>Main</option>
+										<option>Salad</option>
+										<option>Side</option>
+										<option>Soup</option>
 									</select>
 								</div>
 								<div className="flex flex-col">
-									<label htmlFor="ItemPrice" className="text-lg">
+									<label htmlFor="ItemPrice" className="text-lg tracking-wide">
 										Price
 									</label>
 									<div className="flex gap-1">
 										<span>$</span>
 										<input
-											className="pl-1"
+											className="bg-ltgray border-black border-b-2 pl-1 focus:border-none w-full font-thin"
 											type="text"
 											id="ItemPrice"
 											name="ItemPrice"
@@ -234,12 +235,16 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 										/>
 									</div>
 								</div>
+							</div>
+							<div className="flex flex-col gap-3">
 								<div className="flex flex-col">
-									<label htmlFor="ItemDescription" className="text-lg">
+									<label
+										htmlFor="ItemDescription"
+										className="text-lg tracking-wide">
 										Item Description
 									</label>
 									<textarea
-										className="pl-1"
+										className="bg-ltgray border-black border-b-2 pl-1 focus:border-none w-full font-thin"
 										rows="3"
 										id="ItemDescription"
 										name="ItemDescription"
@@ -251,8 +256,23 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 										}
 									/>
 								</div>
-							</div>
-							<div className="flex flex-col gap-3">
+								<div className="flex flex-col">
+									<label
+										htmlFor="ItemCookTime"
+										className="text-lg tracking-wide">
+										Cook Time
+									</label>
+									<input
+										className="bg-ltgray border-black border-b-2 pl-1 focus:border-none w-full font-thin"
+										type="text"
+										id="ItemCookTime"
+										name="ItemCookTime"
+										onChange={(e) => setFormState(e)}
+										value={
+											updateItem.ItemCookTime ? updateItem.ItemCookTime : ""
+										}
+									/>
+								</div>
 								<div className="flex flex-row gap-6">
 									<div className="flex gap-2">
 										<label htmlFor="ItemBreakfast">Breakfast</label>
@@ -312,21 +332,6 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 										/>
 									</div>
 								</div>
-								<div className="flex flex-col">
-									<label htmlFor="ItemCookTime" className="text-lg">
-										Cooking Time
-									</label>
-									<input
-										className="pl-1"
-										type="text"
-										id="ItemCookTime"
-										name="ItemCookTime"
-										onChange={(e) => setFormState(e)}
-										value={
-											updateItem.ItemCookTime ? updateItem.ItemCookTime : ""
-										}
-									/>
-								</div>
 							</div>
 						</div>
 						<div className="flex justify-center gap-4 mt-5">
@@ -347,9 +352,12 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 								</button>
 							</div>
 						</div>
-						<div className="flex flex-col md:pl-10">
-							<label htmlFor="ItemImg">Add an image</label>
+						<div className="flex flex-col md:pl-5">
+							<label htmlFor="ItemImg" className="text-lg tracking-wide">
+								Add an image
+							</label>
 							<input
+								className="font-thin"
 								type="file"
 								id="ItemImg"
 								name="ItemImg"
