@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
-
 import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,9 +12,9 @@ const UpdateRestaurantModal = ({
 	restaurant,
 }) => {
 	const userDetails = useSelector((state) => state?.userDetails[0]);
-	const dispatch = useDispatch();
+
 	const [restToEdit, setRestToEdit] = useState({});
-	const [updateDetails, setUpdateDetails] = useState([{}]);
+	const [restName, setRestName] = useState("");
 
 	useEffect(() => {
 		const getRestaurant = async () => {
@@ -34,10 +33,11 @@ const UpdateRestaurantModal = ({
 			} else {
 				const json = await response?.json();
 				setRestToEdit(json[0]);
+				setRestName(restToEdit.RestName);
 			}
 		};
 		getRestaurant();
-	}, [restaurant.id, toggle]);
+	}, [restName, toggle]);
 
 	const setUpdateFormState = (e) => {
 		setRestToEdit({
@@ -48,8 +48,6 @@ const UpdateRestaurantModal = ({
 	};
 
 	const updateRestaurant = async (restToEdit) => {
-		console.log(restToEdit);
-
 		const response = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/restaurant/updaterestaurant",
 			{
@@ -62,7 +60,7 @@ const UpdateRestaurantModal = ({
 		);
 
 		setToggle(!toggle);
-		// setRestToEdit({ id: restaurant.id });
+
 		toast.success("Restaurant Updated!", {
 			position: toast.POSITION.TOP_CENTER,
 			icon: <img src="../../logos/icon_green.svg" alt="" />,
@@ -170,15 +168,18 @@ const UpdateRestaurantModal = ({
 
 	return (
 		<div className="font-niveau font-bold fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center z-auto bg-overlay">
-			<div className="modal-content bg-ltgray relative w-[80%] flex flex-col gap-3 rounded-xl sm:w-[500px] md:mt-[10%]">
+			<div className="modal-content px-5 py-5 bg-ltgray relative w-[80%] flex flex-col gap-3 rounded-xl sm:w-[500px] md:mt-[0]">
 				<span
-					className="close absolute top-0 right-[10px] h-[10px]"
+					className="absolute top-[5px] right-[5px] text-2xl h-[30px] w-[30px] flex items-center justify-center hover:text-green ease-in duration-200 hover:cursor-pointer"
 					onClick={() => setOpenModal(false)}>
 					&times;
 				</span>
 				<ToastContainer draggablePercent={60} />
 
 				<form className="flex flex-col gap-3 items-center">
+					<div className="flex justify-center">
+						<h1 className="text-2xl">Edit {restName}</h1>
+					</div>
 					<div className="flex flex-col w-full">
 						<label htmlFor="name" className="text-lg tracking-wide">
 							Restaurant Name

@@ -5,33 +5,6 @@ const RestaurantAddMenuItemForm = () => {
 	const [newItem, setNewItem] = useState({});
 
 	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
-	// console.log("restaurant id: ", restaurantId);
-
-	///previously new menu item
-
-	// * expected behavior *
-	//Allows admin to edit menu item
-
-	/*
-  To do:
-  Grab specific menu item (fronm front/backend?) and inject update into backend
-  */
-
-	// const [check, setCheck] = useState({
-	//   ItemBreakfast: false,
-	//   ItemLunch: false,
-	//   ItemDinner: false,
-	//   ItemAvailable: false,
-	//   ItemIsPopular: false,
-	// });
-
-	// const setChecked = (e) => {
-	//   const value = newItem[e.target.name];
-	//   setCheck({
-	//     ...check,
-	//     [e.target.name]: !value,
-	//   });
-	// };
 
 	const setFormState = (e) => {
 		setNewItem({
@@ -82,7 +55,6 @@ const RestaurantAddMenuItemForm = () => {
 				body: JSON.stringify(dataTosend),
 			}
 		);
-		console.log("data from front", data);
 	};
 
 	return (

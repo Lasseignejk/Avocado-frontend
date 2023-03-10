@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import placeholder from "/items/restaurant_placeholder.svg";
 import { FaCog, FaReceipt } from "react-icons/fa";

@@ -3,18 +3,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RestaurantAdminCard from "./RestaurantCard";
 import AdminNavBar from "../../../partials/AdminNavBar";
-import { Link } from "react-router-dom";
-import { supabase } from "../../../../supabase";
 
-import { setRestaurant } from "../../../reducers/DashboardSlice";
 import AddRestaurantForm from "./AddRestaurantForm";
 
 const ManageRestaurants = () => {
-	const dispatch = useDispatch();
-	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
-	const [restLogo, setRestLogo] = useState("");
+
 	const [toggle, setToggle] = useState(true);
 
 	const userDetails = useSelector((state) => state?.userDetails[0]);
