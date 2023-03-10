@@ -52,10 +52,7 @@ const Reports = ({ children }) => {
           //number of restaurants
           const numberOfRestraunts = restrauntsByOwnerData.length;
 
-          let first = restaurantIds[0];
-          let second = 48;
-
-          //order for that specifc restaurant
+          //order for that specifc restaurant (currently hard coded in)
           const { data: orderData, error: orderError } = await supabase
             .from("Order")
             .select()
@@ -70,10 +67,28 @@ const Reports = ({ children }) => {
             console.log(orderData);
           }
 
+          //all unique days items were purchased
           let DatePurchased = orderData.map((a) => a.DatePurchased);
-          console.log(DatePurchased);
-          console.log(new Date(DatePurchased[0]).toDateString());
+          DatePurchased = [...new Set(DatePurchased)];
 
+          //arrays for totals by day
+          let days = [];
+          let totals = [];
+
+          //daily totals
+          for (let i = 0; i < DatePurchased.length; i++) {
+            days.push(DatePurchased[i]);
+            let total = 0;
+            for (let elem of orderData) {
+              if (elem.DatePurchased == DatePurchased[i]) {
+                total += elem.OrderTotal;
+              }
+            }
+            totals.push(total);
+          }
+          let monthlyAmountMade = totals.reduce((a, b) => a + b);
+
+          /*
           let total = orderData.map((a) => a.OrderTotal);
 
           let totalAmountMade = "$" + total.reduce((a, b) => a + b);
@@ -83,11 +98,12 @@ const Reports = ({ children }) => {
           let two = new Date(DatePurchased[2]).toDateString();
           console.log(one);
           console.log(two);
+          */
 
           var data = [
             {
-              x: [one, two],
-              y: [totalAmountMade, "$50"],
+              x: days,
+              y: totals,
               type: "bar",
             },
           ];
@@ -95,7 +111,7 @@ const Reports = ({ children }) => {
           let layout = {
             xaxis: { title: "Dates" },
             yaxis: { title: "Total Puchased" },
-            title: "March Totals: " + totalAmountMade,
+            title: "March Totals: " + monthlyAmountMade,
           };
 
           Plotly.newPlot("myDivOne", data, layout);
