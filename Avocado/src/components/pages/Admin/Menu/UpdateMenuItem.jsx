@@ -23,6 +23,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 				console.log(error);
 			}
 			if (data) {
+				console.log(data);
 				setUpdateItem(data);
 			}
 		};
@@ -160,10 +161,7 @@ const UpdateMenuItem = ({ item, setOpenModal, setMenu }) => {
 	};
 
 	return (
-		<div
-			className="updateItemModal fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay"
-			// onClick={() => setOpenModal(false)}
-		>
+		<div className="updateItemModal fixed inset-0 flex flex-col justify-center items-center z-auto bg-overlay">
 			<div className="w-[80%] sm:w-[600px] overflow-auto">
 				<div className="flex flex-col">
 					<form className=" bg-ltgray flex flex-col gap-2 font-niveau font-bold p-4">
