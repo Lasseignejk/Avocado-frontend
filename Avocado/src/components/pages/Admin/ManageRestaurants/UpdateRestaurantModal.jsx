@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
-import "../ManageRestaurants/ManageRestaurants.css";
+
 import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
@@ -62,7 +62,7 @@ const UpdateRestaurantModal = ({
 		);
 
 		setToggle(!toggle);
-		setRestToEdit({ id: restaurant.id });
+		// setRestToEdit({ id: restaurant.id });
 		toast.success("Restaurant Updated!", {
 			position: toast.POSITION.TOP_CENTER,
 			icon: <img src="../../logos/icon_green.svg" alt="" />,
@@ -130,19 +130,19 @@ const UpdateRestaurantModal = ({
 	};
 
 	const deleteToast = ({ closeToast, toastProps }) => (
-		<div>
+		<div className="">
 			You are about to delete your restaurant! All data will be gone forever!
 			Are you sure you want to proceed?
 			<div className="flex justify-between mt-3">
 				<button
 					type="button"
-					className="bg-[#b8241a] px-3 py-1 text-gray"
+					className="bg-[#b8241a] px-3 py-1 text-gray rounded-full"
 					onClick={() => deleteRestaurant()}>
 					DELETE
 				</button>
 				<button
 					type="button"
-					className="bg-green px-3 py-1 text-gray"
+					className="bg-green px-3 py-1 text-gray rounded-full"
 					onClick={closeToast}>
 					CANCEL
 				</button>
@@ -151,7 +151,9 @@ const UpdateRestaurantModal = ({
 	);
 
 	const displayDelete = () => {
-		toast.warning(deleteToast);
+		toast.warning(deleteToast, {
+			position: toast.POSITION.TOP_CENTER,
+		});
 	};
 
 	const deleteRestaurant = async () => {
@@ -168,7 +170,7 @@ const UpdateRestaurantModal = ({
 
 	return (
 		<div className="font-niveau font-bold fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center z-auto bg-overlay">
-			<div className="modal-content bg-ltgray relative w-[80%] flex flex-col gap-3 rounded-xl sm:w-[500px] md:mt-[5%]">
+			<div className="modal-content bg-ltgray relative w-[80%] flex flex-col gap-3 rounded-xl sm:w-[500px] md:mt-[10%]">
 				<span
 					className="close absolute top-0 right-[10px] h-[10px]"
 					onClick={() => setOpenModal(false)}>
