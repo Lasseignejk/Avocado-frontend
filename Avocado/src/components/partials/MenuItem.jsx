@@ -21,7 +21,7 @@ const MenuItem = ({ item }) => {
           <div>
             <div className="flex w-[250px] justify-between">
               <h1 className="text-xl font-bold">{item.ItemName}</h1>
-              <h1>${item.ItemPrice}</h1>
+              <h1>${item.ItemPrice}.00</h1>
             </div>
             <h1>{item.ItemDescription}</h1>
           </div>

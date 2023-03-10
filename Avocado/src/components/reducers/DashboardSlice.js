@@ -59,7 +59,7 @@ export const DashboardSlice = createSlice({
       //if already exists in cart, add to amount
       const found = state.cart.find((elem) => elem.id === action.payload.id);
       if (found != undefined) {
-        found.amount++;
+        found.Amount++;
       } else {
         state.cart.push(action.payload);
       }
@@ -76,8 +76,8 @@ export const DashboardSlice = createSlice({
       //if exists in cart, remove from amount
       const found = state.cart.find((elem) => elem.id === action.payload.id);
       if (found != undefined) {
-        if (found.amount > 1) {
-          found.amount--;
+        if (found.Amount > 1) {
+          found.Amount--;
         } else {
           state.cart = state.cart.filter(
             (elem) => elem.id != action.payload.id
