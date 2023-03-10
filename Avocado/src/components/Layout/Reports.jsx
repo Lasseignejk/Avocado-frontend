@@ -39,6 +39,8 @@ const Reports = ({ children }) => {
           return;
         }
 
+        //reports
+
         if (restrauntsByOwnerData) {
           //all restraunts data by owner
           setRestaurants(restrauntsByOwnerData);
@@ -54,6 +56,8 @@ const Reports = ({ children }) => {
 
           //order for that specifc restaurant (currently hard coded in)
           let restId = 48;
+
+          ///BAR GRAPH
 
           const { data: orderData, error: orderError } = await supabase
             .from("Order")
@@ -73,20 +77,29 @@ const Reports = ({ children }) => {
           let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
           DatePurchased = [...new Set(DatePurchased)];
 
+          console.log(
+            "sort",
+            DatePurchased.sort((a, b) => a - b)
+          );
+
           //arrays for totals by day
           let days = [];
           let totals = [];
+          let totalItemsPerDay = [];
 
           //daily totals
           for (let i = 0; i < DatePurchased.length; i++) {
             days.push(DatePurchased[i]);
             let total = 0;
+            let totalItemsCount = 0;
             for (let elem of orderData) {
               if (elem.DatePurchased == DatePurchased[i]) {
                 total += elem.OrderTotal;
+                totalItemsCount += elem.TotalItems;
               }
             }
             totals.push(total);
+            totalItemsPerDay.push(totalItemsCount);
           }
           let monthlyAmountMade = totals.reduce((a, b) => a + b);
 
@@ -101,30 +114,12 @@ const Reports = ({ children }) => {
           let layout = {
             xaxis: { title: "Dates" },
             yaxis: { title: "Total Puchased" },
-            title: "March Totals: $" + monthlyAmountMade,
+            title: "Lifetime Totals: $" + monthlyAmountMade,
           };
 
           Plotly.newPlot("myDivOne", data, layout);
 
-          //gets all Order Items by OrderId
-          let OrderIds = orderData.map((a) => a.id);
-
-          for (let i = 0; i < OrderIds.length; i++) {
-            const { data: itemsPerOrderData, error: itemsPerOrderError } =
-              await supabase
-                .from("OrderItem")
-                .select()
-                .eq("OrderId", OrderIds[i]);
-
-            if (itemsPerOrderError) {
-              setError(itemsPerOrderError);
-              return;
-            }
-
-            if (itemsPerOrderData) {
-              console.log(itemsPerOrderData);
-            }
-          }
+          //////PIE CHART
 
           //all menu items by restaurant
           const { data: menuData, error: menuError } = await supabase
@@ -132,15 +127,79 @@ const Reports = ({ children }) => {
             .select()
             .eq("RestId", restId);
 
-          console.log(menuData);
+          //All breakfast items by restaurant
+          let itemBreak = menuData.map((a) => [a.ItemBreakfast]).length;
+          let itemLun = menuData.map((a) => [a.itemLunch]).length;
+          let itemDin = menuData.map((a) => [a.itemDinner]).length;
 
-          let itemIds = menuData.map((a) => a.id);
-          let itemNames = menuData.map((a) => a.ItemName);
+          let piedata = [
+            {
+              values: [itemBreak, itemLun, itemDin],
+              labels: ["Breakfast", "Lunch", "Dinner"],
+              type: "pie",
+            },
+          ];
 
-          console.log(itemNames, itemIds);
-          let breakfast = menuData.map((a) => a.ItemBreakfast);
-          let lunch = menuData.map((a) => a.ItemLunch);
-          let dinner = menuData.map((a) => a.ItemDinner);
+          var pielayout = {
+            height: 400,
+            width: 500,
+          };
+
+          Plotly.newPlot("myDivTwo", piedata, pielayout);
+
+          /////TABLE GRAPH
+
+          //most popular items
+
+          let popularItems = menuData
+            .map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
+            .filter((n) => n);
+
+          let tabledata = [
+            {
+              type: "table",
+              header: {
+                values: [["<b>Popular Items:</b>"]],
+                align: "center",
+                height: 30,
+                fill: { color: "green" },
+                font: { family: "Niveau", size: 20, color: "white" },
+              },
+              cells: {
+                values: popularItems,
+                align: "center",
+                height: 30,
+
+                font: {
+                  family: "Niveau",
+                  size: 18,
+                  color: "green",
+                },
+              },
+            },
+          ];
+
+          Plotly.newPlot("myDivThree", tabledata);
+
+          ///LINE GRAPH
+
+          var linedata = {
+            x: days,
+            y: totalItemsPerDay,
+            mode: "lines",
+          };
+
+          var linelayout = {
+            title: "Amount of items ordered per day",
+          };
+
+          Plotly.newPlot("myDivFour", [linedata], linelayout);
+
+          ///NEW GRAPH
+
+          console.log(orderData);
+
+          ///end of await function
 
           if (menuError) {
             setError(menuError);
@@ -152,74 +211,6 @@ const Reports = ({ children }) => {
           }
 
           //Table
-
-          var values = [
-            ["Salaries", "Office", "Merchandise", "Legal", "<b>TOTAL</b>"],
-            [1200000, 20000, 80000, 2000, 12120000],
-            [1300000, 20000, 70000, 2000, 130902000],
-            [1300000, 20000, 120000, 2000, 131222000],
-            [1400000, 20000, 90000, 2000, 14102000],
-          ];
-
-          var data = [
-            {
-              type: "table",
-              header: {
-                values: [
-                  ["<b>EXPENSES</b>"],
-                  ["<b>Q1</b>"],
-                  ["<b>Q2</b>"],
-                  ["<b>Q3</b>"],
-                  ["<b>Q4</b>"],
-                ],
-                align: "center",
-                line: { width: 1, color: "black" },
-                fill: { color: "grey" },
-                font: { family: "Arial", size: 12, color: "white" },
-              },
-              cells: {
-                values: values,
-                align: "center",
-                line: { color: "black", width: 1 },
-                font: { family: "Arial", size: 11, color: ["black"] },
-              },
-            },
-          ];
-
-          Plotly.newPlot("myDiv", data);
-
-          /*
-          let xArray = years;
-          let yArray = TotalItems;
-
-          let dataArray = [
-            {
-              x: xArray,
-              y: yArray,
-              mode: "lines+markers",
-              connectgaps: true,
-              type: "line",
-              marker: {
-                color: "rgb(164, 194, 244)",
-                size: 12,
-                line: {
-                  color: "white",
-                  width: 0.5,
-                },
-              },
-            },
-          ];
-          setDataArray(dataArray);
-
-          let layout = {
-            xaxis: { title: "Dates" },
-            yaxis: { range: [0, 50], title: "Total items bought" },
-            title: "Items bought per amount spent",
-          };
-          setLayout(layout);
-          setIsLoaded(true);
-          Plotly.newPlot("myPlot", dataArray, layout);
-                */
         }
       };
 
@@ -237,7 +228,9 @@ const Reports = ({ children }) => {
               Reports
             </h1>
             <div id="myDivOne" className="w-[70vw]"></div>
-            <div id="myDiv" className="w-[70vw]"></div>
+            <div id="myDivTwo" className="w-[70vw]"></div>
+            <div id="myDivThree" className="w-[70vh]"></div>
+            <div id="myDivFour" className="w-[90vh]"></div>
           </div>
         </div>
       </div>
