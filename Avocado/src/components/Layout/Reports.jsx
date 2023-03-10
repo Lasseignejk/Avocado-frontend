@@ -15,51 +15,125 @@ import CustomerNavBar from "./CustomerNavBar";
 
 const Reports = ({ children }) => {
   const isOwner = useSelector((state) => state.isOwner);
+  const userDetails = useSelector((state) => state.userDetails);
+
   const [layout, setLayout] = useState(null);
   const [dataArray, setDataArray] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [allRestrauntsByOwner, setRestaurants] = useState(null);
+  const [allRestrauntsByOwnerName, setAllRestrauntsByOwnerName] =
+    useState(null);
 
   if (isOwner) {
     useEffect(() => {
       const fetchUserData = async () => {
-        const { data, error } = await supabase.from("Order").select("*");
+        const { id } = userDetails[0];
 
-        if (error) {
-          setError(error);
+        const { data: restrauntsByOwnerData, error: errorByOwnerData } =
+          await supabase.from("Restaurant").select().eq("OwnerId", id);
+
+        if (errorByOwnerData) {
+          setError(errorByOwnerData);
           return;
         }
-        if (data) {
-          console.log(data);
-          let createdAt = data.map((a) => a.created_at);
-          let CustomerId = data.map((a) => a.CustomerId);
-          let IsDelivery = data.map((a) => a.IsDelivery);
-          let IsPickup = data.map((a) => a.IsPickup);
-          let OrderTotal = data.map((a) => a.OrderTotal);
-          let TotalItems = data.map((a) => a.TotalItems);
-          let xArray = OrderTotal;
+
+        if (restrauntsByOwnerData) {
+          //all restraunts data by owner
+          setRestaurants(restrauntsByOwnerData);
+
+          let restaurantNames = restrauntsByOwnerData.map((a) => a.RestName);
+          let restaurantIds = restrauntsByOwnerData.map((a) => a.id);
+
+          //all restaurants names by owner
+          setAllRestrauntsByOwnerName(restaurantNames);
+
+          //number of restaurants
+          const numberOfRestraunts = restrauntsByOwnerData.length;
+
+          let first = restaurantIds[0];
+          let second = 48;
+
+          //order for that specifc restaurant
+          const { data: orderData, error: orderError } = await supabase
+            .from("Order")
+            .select()
+            .eq("RestaurantId", 48);
+
+          if (orderError) {
+            setError(orderError);
+            return;
+          }
+
+          if (orderData) {
+            console.log(orderData);
+          }
+
+          let DatePurchased = orderData.map((a) => a.DatePurchased);
+          console.log(DatePurchased);
+          console.log(new Date(DatePurchased[0]).toDateString());
+
+          let total = orderData.map((a) => a.OrderTotal);
+
+          let totalAmountMade = "$" + total.reduce((a, b) => a + b);
+          console.log("totalAmountMade", totalAmountMade);
+
+          let one = new Date(DatePurchased[0]).toDateString();
+          let two = new Date(DatePurchased[2]).toDateString();
+          console.log(one);
+          console.log(two);
+
+          var data = [
+            {
+              x: [one, two],
+              y: [totalAmountMade, "$50"],
+              type: "bar",
+            },
+          ];
+
+          let layout = {
+            xaxis: { title: "Dates" },
+            yaxis: { title: "Total Puchased" },
+            title: "March Totals: " + totalAmountMade,
+          };
+
+          Plotly.newPlot("myDivOne", data, layout);
+          /*
+          let xArray = years;
           let yArray = TotalItems;
 
           let dataArray = [
             {
               x: xArray,
               y: yArray,
-              mode: "markers",
-              type: "scatter",
+              mode: "lines+markers",
+              connectgaps: true,
+              type: "line",
+              marker: {
+                color: "rgb(164, 194, 244)",
+                size: 12,
+                line: {
+                  color: "white",
+                  width: 0.5,
+                },
+              },
             },
           ];
           setDataArray(dataArray);
 
           let layout = {
-            xaxis: { range: [0, 100], title: "Total amount spent" },
-            yaxis: { range: [0, 100], title: "Total items bought" },
+            xaxis: { title: "Dates" },
+            yaxis: { range: [0, 50], title: "Total items bought" },
             title: "Items bought per amount spent",
           };
           setLayout(layout);
-
           setIsLoaded(true);
           Plotly.newPlot("myPlot", dataArray, layout);
+                */
         }
       };
+
       fetchUserData();
     }, [isOwner]);
   }
@@ -73,7 +147,8 @@ const Reports = ({ children }) => {
             <h1 className="text-center text-3xl font-bold md:text-left">
               Reports
             </h1>
-            <div id="myPlot" className="w-full"></div>
+            <div id="myPlot" className="w-1/4"></div>
+            <div id="myDivOne" className="w-full"></div>
           </div>
         </div>
       </div>
