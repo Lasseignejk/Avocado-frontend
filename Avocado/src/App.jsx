@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Admin from "./components/pages/Admin";
 import AdminMenu from "./components/pages/AdminMenu";
-import AdminRestaurant from "./components/pages/AdminRestaurant";
 import BOH from "./components/pages/Admin/BOH/BOH";
 import Login from "./components/pages/Login";
 import Menu from "./components/pages/Customer/Menu";
@@ -50,7 +49,6 @@ function App() {
 				<Route path="/menu" element={<Menu />} />
 				<Route path="/BOH" element={<BOH />} />
 				<Route path="/account" element={<UserAcct />} />
-				<Route path="/restaurantinfo" element={<AdminRestaurant />} />
 				<Route path="/menuinfo" element={<RestaurantAdminMenu />} />
 				<Route path="/navtest" element={<AdminNavTest />} />
 				<Route path="/UserAcct" element={<UserAcct />} />
