@@ -6,7 +6,6 @@ import placeholder from "/items/restaurant_placeholder.svg";
 import Cart from "../../partials/Cart";
 import CustomerNavBar from "../../partials/CustomerNavBar";
 
-
 const Menu = () => {
   const location = useLocation();
   const restuarant = location.state;
@@ -39,32 +38,34 @@ const Menu = () => {
   }, [restuarant.id]);
 
   return (
-    <div className="flex">
+    <div>
       <CustomerNavBar />
-      <div className="flex flex-col gap-8">
-        <div className="flex gap-4 justify-center">
-          <div>
-            <img
-              className="h-20"
-              src={restuarant.RestLogo ? restuarant.RestLogo : placeholder}
-              alt=""
-            />
+      <div className="flex">
+        <div className="flex flex-col gap-8 mt-8">
+          <div className="flex gap-4 justify-center">
+            <div>
+              <img
+                className="h-20"
+                src={restuarant.RestLogo ? restuarant.RestLogo : placeholder}
+                alt=""
+              />
+            </div>
+            <div>
+              <h1 className="font-bold">{restuarant.RestName}</h1>
+              <h1>{restuarant.RestLocation}</h1>
+              <h1>{restuarant.RestPhoneNumber}</h1>
+              <h1>{restuarant.RestHours}</h1>
+            </div>
           </div>
-          <div>
-            <h1 className="font-bold">{restuarant.RestName}</h1>
-            <h1>{restuarant.RestLocation}</h1>
-            <h1>{restuarant.RestPhoneNumber}</h1>
-            <h1>{restuarant.RestHours}</h1>
+          <div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-3">
+            {menu?.map((item) => (
+              <MenuItem item={item} />
+            ))}
           </div>
         </div>
-        <div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-3">
-          {menu?.map((item) => (
-            <MenuItem item={item} />
-          ))}
+        <div className="justify-end">
+          <Cart />
         </div>
-      </div>
-      <div>
-        <Cart />
       </div>
     </div>
   );

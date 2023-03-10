@@ -15,17 +15,25 @@ const Cart = () => {
 
   return (
     <div className="w-[400px] h-full p-4 bg-ltgray">
-      <div className="flex justify-center p-8">
-        <h1 className="text-xl font-black">Your Order</h1>
-    <div className="w-[400px]">
-      <div>
-        <h1>Your Order</h1>
+      <div className="flex flex-col justify-center p-4">
+        <div>
+          <h1 className="text-[2rem] text-center  mb-8 font-black">
+            Your Order
+          </h1>
+        </div>
+        <div className="flex flex-col gap-4">
+          {cart?.map((item) => (
+            <CartItem item={item} />
+          ))}
+        </div>
       </div>
-      <div className="flex flex-col gap-4">
-        {cart?.map((item) => (
-          <CartItem item={item} />
-        ))}
-      </div>
+      <button
+        className=" flex justify-between bg-green text-gray text-l font-bold w-full p-8 hover:bg-dkgreen"
+        onClick={() => dispatch()}
+      >
+        <h1>Continue to checkout</h1>
+        <h1>Total: $</h1>
+      </button>
     </div>
   );
 };
