@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import placeholder from "../../../public/items/menu_placeholder.svg";
+import placeholder from "/items/menu_placeholder.svg";
 import { clearCart, removeCart, addCart } from "../reducers/DashboardSlice";
 
 const CartItem = ({ item }) => {
