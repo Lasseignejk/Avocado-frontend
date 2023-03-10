@@ -13,13 +13,13 @@ const MenuItem = ({ item }) => {
         <div className="flex gap-3">
           <div>
             <img
-              className="h-20"
+              className="h-20 w-20"
               src={item.ItemImg ? item.ItemImg : placeholder}
               alt=""
             />
           </div>
           <div>
-            <div className="flex justify-between">
+            <div className="flex w-[250px] justify-between">
               <h1 className="text-xl font-bold">{item.ItemName}</h1>
               <h1>${item.ItemPrice}</h1>
             </div>
@@ -27,7 +27,7 @@ const MenuItem = ({ item }) => {
           </div>
           <div>
             <button
-              className="w-full bg-green font-bold text-gray px-2 hover:bg-dkgreen duration-200"
+              className="w-full bg-green font-bold text-gray px-2 hover:bg-dkgreen hover:text-ltgray duration-200"
               onClick={() => dispatch(addCart(item))}
             >
               +
