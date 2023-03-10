@@ -86,7 +86,7 @@ const RestaurantAddMenuItemForm = () => {
 	};
 
 	return (
-		<div className="w-[300px] h-[620px] bg-ltgray flex flex-col items-center p-5 gap-10 shadow-lg rounded-xl">
+		<div className="w-[300px] h-[700px] bg-ltgray flex flex-col items-center p-5 gap-10 shadow-lg rounded-xl">
 			<form className="flex flex-col gap-5 font-niveau font-bold">
 				<h1 className="text-2xl font-bold text-center">Add a New Item</h1>
 				<div className="flex flex-col">
@@ -224,16 +224,17 @@ const RestaurantAddMenuItemForm = () => {
 					</div>
 				</div>
 
-				{/* <div className="flex flex-col">
+				<div className="flex flex-col">
 					<label htmlFor="ItemImg">Item image URL</label>
 					<input
+						className="bg-ltgray border-black border-b-2 pl-1 focus:border-none font-light"
 						type="text"
 						id="ItemImg"
 						name="ItemImg"
 						onChange={(e) => setFormState(e)}
 						value={newItem.ItemImg ? newItem.ItemImg : ""}
 					/>
-				</div> */}
+				</div>
 				<div className="flex justify-center">
 					<button
 						className="bg-green text-gray tracking-widest py-1 px-3 rounded-full hover:bg-dkgreen duration-200 ease-in"

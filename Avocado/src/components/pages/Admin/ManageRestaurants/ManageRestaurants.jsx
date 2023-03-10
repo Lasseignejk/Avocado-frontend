@@ -96,7 +96,7 @@ const ManageRestaurants = () => {
 
 				<div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:justify-evenly">
 					{restaurants.map((restaurant, index) => (
-						<div className="bg-ltgray md:pr-3 md:flex duration-200 ease-in md:hover:-translate-y-1  md:hover:bg-blue md:shadow-md">
+						<div className="bg-ltgray rounded-xl md:pr-3 md:flex duration-200 ease-in md:hover:-translate-y-1  md:hover:bg-blue md:shadow-md">
 							<div className="duration-200 ease-in flex-col gap-2  md:flex-row">
 								<Link
 									to="/menuinfo"
