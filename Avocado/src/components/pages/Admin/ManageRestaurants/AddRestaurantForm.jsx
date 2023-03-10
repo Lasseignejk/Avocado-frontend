@@ -107,7 +107,7 @@ const AddRestaurantForm = ({ toggle, setToggle }) => {
 					/>
 				</div>
 
-				<div className="flex justify-center">
+				<div className="flex justify-center mt-3">
 					<button
 						className="bg-green text-gray text-lg px-5 py-1 duration-200 font-bold hover:bg-dkgreen rounded-full tracking-widest"
 						type="button"

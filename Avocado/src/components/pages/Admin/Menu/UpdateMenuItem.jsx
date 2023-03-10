@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
-import "../ManageRestaurants/ManageRestaurants.css";
+// import "../ManageRestaurants/ManageRestaurants.css";
 import { FaRegTrashAlt, FaCheck } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";

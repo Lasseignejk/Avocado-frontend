@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import placeholder from "/items/menu_placeholder.png";
-import "../ManageRestaurants/ManageRestaurants.css";
+// import "../ManageRestaurants/ManageRestaurants.css";
 import UpdateMenuItem from "./UpdateMenuItem";
 import { FaCog } from "react-icons/fa";
 

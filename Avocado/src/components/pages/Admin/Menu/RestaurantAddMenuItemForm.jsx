@@ -112,7 +112,8 @@ const RestaurantAddMenuItemForm = () => {
 						id="ItemType"
 						name="ItemType"
 						onChange={(e) => setFormState(e)}
-						value={newItem.ItemType ? newItem.ItemType : ""}>
+						defaultValue={"Please choose an option"}>
+						<option disabled>Please choose an option</option>
 						<option>Appetizer</option>
 						<option>Dessert</option>
 						<option>Drink</option>
