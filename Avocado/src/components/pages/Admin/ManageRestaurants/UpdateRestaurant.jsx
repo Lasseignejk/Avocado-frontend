@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setRestaurant } from "../../reducers/DashboardSlice";
-import "../Admin/ManageRestaurants.css";
-import UpdateRestaurantOptions from "../Admin/UpdateRestaurantOptions";
-import { supabase } from "../../../supabase";
+import { setRestaurant } from "../../../reducers/DashboardSlice";
+import "./ManageRestaurants.css";
+import UpdateRestaurantOptions from "./UpdateRestaurantOptions";
+import { supabase } from "../../../../supabase";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

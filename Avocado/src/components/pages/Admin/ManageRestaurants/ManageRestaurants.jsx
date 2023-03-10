@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RestaurantAdminCard from "./RestaurantCard";
-import AdminNavBar from "../../partials/AdminNavBar";
+import AdminNavBar from "../../../partials/AdminNavBar";
 import { Link } from "react-router-dom";
-import { supabase } from "../../../supabase";
-import "../Admin/ManageRestaurants.css";
+import { supabase } from "../../../../supabase";
+import "../ManageRestaurants/ManageRestaurants.css";
 
-import { setRestaurant } from "../../reducers/DashboardSlice";
+import { setRestaurant } from "../../../reducers/DashboardSlice";
 import UpdateRestaurant from "./UpdateRestaurant";
 
 const ManageRestaurants = () => {
