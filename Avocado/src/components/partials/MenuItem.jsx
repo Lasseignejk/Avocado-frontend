@@ -19,7 +19,7 @@ const MenuItem = ({ item }) => {
             />
           </div>
           <div>
-            <div className="flex w-[250px] justify-between">
+            <div className="flex justify-between">
               <h1 className="text-xl font-bold">{item.ItemName}</h1>
               <h1>${item.ItemPrice}.00</h1>
             </div>
