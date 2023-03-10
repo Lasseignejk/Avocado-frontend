@@ -39,10 +39,12 @@ const Menu = () => {
 
   return (
     <div>
-      <CustomerNavBar />
+      <div className="fixed w-full">
+        <CustomerNavBar />
+      </div>
       <div className="flex">
-        <div className="flex flex-col gap-8 mt-8">
-          <div className="flex gap-4 justify-center">
+        <div className="flex flex-col gap-8 mt-28">
+          <div className="ml-8 flex gap-4">
             <div>
               <img
                 className="h-20"
@@ -57,13 +59,13 @@ const Menu = () => {
               <h1>{restuarant.RestHours}</h1>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-3">
+          <div className="flex flex-col  md:flex-row md:flex-wrap md:justify-evenly gap-3">
             {menu?.map((item) => (
               <MenuItem item={item} />
             ))}
           </div>
         </div>
-        <div className="justify-end">
+        <div className="">
           <Cart />
         </div>
       </div>
