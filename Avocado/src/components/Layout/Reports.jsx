@@ -53,10 +53,12 @@ const Reports = ({ children }) => {
           const numberOfRestraunts = restrauntsByOwnerData.length;
 
           //order for that specifc restaurant (currently hard coded in)
+          let restId = 48;
+
           const { data: orderData, error: orderError } = await supabase
             .from("Order")
             .select()
-            .eq("RestaurantId", 48);
+            .eq("RestaurantId", restId);
 
           if (orderError) {
             setError(orderError);
@@ -64,11 +66,11 @@ const Reports = ({ children }) => {
           }
 
           if (orderData) {
-            console.log(orderData);
+            //console.log(orderData);
           }
 
           //all unique days items were purchased
-          let DatePurchased = orderData.map((a) => a.DatePurchased);
+          let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
           DatePurchased = [...new Set(DatePurchased)];
 
           //arrays for totals by day
@@ -88,18 +90,6 @@ const Reports = ({ children }) => {
           }
           let monthlyAmountMade = totals.reduce((a, b) => a + b);
 
-          /*
-          let total = orderData.map((a) => a.OrderTotal);
-
-          let totalAmountMade = "$" + total.reduce((a, b) => a + b);
-          console.log("totalAmountMade", totalAmountMade);
-
-          let one = new Date(DatePurchased[0]).toDateString();
-          let two = new Date(DatePurchased[2]).toDateString();
-          console.log(one);
-          console.log(two);
-          */
-
           var data = [
             {
               x: days,
@@ -111,10 +101,93 @@ const Reports = ({ children }) => {
           let layout = {
             xaxis: { title: "Dates" },
             yaxis: { title: "Total Puchased" },
-            title: "March Totals: " + monthlyAmountMade,
+            title: "March Totals: $" + monthlyAmountMade,
           };
 
           Plotly.newPlot("myDivOne", data, layout);
+
+          //gets all Order Items by OrderId
+          let OrderIds = orderData.map((a) => a.id);
+
+          for (let i = 0; i < OrderIds.length; i++) {
+            const { data: itemsPerOrderData, error: itemsPerOrderError } =
+              await supabase
+                .from("OrderItem")
+                .select()
+                .eq("OrderId", OrderIds[i]);
+
+            if (itemsPerOrderError) {
+              setError(itemsPerOrderError);
+              return;
+            }
+
+            if (itemsPerOrderData) {
+              console.log(itemsPerOrderData);
+            }
+          }
+
+          //all menu items by restaurant
+          const { data: menuData, error: menuError } = await supabase
+            .from("MenuItems")
+            .select()
+            .eq("RestId", restId);
+
+          console.log(menuData);
+
+          let itemIds = menuData.map((a) => a.id);
+          let itemNames = menuData.map((a) => a.ItemName);
+
+          console.log(itemNames, itemIds);
+          let breakfast = menuData.map((a) => a.ItemBreakfast);
+          let lunch = menuData.map((a) => a.ItemLunch);
+          let dinner = menuData.map((a) => a.ItemDinner);
+
+          if (menuError) {
+            setError(menuError);
+            return;
+          }
+
+          if (menuData) {
+            //console.log("menu data", menuData);
+          }
+
+          //Table
+
+          var values = [
+            ["Salaries", "Office", "Merchandise", "Legal", "<b>TOTAL</b>"],
+            [1200000, 20000, 80000, 2000, 12120000],
+            [1300000, 20000, 70000, 2000, 130902000],
+            [1300000, 20000, 120000, 2000, 131222000],
+            [1400000, 20000, 90000, 2000, 14102000],
+          ];
+
+          var data = [
+            {
+              type: "table",
+              header: {
+                values: [
+                  ["<b>EXPENSES</b>"],
+                  ["<b>Q1</b>"],
+                  ["<b>Q2</b>"],
+                  ["<b>Q3</b>"],
+                  ["<b>Q4</b>"],
+                ],
+                align: "center",
+                line: { width: 1, color: "black" },
+                fill: { color: "grey" },
+                font: { family: "Arial", size: 12, color: "white" },
+              },
+              cells: {
+                values: values,
+                align: "center",
+                line: { color: "black", width: 1 },
+                font: { family: "Arial", size: 11, color: ["black"] },
+              },
+            },
+          ];
+
+          Plotly.newPlot("myDiv", data);
+
           /*
           let xArray = years;
           let yArray = TotalItems;
@@ -163,8 +236,8 @@ const Reports = ({ children }) => {
             <h1 className="text-center text-3xl font-bold md:text-left">
               Reports
             </h1>
-            <div id="myPlot" className="w-1/4"></div>
-            <div id="myDivOne" className="w-full"></div>
+            <div id="myDivOne" className="w-[70vw]"></div>
+            <div id="myDiv" className="w-[70vw]"></div>
           </div>
         </div>
       </div>
