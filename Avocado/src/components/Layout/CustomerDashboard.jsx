@@ -16,16 +16,17 @@ import CustomerNavBar from "../partials/CustomerNavBar";
 const CustomerDashboard = ({ children }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+
   const [error, setError] = useState(null);
+  const [restaurants, setRestaurants] = useState();
+
   const isCustomer = useSelector((state) => state.isCustomer);
   const userDetails = useSelector((state) => state.userDetails);
   const userEmail = useSelector((state) => state.userEmail);
-  const [restaurants, setRestaurants] = useState();
   const isGuest = useSelector((state) => state.isGuest);
   const dashboardCart = useSelector((state) => state.cart);
 
   useEffect(() => {
-    console.log();
     const getRestaurants = async () => {
       const response = await fetch(
         import.meta.env.VITE_BACKEND + "/admin/restaurant/displayrest",
@@ -50,6 +51,7 @@ const CustomerDashboard = ({ children }) => {
 
   //logic to check for owner/customer if logged in
   let firstName;
+  console.log("custdash", isGuest);
 
   if (!isGuest) {
     useEffect(() => {
@@ -80,8 +82,8 @@ const CustomerDashboard = ({ children }) => {
   }
   return (
     <>
+      <CustomerNavBar />
       <div className="mb-[55px] md:flex md:mb-0">
-        <CustomerNavBar />
         <div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20">
           <div className="flex flex-col gap-3">
             <h1 className="text-center text-4xl font-bold text-green md:text-left">

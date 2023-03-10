@@ -11,7 +11,6 @@ import {
   setRestaurant,
 } from "../reducers/DashboardSlice";
 import CustomerRestaurantCard from "./CustomerRestaurantCard";
-import CustomerNavBar from "./CustomerNavBar";
 
 const Reports = ({ children }) => {
   const isOwner = useSelector((state) => state.isOwner);
@@ -73,6 +72,7 @@ const Reports = ({ children }) => {
             //console.log(orderData);
           }
 
+          console.log();
           //all unique days items were purchased
           let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
           DatePurchased = [...new Set(DatePurchased)];
@@ -195,9 +195,14 @@ const Reports = ({ children }) => {
 
           Plotly.newPlot("myDivFour", [linedata], linelayout);
 
-          ///NEW GRAPH
+          const { data: stuffData, error: stuffError } = await supabase
+            .from("MenuItems")
+            .select()
+            .match({ RestId: 58, ItemLunch: false });
 
-          console.log(orderData);
+          console.log("stuff", stuffData);
+
+          console.log(stuffError);
 
           ///end of await function
 

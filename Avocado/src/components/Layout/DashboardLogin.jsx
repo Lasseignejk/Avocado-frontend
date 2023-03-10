@@ -7,6 +7,7 @@ import {
   setOwner,
   setCustomer,
   setLocation,
+  setGuest,
 } from "../reducers/DashboardSlice";
 import { queryIsOwner } from "./Queries";
 
@@ -42,6 +43,7 @@ const DashboardLogin = () => {
   };
 
   const sendToSupabase = async (loginDetails) => {
+    console.log("hello");
     const { CustomerEmail, Password } = loginDetails;
     //signs in
     let { data, error } = await supabase.auth.signInWithPassword({
@@ -54,6 +56,7 @@ const DashboardLogin = () => {
 
     //sets token in state
     dispatch(setToken(user.user));
+    dispatch(setGuest(false));
 
     //checks if owner/customer
     const owner = await queryIsOwner(user.user.email);
@@ -125,7 +128,7 @@ const DashboardLogin = () => {
             <Link
               to={"/customerdashboard"}
               onClick={(e) => {
-                setGuest(true);
+                dispatch(setGuest(true));
               }}
             >
               Continue as guest
