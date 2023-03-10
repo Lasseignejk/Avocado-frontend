@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setOwner, setCustomer } from "../../reducers/DashboardSlice";
-import CustomerNavBar from "../../Layout/CustomerNavBar";
+import CustomerNavBar from "../../partials/CustomerNavBar";
 
 const UserAcct = () => {
   const userDetails = useSelector((state) => state?.userDetails[0]);

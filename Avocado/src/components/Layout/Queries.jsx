@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserDetails, setLogOut } from "../reducers/DashboardSlice";
+import {
+  setUserDetails,
+  setLogOut,
+  setGuest,
+} from "../reducers/DashboardSlice";
 import { redirect, useNavigate } from "react-router-dom";
 
 //Customer hooks for querying supabase for specific rows
@@ -16,6 +20,7 @@ export function useSignOut() {
     dispatch(setLogOut());
     localStorage.clear();
     let { error } = await supabase.auth.signOut();
+    dispatch(setGuest(true));
   };
 }
 

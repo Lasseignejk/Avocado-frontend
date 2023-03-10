@@ -69,10 +69,9 @@ const DashboardSignup = () => {
     //grabs token from supabase
     const { data: user } = await supabase.auth.getUser();
 
-    console.log("token", user);
     //sets token in state
     dispatch(setToken(user.user));
-    console.log("set token", user.user.email);
+    dispatch(setGuest(false));
 
     if (user) {
       //if restaurant inject into owner table

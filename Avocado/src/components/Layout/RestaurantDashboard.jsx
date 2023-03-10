@@ -12,7 +12,7 @@ import {
 
 import AdminNavBar from "../partials/AdminNavBar";
 
-const RestaurantDashboard = ({ children }) => {
+const RestaurantDashboard = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 

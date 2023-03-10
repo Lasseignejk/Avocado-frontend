@@ -23,38 +23,38 @@ import CustomerAuthGaurd from "./components/Layout/CustomerAuthGaurd";
 import RestaurantAuthGaurd from "./components/Layout/RestaurantAuthGaurd";
 
 function App() {
-	return (
-		<div className="App">
-			<Routes>
-				<Route path="/" element={<DashboardLogin />} />
-				<Route path="/accountSignUp" element={<DashboardSignup />} />
-				<Route path="/customerDashboard" element={<CustomerDashboard />} />
-				<Route path="/reports" element={<Reports />} />
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<DashboardLogin />} />
+        <Route path="/accountSignUp" element={<DashboardSignup />} />
+        <Route path="/customerdashboard" element={<CustomerDashboard />} />
+        <Route path="/reports" element={<Reports />} />
 
-				<Route
-					path="/restaurantDashboard"
-					element={
-						<LoggedInAuthGaurd>
-							{/*<CustomerAuthGaurd>*/}
-							<RestaurantDashboard />
-							{/*</CustomerAuthGaurd>*/}
-						</LoggedInAuthGaurd>
-					}
-				/>
-				<Route path="*" element={<Error />} />
-				<Route path="/myrestaurants" element={<ManageRestaurants />} />
+        <Route
+          path="/restaurantDashboard"
+          element={
+            <LoggedInAuthGaurd>
+              {/*<CustomerAuthGaurd>*/}
+              <RestaurantDashboard />
+              {/*</CustomerAuthGaurd>*/}
+            </LoggedInAuthGaurd>
+          }
+        />
+        <Route path="*" element={<Error />} />
+        <Route path="/myrestaurants" element={<ManageRestaurants />} />
 
-				<Route path="/signup" element={<Signup />} />
-				<Route path="/admin" element={<Admin />} />
-				<Route path="/menu" element={<Menu />} />
-				<Route path="/BOH" element={<BOH />} />
-				<Route path="/account" element={<UserAcct />} />
-				<Route path="/menuinfo" element={<RestaurantAdminMenu />} />
-				<Route path="/navtest" element={<AdminNavTest />} />
-				<Route path="/UserAcct" element={<UserAcct />} />
-			</Routes>
-		</div>
-	);
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/BOH" element={<BOH />} />
+        <Route path="/account" element={<UserAcct />} />
+        <Route path="/menuinfo" element={<RestaurantAdminMenu />} />
+        <Route path="/navtest" element={<AdminNavTest />} />
+        <Route path="/UserAcct" element={<UserAcct />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
