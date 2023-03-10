@@ -7,6 +7,14 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
+  let finalTotal = 0;
+  let amountTotal = 0;
+
+  for (let elem of cart) {
+    finalTotal += elem.Amount * elem.ItemPrice;
+    amountTotal += elem.Amount;
+  }
+
   const emptyCart = () => {
     if (cart.length() < 1) {
       return <h1>"Your cart is empty"</h1>;
@@ -32,7 +40,7 @@ const Cart = () => {
         onClick={() => dispatch()}
       >
         <h1>Continue to checkout</h1>
-        <h1>Total: $</h1>
+        <h1>Total: ${finalTotal}.00</h1>
       </button>
     </div>
   );
