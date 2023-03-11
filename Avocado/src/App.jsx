@@ -1,60 +1,67 @@
 import { Route, Routes } from "react-router-dom";
-import Admin from "./components/pages/Admin";
-import AdminMenu from "./components/pages/AdminMenu";
-import BOH from "./components/pages/Admin/BOH/BOH";
-import Login from "./components/pages/Login";
-import Menu from "./components/pages/Customer/Menu";
-import Signup from "./components/pages/Signup";
-import UserAcct from "./components/pages/Customer/UserAcct";
-import AdminNavTest from "./components/pages/AdminNavTest";
 
+// Login, Sign Up
 import DashboardLogin from "./components/Layout/DashboardLogin";
-import Error from "./components/Layout/Error";
-import CustomerDashboard from "./components/Layout/CustomerDashboard";
-import RestaurantDashboard from "./components/Layout/RestaurantDashboard";
 import DashboardSignup from "./components/Layout/DashboardSignup";
 
+// Admin
+import RestaurantDashboard from "./components/Layout/RestaurantDashboard";
+import AdminAccount from "./components/pages/Admin/AdminAccount";
+import BOH from "./components/pages/Admin/BOH/BOH";
 import ManageRestaurants from "./components/pages/Admin/ManageRestaurants/ManageRestaurants";
-import RestaurantAdminMenu from "./components/pages/Admin/Menu/RestaurantMenu";
+import RestaurantMenu from "./components/pages/Admin/Menu/RestaurantMenu";
 import Reports from "./components/Layout/Reports";
+
+// Customer
+import CustomerDashboard from "./components/Layout/CustomerDashboard";
+import Menu from "./components/pages/Customer/Menu";
+
+import CustomerAccount from "./components/pages/Customer/CustomerAccount";
+
+// Misc
+import Error from "./components/Layout/Error";
+import AdminNavTest from "./components/pages/AdminNavTest";
 
 import LoggedInAuthGaurd from "./components/Layout/LoggedInAuthGaurd";
 import CustomerAuthGaurd from "./components/Layout/CustomerAuthGaurd";
 import RestaurantAuthGaurd from "./components/Layout/RestaurantAuthGaurd";
 
 function App() {
-  return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<DashboardLogin />} />
-        <Route path="/accountSignUp" element={<DashboardSignup />} />
-        <Route path="/customerdashboard" element={<CustomerDashboard />} />
-        <Route path="/reports" element={<Reports />} />
+	return (
+		<div className="App">
+			<Routes>
+				<Route path="/" element={<DashboardLogin />} />
+				<Route path="/signup" element={<DashboardSignup />} />
 
-        <Route
-          path="/restaurantDashboard"
-          element={
-            <LoggedInAuthGaurd>
-              {/*<CustomerAuthGaurd>*/}
-              <RestaurantDashboard />
-              {/*</CustomerAuthGaurd>*/}
-            </LoggedInAuthGaurd>
-          }
-        />
-        <Route path="*" element={<Error />} />
-        <Route path="/myrestaurants" element={<ManageRestaurants />} />
+				<Route
+					path="/restaurantDashboard"
+					element={
+						<LoggedInAuthGaurd>
+							{/*<CustomerAuthGaurd>*/}
+							<RestaurantDashboard />
+							{/*</CustomerAuthGaurd>*/}
+						</LoggedInAuthGaurd>
+					}
+				/>
+				{/* Admin Routes */}
+				<Route path="/managerestaurants" element={<ManageRestaurants />} />
+				<Route path="/adminaccount" element={<AdminAccount />} />
+				<Route path="/reports" element={<Reports />} />
+				<Route path="/BOH" element={<BOH />} />
+				<Route path="/menuinfo" element={<RestaurantMenu />} />
 
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/BOH" element={<BOH />} />
-        <Route path="/account" element={<UserAcct />} />
-        <Route path="/menuinfo" element={<RestaurantAdminMenu />} />
-        <Route path="/navtest" element={<AdminNavTest />} />
-        <Route path="/UserAcct" element={<UserAcct />} />
-      </Routes>
-    </div>
-  );
+				{/* Customer Routes */}
+				<Route path="/customerdashboard" element={<CustomerDashboard />} />
+				<Route path="/customeraccount" element={<CustomerAccount />} />
+
+				{/* Misc */}
+				<Route path="*" element={<Error />} />
+				<Route path="/menu" element={<Menu />} />
+				<Route path="/navtest" element={<AdminNavTest />} />
+				{/* <Route path="/UserAcct" element={<UserAcct />} /> */}
+			</Routes>
+		</div>
+	);
 }
 
 export default App;
