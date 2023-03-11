@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const RestaurantAddMenuItemForm = () => {
+const RestaurantAddMenuItemForm = ({ toggle, setToggle }) => {
 	const [newItem, setNewItem] = useState({});
 
 	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
@@ -44,7 +44,6 @@ const RestaurantAddMenuItemForm = () => {
 			ItemLunch: lunch,
 			RestId: restaurantId,
 		};
-		console.log(dataTosend);
 		const data = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/restaurant/addtomenu",
 			{
@@ -55,6 +54,13 @@ const RestaurantAddMenuItemForm = () => {
 				body: JSON.stringify(dataTosend),
 			}
 		);
+		setToggle(!toggle);
+		setNewItem({ RestId: restaurantId });
+		setAvailable(false);
+		setPopular(false);
+		setBreakfast(false);
+		setLunch(false);
+		setDinner(false);
 	};
 
 	return (

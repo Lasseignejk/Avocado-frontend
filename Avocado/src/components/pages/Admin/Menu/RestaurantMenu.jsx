@@ -7,58 +7,34 @@ import { useSelector } from "react-redux";
 
 const RestaurantMenu = () => {
 	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
-	// console.log(restaurantId);
 
 	const [restToEdit, setRestToEdit] = useState({});
-
-	useEffect(() => {
-		console.log();
-		const getRestaurant = async () => {
-			const response = await fetch(
-				import.meta.env.VITE_BACKEND + "/admin/restaurant/getonerestaurant",
-				{
-					method: "GET",
-					headers: {
-						restid: restaurantId,
-					},
-				}
-			);
-
-			if (!response.ok) {
-				window.alert(response?.statusText);
-			} else {
-				const json = await response?.json();
-
-				setRestToEdit(json);
-			}
-		};
-		getRestaurant();
-	}, [restaurantId]);
-
+	const [toggle, setToggle] = useState(true);
 	const [menu, setMenu] = useState();
 
-	useEffect(() => {
-		console.log();
-		const getMenu = async () => {
-			const response = await fetch(
-				import.meta.env.VITE_BACKEND + "/admin/restaurant/getmenu",
-				{
-					method: "GET",
-					headers: {
-						restid: restaurantId,
-					},
-				}
-			);
-			if (!response.ok) {
-				window.alert(response.statusText);
-			} else {
-				const json = await response.json();
-				setMenu(json);
-				// console.log("menu: ", json);
+	const getMenu = async () => {
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/getmenu",
+			{
+				method: "GET",
+				headers: {
+					restid: restaurantId,
+				},
 			}
-		};
+		);
+		if (!response.ok) {
+			window.alert(response.statusText);
+		} else {
+			const json = await response.json();
+			setMenu(json);
+			// console.log("menu: ", json);
+		}
+	};
+
+	// Get menuItems by restaurant Id on reload
+	useEffect(() => {
 		getMenu();
-	}, [restaurantId]);
+	}, [restaurantId, toggle]);
 
 	return (
 		<div className="mb-[55px] lg:flex lg:mb-0 justify-start">
@@ -74,13 +50,19 @@ const RestaurantMenu = () => {
 						</h1>
 					</div>
 					<div className="flex flex-col items-center lg:flex-row lg:flex-wrap gap-3 lg:justify-center">
-						{menu?.map((item) => (
-							<RestaurantMenuItemCard setMenu={setMenu} item={item} />
+						{menu?.map((item, index) => (
+							<RestaurantMenuItemCard
+								setMenu={setMenu}
+								item={item}
+								key={index}
+								toggle={toggle}
+								setToggle={setToggle}
+							/>
 						))}
 					</div>
 				</div>
 				<div className="flex justify-center">
-					<RestaurantAddMenuItemForm />
+					<RestaurantAddMenuItemForm toggle={toggle} setToggle={setToggle} />
 				</div>
 			</div>
 		</div>

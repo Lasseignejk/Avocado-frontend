@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import placeholder from "/items/menu_placeholder.png";
-// import "../ManageRestaurants/ManageRestaurants.css";
 import UpdateMenuItem from "./UpdateMenuItem";
 import { FaCog } from "react-icons/fa";
 
-const RestaurantMenuItemCard = ({ item, setMenu }) => {
+const RestaurantMenuItemCard = ({ item, setMenu, toggle, setToggle }) => {
 	const [openModal, setOpenModal] = useState(false);
 	return (
 		<div className="flex-col w-[350px]">
@@ -36,6 +35,8 @@ const RestaurantMenuItemCard = ({ item, setMenu }) => {
 						item={item}
 						setOpenModal={setOpenModal}
 						setMenu={setMenu}
+						toggle={toggle}
+						setToggle={setToggle}
 					/>
 				)}
 			</div>

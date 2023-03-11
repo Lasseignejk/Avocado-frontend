@@ -6,29 +6,31 @@ import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const UpdateMenuItem = ({ item, setOpenModal }) => {
+const UpdateMenuItem = ({ item, setOpenModal, toggle, setToggle }) => {
 	const [updateItem, setUpdateItem] = useState({});
 	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
 	const userDetails = useSelector((state) => state?.userDetails[0]);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const { data, error } = await supabase
-				.from("MenuItems")
-				.select()
-				.eq("id", item.id)
-				.single();
+	const fetchData = async () => {
+		const { data, error } = await supabase
+			.from("MenuItems")
+			.select()
+			.eq("id", item.id)
+			.single();
 
-			if (error) {
-				console.log(error);
-			}
-			if (data) {
-				console.log(data);
-				setUpdateItem(data);
-			}
-		};
+		if (error) {
+			console.log(error);
+		}
+		if (data) {
+			console.log(data);
+			setUpdateItem(data);
+		}
+	};
+
+	// Reload menu items
+	useEffect(() => {
 		fetchData();
-	}, [item.id]);
+	}, [item.id, toggle]);
 
 	const setFormState = (e) => {
 		setUpdateItem({
@@ -68,7 +70,7 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
 			ItemLunch: lunch,
 			id: item.id,
 		};
-		console.log("Data to send: ", dataTosend);
+
 		const data = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/restaurant/updatemenuitem",
 			{
@@ -79,8 +81,12 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
 				body: JSON.stringify(dataTosend),
 			}
 		);
-		setOpenModal(false);
-		console.log("UPDATE: ", data);
+		setToggle(!toggle);
+
+		toast.success("Item Updated!", {
+			position: toast.POSITION.TOP_CENTER,
+			icon: <img src="../../logos/icon_green.svg" />,
+		});
 	};
 
 	const deleteItem = async () => {
@@ -98,9 +104,36 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
 		setOpenModal(false);
 	};
 
+	const displayDelete = () => {
+		toast.warning(deleteToast, {
+			position: toast.POSITION.TOP_CENTER,
+		});
+	};
+
+	const deleteToast = ({ closeToast, toastProps }) => (
+		<div className="">
+			You are about to delete this item from your menu. Are you sure you want to
+			proceed?
+			<div className="flex justify-between mt-3">
+				<button
+					type="button"
+					className="bg-[#b8241a] px-3 py-1 text-gray rounded-full"
+					onClick={() => deleteItem()}>
+					DELETE
+				</button>
+				<button
+					type="button"
+					className="bg-green px-3 py-1 text-gray rounded-full"
+					onClick={closeToast}>
+					CANCEL
+				</button>
+			</div>
+		</div>
+	);
+
 	const uploadImage = async (e) => {
 		let file = e.target.files[0];
-		console.log(file);
+
 		const fileEXT = file.name.split(".").pop();
 		const fileName = file.name.split(".").shift();
 		const filePath = `${fileName}.${fileEXT}`;
@@ -132,7 +165,6 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
 					icon: <img src="../../logos/icon_green.svg" alt="" />,
 				});
 			}
-			console.log(data);
 		} catch (error) {
 			alert(error.message);
 		}
@@ -143,8 +175,6 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
 				uploadPath,
 			id: item.id,
 		};
-		console.log(item.id);
-		console.log(imgPath);
 
 		const response = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/restaurant/updatemenuitem",
@@ -338,7 +368,7 @@ const UpdateMenuItem = ({ item, setOpenModal }) => {
 								<button
 									className="bg-[#b8241a] text-gray tracking-widest py-1 px-3 hover:bg-[#992017] flex justify-between items-center gap-3 duration-200 ease-in rounded-full"
 									type="button"
-									onClick={() => deleteItem()}>
+									onClick={() => displayDelete()}>
 									<FaRegTrashAlt />
 									DELETE
 								</button>
