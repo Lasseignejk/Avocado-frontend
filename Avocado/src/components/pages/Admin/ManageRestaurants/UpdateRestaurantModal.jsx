@@ -16,26 +16,28 @@ const UpdateRestaurantModal = ({
 	const [restToEdit, setRestToEdit] = useState({});
 	const [restName, setRestName] = useState("");
 
-	useEffect(() => {
-		const getRestaurant = async () => {
-			const response = await fetch(
-				import.meta.env.VITE_BACKEND + "/admin/restaurant/getonerestaurant",
-				{
-					method: "GET",
-					headers: {
-						restid: restaurant.id,
-					},
-				}
-			);
-
-			if (!response.ok) {
-				window.alert(response?.statusText);
-			} else {
-				const json = await response?.json();
-				setRestToEdit(json[0]);
-				setRestName(restToEdit.RestName);
+	const getRestaurant = async () => {
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/getonerestaurant",
+			{
+				method: "GET",
+				headers: {
+					restid: restaurant.id,
+				},
 			}
-		};
+		);
+
+		if (!response.ok) {
+			window.alert(response?.statusText);
+		} else {
+			const json = await response?.json();
+			setRestToEdit(json[0]);
+			setRestName(restToEdit.RestName);
+		}
+	};
+
+	// Reload restaurants
+	useEffect(() => {
 		getRestaurant();
 	}, [restName, toggle]);
 
@@ -68,7 +70,7 @@ const UpdateRestaurantModal = ({
 	};
 	const uploadImage = async (e) => {
 		let file = e.target.files[0];
-		console.log(file);
+
 		const fileEXT = file.name.split(".").pop();
 		const fileName = file.name.split(".").shift();
 		const filePath = `${fileName}.${fileEXT}`;
@@ -100,7 +102,6 @@ const UpdateRestaurantModal = ({
 					icon: <img src="../../logos/icon_green.svg" alt="" />,
 				});
 			}
-			console.log(data);
 		} catch (error) {
 			alert(error.message);
 		}

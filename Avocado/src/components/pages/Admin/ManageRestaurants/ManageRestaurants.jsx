@@ -9,32 +9,31 @@ import AddRestaurantForm from "./AddRestaurantForm";
 const ManageRestaurants = () => {
 	const [restName, setRestName] = useState("");
 	const [restaurants, setRestaurants] = useState([]);
-
 	const [toggle, setToggle] = useState(true);
 
 	const userDetails = useSelector((state) => state?.userDetails[0]);
 
+	const getRestaurants = async () => {
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND + "/admin/restaurant/getrestaurants",
+			{
+				method: "GET",
+				headers: {
+					userid: userDetails.id,
+				},
+			}
+		);
+
+		if (!response.ok) {
+			window.alert(response.statusText);
+		} else {
+			const json = await response.json();
+			setRestaurants(json);
+		}
+	};
+
 	// Get restaurants by owner ID on reload
 	useEffect(() => {
-		console.log();
-		const getRestaurants = async () => {
-			const response = await fetch(
-				import.meta.env.VITE_BACKEND + "/admin/restaurant/getrestaurants",
-				{
-					method: "GET",
-					headers: {
-						userid: userDetails.id,
-					},
-				}
-			);
-
-			if (!response.ok) {
-				window.alert(response.statusText);
-			} else {
-				const json = await response.json();
-				setRestaurants(json);
-			}
-		};
 		getRestaurants();
 	}, [restName, toggle]);
 
