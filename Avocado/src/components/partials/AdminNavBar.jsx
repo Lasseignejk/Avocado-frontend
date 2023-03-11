@@ -32,14 +32,14 @@ const AdminNavBar = () => {
 		},
 		{
 			title: "Manage Restaurants",
-			path: "/myrestaurants",
+			path: "/managerestaurants",
 			src: (
 				<FaStoreAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
 			),
 		},
 		{
 			title: "My Account",
-			path: "/admin",
+			path: "/adminaccount",
 			src: (
 				<FaUserAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
 			),
