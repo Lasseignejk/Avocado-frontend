@@ -146,14 +146,14 @@ const DashboardSignup = () => {
 			<div className="w-[300px] bg-gray flex flex-col items-center p-5 gap-10 rounded-xl shadow-2xl shadow-dkgreen">
 				<form className="flex flex-col gap-5 font-niveau font-bold">
 					<img src="../logos/avocado_green.svg" alt="" className="h-[30px]" />
-					<h1 className="text-center text-lg">
+					<h1 className="text-center text-lg font-light">
 						Sign up for an Avocado account
 					</h1>
 
 					<div className="flex gap-3">
-						<p>I am...*</p>
+						<p className="tracking-wide">I am...*</p>
 						<select
-							className="hover:cursor-pointer"
+							className="pl-1 font-thin border-black border-b-2 bg-gray hover:cursor-pointer"
 							name="RestOwner"
 							id=""
 							value={accountDetails.RestOwner ? accountDetails.RestOwner : ""}
@@ -171,11 +171,14 @@ const DashboardSignup = () => {
 					</div>
 					<div className="flex gap-3">
 						<div>
-							<label htmlFor="firstName">First Name*</label>
+							<label htmlFor="firstName" className="tracking-wide">
+								First Name*
+							</label>
 							<input
-								className="w-full pl-1"
+								className="pl-1 font-thin border-black border-b-2 bg-gray w-full"
 								type="text"
 								id="firstName"
+								placeholder="Haas"
 								name="CustomerFirstName"
 								onChange={(e) => setFormState(e)}
 								value={
@@ -186,11 +189,14 @@ const DashboardSignup = () => {
 							/>
 						</div>
 						<div>
-							<label htmlFor="lastName">Last Name*</label>
+							<label htmlFor="lastName" className="tracking-wide">
+								Last Name*
+							</label>
 							<input
-								className="w-full pl-1"
+								className="pl-1 font-thin border-black border-b-2 bg-gray w-full"
 								type="text"
 								id="lastName"
+								placeholder="'ocado"
 								name="CustomerLastName"
 								onChange={(e) => setFormState(e)}
 								value={
@@ -203,10 +209,13 @@ const DashboardSignup = () => {
 					</div>
 
 					<div className="flex flex-col">
-						<label htmlFor="email">Email*</label>
+						<label htmlFor="email" className="tracking-wide">
+							Email*
+						</label>
 						<input
-							className="pl-1"
+							className="pl-1 font-thin border-black border-b-2 bg-gray"
 							type="email"
+							placeholder="avocadozrule@email.com"
 							id="email"
 							name="CustomerEmail"
 							onChange={(e) => setFormState(e)}
@@ -216,9 +225,12 @@ const DashboardSignup = () => {
 						/>
 					</div>
 					<div className="flex flex-col">
-						<label htmlFor="phone">Phone Number*</label>
+						<label htmlFor="phone" className="tracking-wide">
+							Phone Number*
+						</label>
 						<input
-							className="pl-1"
+							className="pl-1 font-thin border-black border-b-2 bg-gray"
+							placeholder="111-111-1111"
 							type="text"
 							id="phone"
 							name="CustomerPhoneNumber"
@@ -232,9 +244,12 @@ const DashboardSignup = () => {
 					</div>
 
 					<div className="flex flex-col">
-						<label htmlFor="address">Address</label>
+						<label htmlFor="address" className="tracking-wide">
+							Address
+						</label>
 						<input
-							className="pl-1"
+							className="pl-1 font-thin border-black border-b-2 bg-gray"
+							placeholder="149 Pit Road, Avo, California, 12345 "
 							type="address"
 							id="address"
 							name="Address"
@@ -244,9 +259,11 @@ const DashboardSignup = () => {
 					</div>
 
 					<div className="flex flex-col">
-						<label htmlFor="password">Password*</label>
+						<label htmlFor="password" className="tracking-wide">
+							Password*
+						</label>
 						<input
-							className="pl-1"
+							className="pl-1 font-thin border-black border-b-2 bg-gray"
 							type="password"
 							id="password"
 							name="Password"
