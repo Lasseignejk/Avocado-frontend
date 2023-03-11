@@ -81,14 +81,18 @@ const DashboardLogin = () => {
 
 	return (
 		<div className="w-screen h-screen flex justify-center items-center bg-green">
-			<div className="w-[300px] h-[400px] bg-gray flex flex-col items-center p-5 gap-10">
+			<div className="w-[300px] h-[460px] bg-gray flex flex-col items-center p-5 gap-10 rounded-xl shadow-2xl shadow-dkgreen">
 				<form className="flex flex-col gap-5 font-niveau font-bold">
-					<img src="../logos/avocado_green.svg" alt="" />
-
+					<img src="../logos/avocado_green.svg" className="h-[30px]" alt="" />
+					<h1 className="text-center text-lg font-light">
+						Login to your Avocado account
+					</h1>
 					<div className="flex flex-col">
-						<label htmlFor="email">email</label>
+						<label htmlFor="email" className="text-lg tracking-wide">
+							Email
+						</label>
 						<input
-							className="pl-3"
+							className="pl-1 font-thin border-black border-b-2 bg-gray"
 							type="email"
 							id="email"
 							name="CustomerEmail"
@@ -99,9 +103,11 @@ const DashboardLogin = () => {
 						/>
 					</div>
 					<div className="flex flex-col">
-						<label htmlFor="password">password</label>
+						<label htmlFor="password" className="text-lg tracking-wide">
+							Password
+						</label>
 						<input
-							className="pl-3"
+							className="pl-1 font-thin border-black border-b-2 bg-gray"
 							type="password"
 							id="password"
 							name="Password"
@@ -112,7 +118,7 @@ const DashboardLogin = () => {
 
 					<div className="flex justify-center">
 						<button
-							className="text-lg bg-green text-gray px-3 hover:bg-blue hover:text-black duration-200 ease-in loginBtn"
+							className="text-lg bg-green text-gray px-3 py-1 hover:bg-dkgreen duration-200 ease-in loginBtn rounded-full tracking-wide"
 							onClick={(e) => {
 								e.preventDefault();
 								sendToSupabase(loginDetails);
@@ -121,20 +127,28 @@ const DashboardLogin = () => {
 						</button>
 					</div>
 				</form>
-				<div className="text-center font-niveau">
-					<h1 className="text-sm">New to Avocado online ordering?</h1>
-					<p className="bg-green text-center text-white text-sm">
+				<div className="text-center font-niveau flex flex-col">
+					<h1 className="font-bold">New to Avocado online ordering?</h1>
+					<div className="flex flex-col">
+						<Link to={"/signup"} className="font-light duration-200 ease-in">
+							<p className="hover:scale-110 hover:text-green duration-200 ease-in">
+								Create an Account
+							</p>
+						</Link>
+
+						<p>or</p>
+
 						<Link
 							to={"/customerdashboard"}
+							className="font-light duration-200 ease-in "
 							onClick={(e) => {
 								dispatch(setGuest(true));
 							}}>
-							Continue as guest
+							<p className="hover:scale-110 hover:text-green duration-200 ease-in">
+								Continue as Guest
+							</p>
 						</Link>
-					</p>
-					<p className="text-green text-center text-sm">
-						<Link to={"/signup"}>Create Account</Link>
-					</p>
+					</div>
 				</div>
 			</div>
 		</div>
