@@ -114,13 +114,18 @@ const Reports = ({ children }) => {
               x: days,
               y: totals,
               type: "bar",
+              marker: {
+                color: "#387f5f",
+              },
             },
           ];
 
           let layout = {
-            xaxis: { title: "Dates" },
-            yaxis: { title: "Total Puchased" },
             title: "Lifetime Totals: $" + monthlyAmountMade,
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
+            height: 400,
+            width: 500,
           };
 
           Plotly.newPlot("BAR", data, layout);
@@ -143,12 +148,24 @@ const Reports = ({ children }) => {
               values: [itemBreak, itemLun, itemDin],
               labels: ["Breakfast", "Lunch", "Dinner"],
               type: "pie",
+              marker: {
+                colors: [
+                  "#387f5f",
+                  "#96d9f7",
+                  "#d2d2c8",
+                  "#efebe4",
+                  "#145a3c",
+                  "#d2d2c8",
+                ],
+              },
             },
           ];
 
-          var pielayout = {
+          let pielayout = {
             height: 400,
             width: 500,
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
           };
 
           Plotly.newPlot("PIE", piedata, pielayout);
@@ -165,27 +182,34 @@ const Reports = ({ children }) => {
             {
               type: "table",
               header: {
-                values: [["<b>Popular Items:</b>"]],
                 align: "center",
                 height: 30,
-                fill: { color: "green" },
+                fill: { color: "#387f5f" },
                 font: { family: "Niveau", size: 20, color: "white" },
               },
               cells: {
                 values: popularItems,
                 align: "center",
                 height: 30,
+                fill: { color: "#efebe4" },
 
                 font: {
                   family: "Niveau",
                   size: 18,
-                  color: "green",
+                  color: "#387f5f",
                 },
               },
             },
           ];
 
-          Plotly.newPlot("TABLE", tabledata);
+          let tablelayout = {
+            height: 400,
+            width: 500,
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
+          };
+
+          Plotly.newPlot("TABLE", tabledata, tablelayout);
 
           ///LINE GRAPH
 
@@ -193,10 +217,15 @@ const Reports = ({ children }) => {
             x: days,
             y: totalItemsPerDay,
             mode: "lines",
+            marker: {
+              color: "#387f5f",
+            },
           };
 
           var linelayout = {
             title: "Amount of items ordered per day",
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
           };
 
           Plotly.newPlot("LINE", [linedata], linelayout);
@@ -321,7 +350,7 @@ const Reports = ({ children }) => {
             <div className="mt-5 space-x-3 items center ml-12"></div>
             <div
               id="BAR"
-              className={barOpen ? "w-[40vw] h-[50vh]" : "hidden"}
+              className={barOpen ? "w-[40vw] h-[40vh]" : "hidden"}
             ></div>
             <div
               id="LINE"
