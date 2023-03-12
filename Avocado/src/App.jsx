@@ -19,7 +19,7 @@ import Menu from "./components/pages/Customer/Menu";
 import CustomerAccount from "./components/pages/Customer/CustomerAccount";
 
 // Misc
-import Error from "./components/Layout/Error";
+import Error from "./components/pages/Error";
 import AdminNavTest from "./components/pages/AdminNavTest";
 
 import LoggedInAuthGaurd from "./components/Layout/LoggedInAuthGaurd";
