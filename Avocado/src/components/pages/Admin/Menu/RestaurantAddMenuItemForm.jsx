@@ -1,37 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const RestaurantAddMenuItemForm = () => {
+const RestaurantAddMenuItemForm = ({ toggle, setToggle }) => {
 	const [newItem, setNewItem] = useState({});
 
 	const restaurantId = useSelector((state) => state.currentRestaurant[0]);
-	// console.log("restaurant id: ", restaurantId);
-
-	///previously new menu item
-
-	// * expected behavior *
-	//Allows admin to edit menu item
-
-	/*
-  To do:
-  Grab specific menu item (fronm front/backend?) and inject update into backend
-  */
-
-	// const [check, setCheck] = useState({
-	//   ItemBreakfast: false,
-	//   ItemLunch: false,
-	//   ItemDinner: false,
-	//   ItemAvailable: false,
-	//   ItemIsPopular: false,
-	// });
-
-	// const setChecked = (e) => {
-	//   const value = newItem[e.target.name];
-	//   setCheck({
-	//     ...check,
-	//     [e.target.name]: !value,
-	//   });
-	// };
 
 	const setFormState = (e) => {
 		setNewItem({
@@ -71,7 +44,6 @@ const RestaurantAddMenuItemForm = () => {
 			ItemLunch: lunch,
 			RestId: restaurantId,
 		};
-		console.log(dataTosend);
 		const data = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/restaurant/addtomenu",
 			{
@@ -82,7 +54,13 @@ const RestaurantAddMenuItemForm = () => {
 				body: JSON.stringify(dataTosend),
 			}
 		);
-		console.log("data from front", data);
+		setToggle(!toggle);
+		setNewItem({ RestId: restaurantId });
+		setAvailable(false);
+		setPopular(false);
+		setBreakfast(false);
+		setLunch(false);
+		setDinner(false);
 	};
 
 	return (
@@ -112,7 +90,8 @@ const RestaurantAddMenuItemForm = () => {
 						id="ItemType"
 						name="ItemType"
 						onChange={(e) => setFormState(e)}
-						value={newItem.ItemType ? newItem.ItemType : ""}>
+						defaultValue={"Please choose an option"}>
+						<option disabled>Please choose an option</option>
 						<option>Appetizer</option>
 						<option>Dessert</option>
 						<option>Drink</option>

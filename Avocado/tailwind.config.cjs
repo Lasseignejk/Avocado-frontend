@@ -17,6 +17,12 @@ module.exports = {
 			ltgray: "#fffbf7",
 			overlay: "rgba(0, 0, 0, 0.4)",
 		},
+		screens: {
+			sm: "480px",
+			md: "768px",
+			lg: "976px",
+			xl: "1440px",
+		},
 		extend: {},
 	},
 	plugins: [],
