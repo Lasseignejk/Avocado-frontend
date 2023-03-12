@@ -8,6 +8,7 @@ import {
 	setOwner,
 	setCustomer,
 	setLocation,
+	setGuest,
 } from "../reducers/DashboardSlice";
 
 const DashboardSignup = () => {
