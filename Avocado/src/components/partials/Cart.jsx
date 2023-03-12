@@ -39,7 +39,7 @@ const Cart = () => {
       >
         <h1>Checkout</h1>
         <h1>
-          {cart.length} Items Total: ${finalTotal}.00
+          {cart.length} Items: ${finalTotal}.00
         </h1>
       </button>
     </div>
