@@ -76,38 +76,3 @@ export async function queryIsOwner(email) {
     return true;
   }
 }
-
-/*
-//hook to search for menu items by restaurant id in menuitems database
-export function useMenuData() {
-  const [data, setUserData] = useState(null);
-  const [error, setError] = useState(null);
-
-  //grabs userdetails in state
-  const userDetails = useSelector((state) => state.dashboard.userDetails);
-
-  //grabs id from state
-  const id = userDetails[0]?.user?.id;
-
-  useEffect(() => {
-    const fetchMenubyRestaurant = async () => {
-      const { data, error } = await supabase
-        .from("MenuItems")
-        .select()
-        .eq("RestId", id);
-
-      if (error) {
-        setError(error);
-        return;
-      }
-      if (data) {
-        setUserData(data);
-      }
-    };
-    fetchMenubyRestaurant();
-  }, [id]);
-
-  return { data, error };
-}
-
-*/
