@@ -1,9 +1,9 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSignOut } from "../Layout/Queries";
 import { useDispatch, useSelector } from "react-redux";
 import CustomerNavBarLinks from "./CustomerNavBarLinks";
+import { setGuest } from "../reducers/DashboardSlice";
 
 const CustomerNavBar = () => {
 	const signOut = useSignOut();
@@ -15,12 +15,15 @@ const CustomerNavBar = () => {
 		setSpin(!spin);
 	};
 
-	const isGuest = true;
-	// const isGuest = useSelector((state) => state.isGuest);
+	const isGuest = useSelector((state) => state.isGuest);
 
 	const Customerlinks = [
 		{ title: "Restaurants", path: "#", src: "../../items/restaurant.svg" },
-		{ title: "My Account", path: "#", src: "../../items/account.svg" },
+		{
+			title: "My Account",
+			path: "/customeraccount",
+			src: "../../items/account.svg",
+		},
 	];
 
 	const Guestlinks = [
@@ -32,10 +35,12 @@ const CustomerNavBar = () => {
 		{ title: "Login", path: "/", src: "../../items/login.svg" },
 		{
 			title: "Make an account",
-			path: "/accountSignUp",
+			path: "/signup",
 			src: "../../items/signUp.svg",
 		},
 	];
+
+	useEffect(() => {}, [isGuest]);
 
 	return (
 		<div

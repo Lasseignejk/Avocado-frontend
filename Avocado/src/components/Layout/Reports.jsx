@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase";
 import { useUserData } from "./Queries";
-import {
-  setCustomer,
-  setUserDetails,
-  setLocation,
-  setGuest,
-  setRestaurant,
-} from "../reducers/DashboardSlice";
-import CustomerRestaurantCard from "./CustomerRestaurantCard";
-import CustomerNavBar from "./CustomerNavBar";
+import Button from "./Button";
+
+import AdminNavBar from "../partials/AdminNavBar";
+import * as FaIcons from "react-icons/fa";
+import * as BsIcons from "react-icons/bs";
+import * as AiIcons from "react-icons/ai";
+import * as GoIcons from "react-icons/go";
 
 const Reports = ({ children }) => {
+  const dispatch = useDispatch();
+
   const isOwner = useSelector((state) => state.isOwner);
   const userDetails = useSelector((state) => state.userDetails);
 
@@ -21,6 +21,11 @@ const Reports = ({ children }) => {
   const [dataArray, setDataArray] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(false);
+
+  const [pieOpen, setPieOpen] = useState(false);
+  const [tableOpen, setTableOpen] = useState(false);
+  const [lineOpen, setLineOpen] = useState(false);
+  const [barOpen, setBarOpen] = useState(false);
 
   const [allRestrauntsByOwner, setRestaurants] = useState(null);
   const [allRestrauntsByOwnerName, setAllRestrauntsByOwnerName] =
@@ -73,6 +78,7 @@ const Reports = ({ children }) => {
             //console.log(orderData);
           }
 
+          console.log();
           //all unique days items were purchased
           let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
           DatePurchased = [...new Set(DatePurchased)];
@@ -108,16 +114,21 @@ const Reports = ({ children }) => {
               x: days,
               y: totals,
               type: "bar",
+              marker: {
+                color: "#387f5f",
+              },
             },
           ];
 
           let layout = {
-            xaxis: { title: "Dates" },
-            yaxis: { title: "Total Puchased" },
             title: "Lifetime Totals: $" + monthlyAmountMade,
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
+            height: 400,
+            width: 500,
           };
 
-          Plotly.newPlot("myDivOne", data, layout);
+          Plotly.newPlot("BAR", data, layout);
 
           //////PIE CHART
 
@@ -137,15 +148,27 @@ const Reports = ({ children }) => {
               values: [itemBreak, itemLun, itemDin],
               labels: ["Breakfast", "Lunch", "Dinner"],
               type: "pie",
+              marker: {
+                colors: [
+                  "#387f5f",
+                  "#96d9f7",
+                  "#d2d2c8",
+                  "#efebe4",
+                  "#145a3c",
+                  "#d2d2c8",
+                ],
+              },
             },
           ];
 
-          var pielayout = {
+          let pielayout = {
             height: 400,
             width: 500,
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
           };
 
-          Plotly.newPlot("myDivTwo", piedata, pielayout);
+          Plotly.newPlot("PIE", piedata, pielayout);
 
           /////TABLE GRAPH
 
@@ -159,27 +182,34 @@ const Reports = ({ children }) => {
             {
               type: "table",
               header: {
-                values: [["<b>Popular Items:</b>"]],
                 align: "center",
                 height: 30,
-                fill: { color: "green" },
+                fill: { color: "#387f5f" },
                 font: { family: "Niveau", size: 20, color: "white" },
               },
               cells: {
                 values: popularItems,
                 align: "center",
                 height: 30,
+                fill: { color: "#efebe4" },
 
                 font: {
                   family: "Niveau",
                   size: 18,
-                  color: "green",
+                  color: "#387f5f",
                 },
               },
             },
           ];
 
-          Plotly.newPlot("myDivThree", tabledata);
+          let tablelayout = {
+            height: 400,
+            width: 500,
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
+          };
+
+          Plotly.newPlot("TABLE", tabledata, tablelayout);
 
           ///LINE GRAPH
 
@@ -187,17 +217,27 @@ const Reports = ({ children }) => {
             x: days,
             y: totalItemsPerDay,
             mode: "lines",
+            marker: {
+              color: "#387f5f",
+            },
           };
 
           var linelayout = {
             title: "Amount of items ordered per day",
+            paper_bgcolor: "#efebe4",
+            plot_bgcolor: "#efebe4",
           };
 
-          Plotly.newPlot("myDivFour", [linedata], linelayout);
+          Plotly.newPlot("LINE", [linedata], linelayout);
 
-          ///NEW GRAPH
+          const { data: stuffData, error: stuffError } = await supabase
+            .from("MenuItems")
+            .select()
+            .match({ RestId: 58, ItemLunch: false });
 
-          console.log(orderData);
+          console.log("stuff", stuffData);
+
+          console.log(stuffError);
 
           ///end of await function
 
@@ -221,16 +261,109 @@ const Reports = ({ children }) => {
   return (
     <>
       <div className="mb-[55px] md:flex md:mb-0">
-        <CustomerNavBar />
-        <div className="flex flex-col gap-10 pt-3 md:w-full md:px-16 md:pt-20">
-          <div className="flex flex-col gap-3">
-            <h1 className="text-center text-3xl font-bold md:text-left">
-              Reports
-            </h1>
-            <div id="myDivOne" className="w-[70vw]"></div>
-            <div id="myDivTwo" className="w-[70vw]"></div>
-            <div id="myDivThree" className="w-[70vh]"></div>
-            <div id="myDivFour" className="w-[90vh]"></div>
+        <AdminNavBar />
+        <div className="flex flex-col gap-10 pt-3 md:w-full md:px-13 md:pt-20 ">
+          <div className="flex flex-row gap-3">
+            <div className="">
+              <div className="flex justify-between items-center"></div>
+              <div className=" items center sm:ml-10 space-y-3">
+                {/* Lifetime totals BAR Graph */}
+                <div
+                  onClick={() =>
+                    dispatch(
+                      setPieOpen(false),
+                      setBarOpen(!barOpen),
+                      setLineOpen(false),
+                      setTableOpen(false)
+                    )
+                  }
+                >
+                  <Button
+                    color="white"
+                    bgColor="#387f5f"
+                    text="Lifetime Totals"
+                    borderRadius="10px"
+                    size="md"
+                  />
+                </div>
+                {/* Popular items Table Graph */}
+                <div
+                  onClick={() =>
+                    dispatch(
+                      setPieOpen(false),
+                      setBarOpen(false),
+                      setLineOpen(false),
+                      setTableOpen(!tableOpen)
+                    )
+                  }
+                >
+                  <Button
+                    color="white"
+                    bgColor="#387f5f"
+                    text="Popular Items"
+                    borderRadius="10px"
+                    size="md"
+                  />
+                </div>
+                {/* Order item totals Line Graph */}
+
+                <div
+                  onClick={() =>
+                    dispatch(
+                      setPieOpen(false),
+                      setBarOpen(false),
+                      setLineOpen(!lineOpen),
+                      setTableOpen(false)
+                    )
+                  }
+                >
+                  <Button
+                    color="white"
+                    bgColor="#387f5f"
+                    text="Total Items Ordered"
+                    borderRadius="10px"
+                    size="md"
+                  />
+                </div>
+                {/* Percentage of items on menu Pie Graph */}
+
+                <div
+                  onClick={() =>
+                    dispatch(
+                      setPieOpen(!pieOpen),
+                      setBarOpen(false),
+                      setLineOpen(false),
+                      setTableOpen(false)
+                    )
+                  }
+                >
+                  <Button
+                    color="white"
+                    bgColor="#387f5f"
+                    text="Menu Percentages"
+                    borderRadius="10px"
+                    size="md"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 space-x-3 items center ml-12"></div>
+            <div
+              id="BAR"
+              className={barOpen ? "w-[40vw] h-[40vh]" : "hidden"}
+            ></div>
+            <div
+              id="LINE"
+              className={lineOpen ? "w-[30vw] h-[40vh]" : "hidden"}
+            ></div>
+            <div
+              id="PIE"
+              className={pieOpen ? "w-[30vw] h-[30vh]" : "hidden"}
+            ></div>
+            <div
+              id="TABLE"
+              className={tableOpen ? "w-[30vw] h-[40vh]" : "hidden"}
+            ></div>
           </div>
         </div>
       </div>
