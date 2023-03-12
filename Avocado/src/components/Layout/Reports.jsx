@@ -340,7 +340,7 @@ const Reports = ({ children }) => {
                   <Button
                     color="white"
                     bgColor="#387f5f"
-                    text="Item Percentages"
+                    text="Menu Percentages"
                     borderRadius="10px"
                     size="md"
                   />
