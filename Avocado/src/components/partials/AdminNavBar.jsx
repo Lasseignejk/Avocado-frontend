@@ -25,7 +25,7 @@ const AdminNavBar = () => {
 	const adminLinks = [
 		{
 			title: "Manage Restaurants",
-			path: "/restaurantDashboard",
+			path: "/managerestaurants",
 			src: (
 				<FaStoreAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
 			),
