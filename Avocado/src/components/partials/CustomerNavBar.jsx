@@ -66,7 +66,7 @@ const CustomerNavBar = () => {
 		<div
 			className="w-full h-[53px] fixed bottom-0 md:h-[80px] md:flex md:bg-blue md:static"
 			onClick={() => toggleNav()}>
-			<div className="bg-blue w-full box-border p-3 flex justify-between z-10 relative md:z-0 md:p-5">
+			<div className="bg-blue w-full box-border p-3 flex justify-between z-10 relative lg:z-0 md:p-5">
 				<img src="../logos/avocado_green.svg" alt="" className="h-[30px]" />
 				<button
 					className="w-[30px] h-[30px] bg-blue md:hidden"
@@ -81,21 +81,21 @@ const CustomerNavBar = () => {
 			</div>
 			<nav
 				className={
-					"bg-blue md:flex items-center md:justify-end text-xl text-black font-bold duration-500 nav fixed w-full z-[9] p-5 py-3 text-center md:relative md:z-0 md:translate-y-0 md:duration-[0ms]" +
+					"bg-blue md:flex items-center md:justify-end text-xl text-black font-bold duration-500 fixed w-full z-[9] p-5 py-3 text-center md:relative md:z-0 md:translate-y-0 md:duration-[0ms]" +
 					(show ? "" : " translate-y-[calc((81px*3)*-1)]")
 				}>
 				<ul className="flex flex-col gap-3 items-center md:flex-row md:justify-end md:w-[430px] lg:w-[500px]">
 					{!isGuest && (
 						<>
 							<CustomerNavBarLinks links={Customerlinks} />
-							<li className="flex justify-center items-center border-b-2 border-black w-full h-[50px] md:h-[37px] hover:bg-[#4e98ba] duration-200 ease-in md:rounded-full md:border-none md:pb-0">
+							<li className="flex justify-center items-center border-b-2 border-black w-full h-[50px] md:h-[37px] duration-200 ease-in md:rounded-full md:border-none md:pb-0">
 								<button
-									className="md:bg-[#4e98ba] md:px-3 md:py-1 md:rounded-full md:text-gray"
+									className="duration-200 ease-in md:bg-[#4e98ba] md:hover:bg-[#286480] md:px-3 md:py-1 md:rounded-full md:text-gray w-[100px]"
 									type="button"
 									onClick={(e) => {
 										signOut();
 									}}>
-									Logout
+									Log out
 								</button>
 							</li>
 						</>
