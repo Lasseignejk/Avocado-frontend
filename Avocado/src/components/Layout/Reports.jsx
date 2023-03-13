@@ -4,262 +4,237 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase";
 import { useUserData } from "./Queries";
 import Button from "./Button";
+import {
+  setCurrentRestId,
+  setBarGraph,
+  setLineGraph,
+  setTableGraph,
+  setPieGraph,
+} from "../reducers/DashboardSlice";
 
 import AdminNavBar from "../partials/AdminNavBar";
-import * as FaIcons from "react-icons/fa";
-import * as BsIcons from "react-icons/bs";
-import * as AiIcons from "react-icons/ai";
-import * as GoIcons from "react-icons/go";
 
-const Reports = ({ children }) => {
+const Reports = () => {
   const dispatch = useDispatch();
 
   const isOwner = useSelector((state) => state.isOwner);
   const userDetails = useSelector((state) => state.userDetails);
+  const currentRestId = useSelector((state) => state.currentRestId);
+
+  const barGraph = useSelector((state) => state.barGraph);
+  const lineGraph = useSelector((state) => state.lineGraph);
+  const tableGraph = useSelector((state) => state.tableGraph);
+  const pieGraph = useSelector((state) => state.pieGraph);
+
+  const [restName, setRestName] = useState(null);
 
   const [error, setError] = useState(false);
 
   const [pieOpen, setPieOpen] = useState(false);
   const [tableOpen, setTableOpen] = useState(false);
   const [lineOpen, setLineOpen] = useState(false);
-  const [barOpen, setBarOpen] = useState(false);
 
-  const [currentRestaurantId, setCurrentRestaurantId] = useState(null);
+  //const [barOpen, setBarOpen] = useState(false);
 
   const [allRestrauntsByOwner, setRestaurants] = useState(null);
 
-  console.log("currentRestaurantId", currentRestaurantId);
+  console.log("currentRestaurantId", currentRestId);
 
-  if (isOwner) {
-    useEffect(() => {
-      const fetchUserData = async () => {
-        //owner id
-        const { id } = userDetails[0];
+  useEffect(() => {
+    if (isOwner) {
+      const fetchOwnerData = async () => {
+        try {
+          const { id } = userDetails[0];
 
-        //all restaurants by owner
-        const { data: restrauntsByOwnerData, error: errorByOwnerData } =
-          await supabase.from("Restaurant").select().eq("OwnerId", id);
+          //all restaurants by owner
+          const { data: restrauntsByOwnerData, error: errorByOwnerData } =
+            await supabase.from("Restaurant").select().eq("OwnerId", id);
 
-        if (errorByOwnerData) {
-          setError(errorByOwnerData);
-          return;
-        }
-
-        //all restraunts data by owner
-
-        setRestaurants(restrauntsByOwnerData);
-        console.log("restrauntsByOwnerData", restrauntsByOwnerData);
-
-        //reports
-
-        console.log(currentRestaurantId);
-
-        if (currentRestaurantId) {
-          //order for that specifc restaurant (currently hard coded in)
-          let restId = currentRestaurantId; //currentRestaurantId
-          restId = 68;
-
-          console.log(restId);
-
-          ///BAR GRAPH
-
-          //all orders by rest
-          const { data: orderData, error: orderError } = await supabase
-            .from("Order")
-            .select()
-            .eq("RestaurantId", restId);
-
-          if (orderError) {
-            setError(orderError);
+          if (errorByOwnerData) {
+            setError(errorByOwnerData);
             return;
           }
 
-          if (orderData) {
-            //console.log(orderData);
-          }
+          //all restraunts data by owner
 
-          console.log(
-            "restrauntsByOwnerData",
-            restrauntsByOwnerData[0].RestName
-          );
-
-          const restName = restrauntsByOwnerData
-            .map((a) => (a.id == currentRestaurantId ? a.RestName : ""))
-            .filter((n) => n);
-
-          console.log("restName", restName[0]);
-
-          //all unique days items were purchased
-          let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
-          DatePurchased = [...new Set(DatePurchased)];
-
-          //arrays for totals by day
-          let days = [];
-          let totals = [];
-          let totalItemsPerDay = [];
-
-          //daily totals
-          for (let i = 0; i < DatePurchased.length; i++) {
-            days.push(DatePurchased[i]);
-            let total = 0;
-            let totalItemsCount = 0;
-            for (let elem of orderData) {
-              if (elem.DatePurchased == DatePurchased[i]) {
-                total += elem.OrderTotal;
-                totalItemsCount += elem.TotalItems;
-              }
-            }
-            totals.push(total);
-            totalItemsPerDay.push(totalItemsCount);
-          }
-          let monthlyAmountMade = totals.reduce((a, b) => a + b);
-
-          var data = [
-            {
-              x: days,
-              y: totals,
-              type: "bar",
-              marker: {
-                color: "#387f5f",
-              },
-            },
-          ];
-
-          let layout = {
-            title: restName[0] + " Lifetime Totals: $" + monthlyAmountMade,
-            paper_bgcolor: "#efebe4",
-            plot_bgcolor: "#efebe4",
-            height: 400,
-            width: 500,
-          };
-
-          Plotly.newPlot("BAR", data, layout);
-
-          //////PIE CHART
-
-          //all menu items by restaurant
-          const { data: menuData, error: menuError } = await supabase
-            .from("MenuItems")
-            .select()
-            .eq("RestId", restId);
-
-          //All breakfast items by restaurant
-          let itemBreak = menuData.map((a) => [a.ItemBreakfast]).length;
-          let itemLun = menuData.map((a) => [a.itemLunch]).length;
-          let itemDin = menuData.map((a) => [a.itemDinner]).length;
-
-          let piedata = [
-            {
-              values: [itemBreak, itemLun, itemDin],
-              labels: ["Breakfast", "Lunch", "Dinner"],
-              type: "pie",
-              marker: {
-                colors: [
-                  "#387f5f",
-                  "#96d9f7",
-                  "#d2d2c8",
-                  "#efebe4",
-                  "#145a3c",
-                  "#d2d2c8",
-                ],
-              },
-            },
-          ];
-
-          let pielayout = {
-            height: 400,
-            width: 500,
-            paper_bgcolor: "#efebe4",
-            plot_bgcolor: "#efebe4",
-          };
-
-          Plotly.newPlot("PIE", piedata, pielayout);
-
-          /////TABLE GRAPH
-
-          //most popular items
-
-          let popularItems = menuData
-            .map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
-            .filter((n) => n);
-
-          let tabledata = [
-            {
-              type: "table",
-              header: {
-                align: "center",
-                height: 30,
-                fill: { color: "#387f5f" },
-                font: { family: "Niveau", size: 20, color: "white" },
-              },
-              cells: {
-                values: popularItems,
-                align: "center",
-                height: 30,
-                fill: { color: "#efebe4" },
-
-                font: {
-                  family: "Niveau",
-                  size: 18,
-                  color: "#387f5f",
-                },
-              },
-            },
-          ];
-
-          let tablelayout = {
-            height: 400,
-            width: 500,
-            paper_bgcolor: "#efebe4",
-            plot_bgcolor: "#efebe4",
-          };
-
-          Plotly.newPlot("TABLE", tabledata, tablelayout);
-
-          ///LINE GRAPH
-
-          var linedata = {
-            x: days,
-            y: totalItemsPerDay,
-            mode: "lines",
-            marker: {
-              color: "#387f5f",
-            },
-          };
-
-          var linelayout = {
-            title: "Amount of items ordered per day",
-            paper_bgcolor: "#efebe4",
-            plot_bgcolor: "#efebe4",
-          };
-
-          Plotly.newPlot("LINE", [linedata], linelayout);
-
-          /*
-          const { data: stuffData, error: stuffError } = await supabase
-            .from("MenuItems")
-            .select()
-            .match({ RestId: 58, ItemLunch: false });
-            */
-
-          ///end of await function
-
-          if (menuError) {
-            setError(menuError);
-            return;
-          }
-
-          if (menuData) {
-            //console.log("menu data", menuData);
-          }
-
-          //Table
+          setRestaurants(restrauntsByOwnerData);
+        } catch (error) {
+          console.log(error);
         }
       };
 
-      fetchUserData();
-    }, [isOwner, currentRestaurantId]);
-  }
+      fetchOwnerData();
+    }
+  }, [isOwner]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      //order for that specifc restaurant (currently hard coded in)
+
+      try {
+        console.log("currentRestId", currentRestId);
+        let restId = currentRestId; //currentRestaurantId
+        restId = 68;
+
+        ///BAR GRAPH
+
+        //all orders by rest
+        const { data: orderData, error: orderError } = await supabase
+          .from("Order")
+          .select()
+          .eq("RestaurantId", restId);
+
+        //all unique days items were purchased
+        let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
+        DatePurchased = [...new Set(DatePurchased)];
+
+        //arrays for totals by day
+        let days = [];
+        let totals = [];
+        let totalItemsPerDay = [];
+
+        //daily totals
+        for (let i = 0; i < DatePurchased.length; i++) {
+          days.push(DatePurchased[i]);
+          let total = 0;
+          let totalItemsCount = 0;
+          for (let elem of orderData) {
+            if (elem.DatePurchased == DatePurchased[i]) {
+              total += elem.OrderTotal;
+              totalItemsCount += elem.TotalItems;
+            }
+          }
+          totals.push(total);
+          totalItemsPerDay.push(totalItemsCount);
+        }
+        let monthlyAmountMade = totals.reduce((a, b) => a + b);
+
+        var data = [
+          {
+            x: days,
+            y: totals,
+            type: "bar",
+            marker: {
+              color: "#387f5f",
+            },
+          },
+        ];
+
+        let layout = {
+          title: "Lifetime Totals: $" + monthlyAmountMade,
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+          height: 400,
+          width: 500,
+        };
+
+        Plotly.newPlot("BAR", data, layout);
+
+        //////PIE CHART
+
+        //all menu items by restaurant
+        const { data: menuData, error: menuError } = await supabase
+          .from("MenuItems")
+          .select()
+          .eq("RestId", restId);
+
+        //All breakfast items by restaurant
+        let itemBreak = menuData.map((a) => [a.ItemBreakfast]).length;
+        let itemLun = menuData.map((a) => [a.itemLunch]).length;
+        let itemDin = menuData.map((a) => [a.itemDinner]).length;
+
+        let piedata = [
+          {
+            values: [itemBreak, itemLun, itemDin],
+            labels: ["Breakfast", "Lunch", "Dinner"],
+            type: "pie",
+            marker: {
+              colors: [
+                "#387f5f",
+                "#96d9f7",
+                "#d2d2c8",
+                "#efebe4",
+                "#145a3c",
+                "#d2d2c8",
+              ],
+            },
+          },
+        ];
+
+        let pielayout = {
+          height: 400,
+          width: 500,
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+        };
+
+        Plotly.newPlot("PIE", piedata, pielayout);
+
+        /////TABLE GRAPH
+
+        //most popular items
+
+        let popularItems = menuData
+          .map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
+          .filter((n) => n);
+
+        let tabledata = [
+          {
+            type: "table",
+            header: {
+              align: "center",
+              height: 30,
+              fill: { color: "#387f5f" },
+              font: { family: "Niveau", size: 20, color: "white" },
+            },
+            cells: {
+              values: popularItems,
+              align: "center",
+              height: 30,
+              fill: { color: "#efebe4" },
+
+              font: {
+                family: "Niveau",
+                size: 18,
+                color: "#387f5f",
+              },
+            },
+          },
+        ];
+
+        let tablelayout = {
+          height: 400,
+          width: 500,
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+        };
+
+        Plotly.newPlot("TABLE", tabledata, tablelayout);
+
+        ///LINE GRAPH
+
+        var linedata = {
+          x: days,
+          y: totalItemsPerDay,
+          mode: "lines",
+          marker: {
+            color: "#387f5f",
+          },
+        };
+
+        var linelayout = {
+          title: "Amount of items ordered per day",
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+        };
+
+        Plotly.newPlot("LINE", [linedata], linelayout);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUserData();
+  }, [currentRestId]);
 
   return (
     <>
@@ -280,8 +255,9 @@ const Reports = ({ children }) => {
                 >
                   {allRestrauntsByOwner?.map((a) => (
                     <div
+                      key={a.id}
                       className="flex flex-row items-center w-[100px] h-[70px] md:w-[100px] md:h-[100px] box-border bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-3 py-3 md:py-3 md:shadow-md justify-between"
-                      onClick={() => dispatch(setCurrentRestaurantId(a.id))}
+                      onClick={() => dispatch(setCurrentRestId(a.id))}
                     >
                       <img
                         className="relative w-full"
@@ -295,8 +271,8 @@ const Reports = ({ children }) => {
                 <div
                   onClick={() =>
                     dispatch(
+                      setBarGraph(!barGraph),
                       setPieOpen(false),
-                      setBarOpen(!barOpen),
                       setLineOpen(false),
                       setTableOpen(false)
                     )
@@ -314,10 +290,10 @@ const Reports = ({ children }) => {
                 <div
                   onClick={() =>
                     dispatch(
+                      setBarGraph(false),
                       setPieOpen(false),
-                      setBarOpen(false),
                       setLineOpen(false),
-                      setTableOpen(!tableOpen)
+                      setTableOpen(!tableGraph)
                     )
                   }
                 >
@@ -334,9 +310,9 @@ const Reports = ({ children }) => {
                 <div
                   onClick={() =>
                     dispatch(
+                      setBarGraph(false),
                       setPieOpen(false),
-                      setBarOpen(false),
-                      setLineOpen(!lineOpen),
+                      setLineOpen(!lineGraph),
                       setTableOpen(false)
                     )
                   }
@@ -354,8 +330,8 @@ const Reports = ({ children }) => {
                 <div
                   onClick={() =>
                     dispatch(
-                      setPieOpen(!pieOpen),
-                      setBarOpen(false),
+                      setBarGraph(false),
+                      setPieOpen(!pieGraph),
                       setLineOpen(false),
                       setTableOpen(false)
                     )
@@ -374,7 +350,7 @@ const Reports = ({ children }) => {
             <div className="mt-5 space-x-3 items center ml-12"></div>
             <div
               id="BAR"
-              className={barOpen ? "w-[40vw] h-[40vh]" : "hidden"}
+              className={barGraph ? "w-[40vw] h-[40vh]" : "hidden"}
             ></div>
             <div
               id="LINE"
