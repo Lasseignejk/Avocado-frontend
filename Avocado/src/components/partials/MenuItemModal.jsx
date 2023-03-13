@@ -12,7 +12,7 @@ const MenuItemModal = ({ item, setOpenModal, counter, setCounter }) => {
 
 	return (
 		<div className="font-niveau font-bold fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center z-20 bg-overlay ">
-			<div className="modal-content bg-ltgray relative w-[85%] flex flex-col gap-3 rounded-3xl pb-5 sm:w-[500px] md:mt-[0]">
+			<div className="modal-content bg-ltgray relative w-[85%] flex flex-col overflow-y-auto gap-3 rounded-3xl pb-5 sm:w-[500px] md:mt-[0]">
 				<span
 					className="absolute top-[10px] right-[10px] text-2xl h-[40px] w-[40px] flex items-center justify-center hover:bg-green hover:text-ltgray ease-in duration-200 hover:cursor-pointer rounded-full bg-ltgray"
 					onClick={() => setOpenModal(false)}>

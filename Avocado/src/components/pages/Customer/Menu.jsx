@@ -47,8 +47,8 @@ const Menu = () => {
 			<CustomerNavBar />
 			<div className="mb-[65px] md:flex lg:mb-[30px]">
 				<div className="flex lg:justify-between">
-					<div className="flex flex-col gap-8 mt-8 lg:mt-0">
-						<div className="ml-5 flex gap-4 lg:mt-5">
+					<div className="flex flex-col gap-8 pt-8 lg:pt-20 lg:pl-16">
+						<div className="ml-5 flex gap-4 lg:ml-0">
 							<div className="w-[50px] h-[50px] z-10 bg-dkgreen fixed top-[10px] right-[10px] grid place-items-center rounded-full md:top-[100px] lg:hidden">
 								<FaShoppingCart className="text-gray text-2xl" />
 							</div>

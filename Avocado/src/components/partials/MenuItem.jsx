@@ -18,34 +18,28 @@ const MenuItem = ({ item, counter, setCounter }) => {
 		if (cut == -1) {
 			return description;
 		} else {
-			return description.substring(0, cut);
+			return description.substring(0, cut) + "...";
 		}
 	};
 
-	const shortDescription = shortenDescription(item.ItemDescription, 35) + "...";
-
-	function cutString(s, n) {
-		var cut = s.indexOf(" ", n);
-		if (cut == -1) return s;
-		return s.substring(0, cut);
-	}
+	const shortDescription = shortenDescription(item.ItemDescription, 35);
 
 	return (
-		<div className="px-3">
+		<div className="px-3 sm:px-0">
 			<div
-				className="flex flex-col bg-ltgray font-niveau gap-3 hover:bg-dkgray shadow-md md:hover:-translate-y-1 duration-200 ease-in w-full sm:w-[450px] md:shadow-md rounded-3xl hover:cursor-pointer"
+				className="flex flex-col bg-ltgray font-niveau gap-3 hover:bg-dkgray shadow-md md:hover:-translate-y-1 duration-200 ease-in w-full sm:w-[400px] md:shadow-md rounded-3xl hover:cursor-pointer"
 				onClick={() => setOpenModal(true)}>
 				<div className="flex gap-3">
 					<div className="grid place-items-center w-1/2 ">
-						<div className="w-full">
+						<div className="w-full overflow:hidden">
 							<img
-								className="w-full rounded-tl-3xl rounded-bl-3xl"
+								className="w-full h-full rounded-tl-3xl rounded-bl-3xl"
 								src={item.ItemImg ? item.ItemImg : placeholder}
 								alt=""
 							/>
 						</div>
 					</div>
-					<div className="flex flex-col w-1/2 pt-3 px-3">
+					<div className="flex flex-col w-1/2 py-3 px-3">
 						<div className="flex flex-col">
 							<div className="flex flex-wrap items-center">
 								<h1 className="text-xl font-bold">{item.ItemName}</h1>
