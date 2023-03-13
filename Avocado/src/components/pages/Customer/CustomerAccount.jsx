@@ -29,6 +29,9 @@ const CustomerAccount = () => {
 				body: JSON.stringify(updateDetails),
 			}
 		);
+		if (data) {
+			console.log(data);
+		}
 	};
 
 	return (
