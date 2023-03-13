@@ -3,7 +3,7 @@ import placeholder from "/items/restaurant_placeholder.svg";
 
 const CustomerRestaurantCard = ({ restaurant, index }) => {
 	return (
-		<div className="bg-ltgray  rounded-2xl duration-200 ease-in hover:bg-dkgray font-niveau px-3 flex py-3 sm:w-[350px] md:py-3 md:shadow-md gap-3 hover:-translate-y-1">
+		<div className="bg-ltgray rounded-2xl duration-200 ease-in hover:bg-dkgray font-niveau px-3 flex py-3 sm:w-[350px] md:py-3 md:shadow-md gap-3 hover:-translate-y-1">
 			<div className="grid place-items-center">
 				<img
 					className="w-[70px]"
