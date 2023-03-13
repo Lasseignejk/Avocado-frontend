@@ -20,7 +20,7 @@ const Cart = ({ counter, setCounter }) => {
 	// NUMBER OF TOTAL ITEMS IN ORDER (ITEM.AMOUNT FOR EACH ITEM)
 
 	return (
-		<div className="sticky top-0">
+		<div className="lg:sticky lg:top-0">
 			<div className="w-[400px] min-h-full  p-4 bg-ltgray">
 				<div className="flex flex-col justify-center p-4">
 					<div>
