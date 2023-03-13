@@ -6,12 +6,14 @@ const CustomerNavBarLinks = ({ links }) => {
 		<>
 			{links.map((link, index) => (
 				<li
-					className={"border-b-2 border-black h-[50px] md:border-none flex"}
+					className={
+						"border-b-2 border-black h-[50px] flex justify-center items-center w-full md:border-none"
+					}
 					index={index}>
 					<Link
 						to={link.path}
-						className="flex justify-center items-center w-full hover:bg-[#4e98ba] hover:text-gray duration-200 ease-in rounded-full md:px-3 md:py-1">
-						<div className="w-full lg:w-full lg:flex lg:gap-2 items-center">
+						className="flex justify-center items-center w-full hover:bg-[#4e98ba] hover:text-gray duration-200 ease-in rounded-full md:px-3 md:py-1 md:w-[150px] lg:w-[200px]">
+						<div className="w-full md:flex md:gap-2 items-center justify-center">
 							{link.src}
 							<h1 className="">{link.title}</h1>
 						</div>

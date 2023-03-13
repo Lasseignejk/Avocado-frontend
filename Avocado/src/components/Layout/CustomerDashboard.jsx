@@ -91,7 +91,7 @@ const CustomerDashboard = () => {
 						<h1 className="text-center text-3xl font-bold md:text-left">
 							Browse Restaurants
 						</h1>
-						<div className="flex flex-wrap gap-3 mb-10 justify-center">
+						<div className="flex flex-wrap gap-3 lg:mb-10 justify-center">
 							{restaurants?.map((restaurant, index) => (
 								<Link
 									to="/menu"

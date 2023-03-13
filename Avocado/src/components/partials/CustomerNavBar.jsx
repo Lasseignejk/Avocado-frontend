@@ -73,7 +73,7 @@ const CustomerNavBar = () => {
 					onClick={() => toggleNav()}>
 					<FaAngleUp
 						className={
-							"duration-200 ease-in text-2xl text-gray" +
+							"duration-200 ease-in text-2xl text-black" +
 							(spin ? " rotate-180" : "")
 						}
 					/>
@@ -81,14 +81,14 @@ const CustomerNavBar = () => {
 			</div>
 			<nav
 				className={
-					"bg-blue text-xl text-black font-bold duration-500 nav fixed w-full z-[9] p-5 text-center md:relative md:z-0 md:translate-y-0 md:duration-[0ms]" +
-					(show ? "" : " translate-y-[calc((88px*3)*-1)]")
+					"bg-blue md:flex items-center md:justify-end text-xl text-black font-bold duration-500 nav fixed w-full z-[9] p-5 py-3 text-center md:relative md:z-0 md:translate-y-0 md:duration-[0ms]" +
+					(show ? "" : " translate-y-[calc((81px*3)*-1)]")
 				}>
-				<ul className="flex flex-col gap-3 items-center md:flex-row md:justify-end">
+				<ul className="flex flex-col gap-3 items-center md:flex-row md:justify-end md:w-[430px] lg:w-[500px]">
 					{!isGuest && (
 						<>
 							<CustomerNavBarLinks links={Customerlinks} />
-							<li className="flex justify-center items-center border-b-2 border-black h-[50px] md:h-[37px] hover:bg-[#4e98ba] duration-200 ease-in md:rounded-full md:border-none md:pb-0">
+							<li className="flex justify-center items-center border-b-2 border-black w-full h-[50px] md:h-[37px] hover:bg-[#4e98ba] duration-200 ease-in md:rounded-full md:border-none md:pb-0">
 								<button
 									className="md:bg-[#4e98ba] md:px-3 md:py-1 md:rounded-full md:text-gray"
 									type="button"
