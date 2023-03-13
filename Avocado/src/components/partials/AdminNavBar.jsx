@@ -24,31 +24,25 @@ const AdminNavBar = () => {
 
 	const adminLinks = [
 		{
+			title: "Manage Restaurants",
+			path: "/restaurantDashboard",
+			src: (
+				<FaStoreAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
+			),
+		},
+		{
 			title: "Reports",
 			path: "/reports",
 			src: (
 				<FaChartBar className="text-gray font-2xl w-[30px] hidden lg:block" />
 			),
 		},
-		{
-			title: "Manage Restaurants",
-			path: "/managerestaurants",
-			src: (
-				<FaStoreAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
-			),
-		},
+
 		{
 			title: "My Account",
 			path: "/adminaccount",
 			src: (
 				<FaUserAlt className="text-gray font-2xl w-[30px] hidden lg:block" />
-			),
-		},
-		{
-			title: "BOH",
-			path: "/BOH",
-			src: (
-				<FaReceipt className="text-gray font-2xl w-[30px] hidden lg:block" />
 			),
 		},
 	];
@@ -73,7 +67,7 @@ const AdminNavBar = () => {
 			<nav
 				className={
 					"bg-green text-xl text-gray font-bold duration-500 nav fixed w-full z-[9] p-5 text-center lg:relative lg:z-0 lg:w-[300px] lg:text-left lg:translate-y-0 lg:duration-[0ms]" +
-					(show ? "" : " translate-y-[-410px]")
+					(show ? "" : " translate-y-[-340px]")
 				}>
 				<ul className="flex flex-col gap-5">
 					<AdminNavBarLinks links={adminLinks} />
