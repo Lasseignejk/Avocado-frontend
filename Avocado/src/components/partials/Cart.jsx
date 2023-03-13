@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { clearCart, removeItem } from "../reducers/DashboardSlice";
+import { Link } from "react-router-dom";
 
 const Cart = ({ counter, setCounter }) => {
   const dispatch = useDispatch();
@@ -34,15 +35,14 @@ const Cart = ({ counter, setCounter }) => {
             ))}
           </div>
         </div>
-        <button
-          className="flex justify-between right-0 bg-green text-gray text-l font-bold w-full p-8 hover:bg-dkgreen"
-          onClick={() => dispatch()}
-        >
-          <h1>Checkout</h1>
-          <h1>
-            {counter} Items: ${finalTotal}.00
-          </h1>
-        </button>
+        <Link to="/confirmation">
+          <button className="flex justify-between right-0 bg-green text-gray text-l font-bold w-full p-8 hover:bg-dkgreen">
+            <h1>Checkout</h1>
+            <h1>
+              {counter} Items: ${finalTotal}.00
+            </h1>
+          </button>
+        </Link>
       </div>
     </div>
   );
