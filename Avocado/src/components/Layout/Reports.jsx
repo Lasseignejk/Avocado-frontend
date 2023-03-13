@@ -240,7 +240,7 @@ const Reports = () => {
           <div className="flex flex-row gap-3">
             <div className="">
               <div className="flex justify-between items-center"></div>
-              <div className="items center sm:ml-10 space-y-3">
+              <div className="flex flex-col items center sm:ml-10 space-y-3">
                 <h1 className="text-2xl text-black">Reporting for:</h1>
                 <div
                   className={
@@ -252,7 +252,7 @@ const Reports = () => {
                   {allRestrauntsByOwner?.map((a) => (
                     <div
                       key={a.id}
-                      className="flex flex-row items-center w-[100px] h-[70px] md:w-[100px] md:h-[100px] box-border bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-3 py-3 md:py-3 md:shadow-md justify-between"
+                      className="flex flex-row items-center w-[100px] h-[70px] md:w-[100px] md:h-[100px] box-border bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-2 py-3 md:py-3 md:shadow-md justify-between"
                       onClick={() => dispatch(setCurrentRestId(a.id))}
                     >
                       <img
@@ -278,8 +278,8 @@ const Reports = () => {
                     color="white"
                     bgColor="#387f5f"
                     text="Lifetime Totals"
-                    borderRadius="10px"
-                    size="md"
+                    borderRadius="8px"
+                    size="sm"
                   />
                 </div>
                 {/* Popular items Table Graph */}
@@ -297,8 +297,8 @@ const Reports = () => {
                     color="white"
                     bgColor="#387f5f"
                     text="Popular Items"
-                    borderRadius="10px"
-                    size="md"
+                    borderRadius="8px"
+                    size="sm"
                   />
                 </div>
                 {/* Order item totals Line Graph */}
@@ -316,9 +316,9 @@ const Reports = () => {
                   <Button
                     color="white"
                     bgColor="#387f5f"
-                    text="Total Items Ordered"
-                    borderRadius="10px"
-                    size="md"
+                    text="Ordered Total"
+                    borderRadius="8px"
+                    size="sm"
                   />
                 </div>
                 {/* Percentage of items on menu Pie Graph */}
@@ -337,8 +337,8 @@ const Reports = () => {
                     color="white"
                     bgColor="#387f5f"
                     text="Menu Percentages"
-                    borderRadius="10px"
-                    size="md"
+                    borderRadius="8px"
+                    size="sm"
                   />
                 </div>
               </div>
