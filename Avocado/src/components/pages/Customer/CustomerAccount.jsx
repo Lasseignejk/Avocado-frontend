@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
-import { setOwner, setCustomer } from "../../reducers/DashboardSlice";
 import CustomerNavBar from "../../partials/CustomerNavBar";
 
 const CustomerAccount = () => {
