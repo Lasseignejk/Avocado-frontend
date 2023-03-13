@@ -7,7 +7,7 @@ import DashboardSignup from "./components/Layout/DashboardSignup";
 // Admin
 import RestaurantDashboard from "./components/Layout/RestaurantDashboard";
 import AdminAccount from "./components/pages/Admin/AdminAccount";
-import BOH from "./components/pages/Admin/BOH/BOH";
+import BOH from "./components/pages/BOH";
 import ManageRestaurants from "./components/pages/Admin/ManageRestaurants/ManageRestaurants";
 import RestaurantMenu from "./components/pages/Admin/Menu/RestaurantMenu";
 import Reports from "./components/Layout/Reports";
@@ -28,42 +28,42 @@ import RestaurantAuthGaurd from "./components/Layout/RestaurantAuthGaurd";
 import OrderConfirm from "./components/pages/Customer/OrderConfirm";
 
 function App() {
-  return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<DashboardLogin />} />
-        <Route path="/signup" element={<DashboardSignup />} />
+	return (
+		<div className="App">
+			<Routes>
+				<Route path="/" element={<DashboardLogin />} />
+				<Route path="/signup" element={<DashboardSignup />} />
 
-        <Route
-          path="/restaurantDashboard"
-          element={
-            <LoggedInAuthGaurd>
-              {/*<CustomerAuthGaurd>*/}
-              <RestaurantDashboard />
-              {/*</CustomerAuthGaurd>*/}
-            </LoggedInAuthGaurd>
-          }
-        />
-        {/* Admin Routes */}
-        <Route path="/managerestaurants" element={<ManageRestaurants />} />
-        <Route path="/adminaccount" element={<AdminAccount />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/BOH" element={<BOH />} />
-        <Route path="/menuinfo" element={<RestaurantMenu />} />
+				<Route
+					path="/restaurantDashboard"
+					element={
+						<LoggedInAuthGaurd>
+							{/*<CustomerAuthGaurd>*/}
+							<RestaurantDashboard />
+							{/*</CustomerAuthGaurd>*/}
+						</LoggedInAuthGaurd>
+					}
+				/>
+				{/* Admin Routes */}
+				<Route path="/managerestaurants" element={<ManageRestaurants />} />
+				<Route path="/adminaccount" element={<AdminAccount />} />
+				<Route path="/reports" element={<Reports />} />
+				<Route path="/BOH" element={<BOH />} />
+				<Route path="/menuinfo" element={<RestaurantMenu />} />
 
-        {/* Customer Routes */}
-        <Route path="/customerdashboard" element={<CustomerDashboard />} />
-        <Route path="/customeraccount" element={<CustomerAccount />} />
-        <Route path="confirmation" element={<OrderConfirm />} />
+				{/* Customer Routes */}
+				<Route path="/customerdashboard" element={<CustomerDashboard />} />
+				<Route path="/customeraccount" element={<CustomerAccount />} />
+				<Route path="confirmation" element={<OrderConfirm />} />
 
-        {/* Misc */}
-        <Route path="*" element={<Error />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/navtest" element={<AdminNavTest />} />
-        {/* <Route path="/UserAcct" element={<UserAcct />} /> */}
-      </Routes>
-    </div>
-  );
+				{/* Misc */}
+				<Route path="*" element={<Error />} />
+				<Route path="/menu" element={<Menu />} />
+				<Route path="/navtest" element={<AdminNavTest />} />
+				{/* <Route path="/UserAcct" element={<UserAcct />} /> */}
+			</Routes>
+		</div>
+	);
 }
 
 export default App;
