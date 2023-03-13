@@ -53,8 +53,6 @@ const AdminNavBar = () => {
 		},
 	];
 
-	const linkLength = adminLinks.length + 1;
-
 	return (
 		<div
 			className="w-full lg:min-h-screen fixed bottom-0 lg:flex lg:flex-col lg:bg-green lg:static lg:w-[300px]"
@@ -70,18 +68,12 @@ const AdminNavBar = () => {
 							(spin ? " rotate-180" : "")
 						}
 					/>
-					{/* <img
-						src="../items/expand_more.svg"
-						alt=""
-						className={"duration-200 ease-in" + (spin ? " rotate-180" : "")}
-					/> */}
 				</button>
 			</div>
 			<nav
 				className={
 					"bg-green text-xl text-gray font-bold duration-500 nav fixed w-full z-[9] p-5 text-center lg:relative lg:z-0 lg:w-[300px] lg:text-left lg:translate-y-0 lg:duration-[0ms]" +
 					(show ? "" : " translate-y-[-410px]")
-					// (show ? "" : " translate-y-[-340px]")
 				}>
 				<ul className="flex flex-col gap-5">
 					<AdminNavBarLinks links={adminLinks} />
@@ -94,10 +86,6 @@ const AdminNavBar = () => {
 								signOut();
 							}}>
 							<GoSignOut className="hidden lg:block md:w-[30px] text-gray text-2xl" />
-							{/* <img
-								src="../../items/logout.svg"
-								className="hidden lg:block md:w-[30px]"
-							/>{" "} */}
 							Logout
 						</button>
 					</li>
