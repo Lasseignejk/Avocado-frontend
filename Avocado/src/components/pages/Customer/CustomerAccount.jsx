@@ -12,13 +12,13 @@ const CustomerAccount = () => {
 	const [updateDetails, setupdateDetails] = useState({});
 	const dispatch = useDispatch();
 
-	const setFormState = (e) => {
-		setupdateDetails({
-			...updateDetails,
-			[e.target.name]: e.target.value,
-			id: userDetails.id,
-		});
-	};
+  const setFormState = (e) => {
+    setupdateDetails({
+      ...updateDetails,
+      [e.target.name]: e.target.value,
+      id: userDetails.id,
+    });
+  };
 
 	const fetchUserData = async () => {
 		const { data, error } = await supabase

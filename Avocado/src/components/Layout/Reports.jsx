@@ -17,9 +17,6 @@ const Reports = ({ children }) => {
   const isOwner = useSelector((state) => state.isOwner);
   const userDetails = useSelector((state) => state.userDetails);
 
-  const [layout, setLayout] = useState(null);
-  const [dataArray, setDataArray] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(false);
 
   const [pieOpen, setPieOpen] = useState(false);
@@ -27,15 +24,19 @@ const Reports = ({ children }) => {
   const [lineOpen, setLineOpen] = useState(false);
   const [barOpen, setBarOpen] = useState(false);
 
+  const [currentRestaurantId, setCurrentRestaurantId] = useState(null);
+
   const [allRestrauntsByOwner, setRestaurants] = useState(null);
-  const [allRestrauntsByOwnerName, setAllRestrauntsByOwnerName] =
-    useState(null);
+
+  console.log("currentRestaurantId", currentRestaurantId);
 
   if (isOwner) {
     useEffect(() => {
       const fetchUserData = async () => {
+        //owner id
         const { id } = userDetails[0];
 
+        //all restaurants by owner
         const { data: restrauntsByOwnerData, error: errorByOwnerData } =
           await supabase.from("Restaurant").select().eq("OwnerId", id);
 
@@ -44,26 +45,25 @@ const Reports = ({ children }) => {
           return;
         }
 
+        //all restraunts data by owner
+
+        setRestaurants(restrauntsByOwnerData);
+        console.log("restrauntsByOwnerData", restrauntsByOwnerData);
+
         //reports
 
-        if (restrauntsByOwnerData) {
-          //all restraunts data by owner
-          setRestaurants(restrauntsByOwnerData);
+        console.log(currentRestaurantId);
 
-          let restaurantNames = restrauntsByOwnerData.map((a) => a.RestName);
-          let restaurantIds = restrauntsByOwnerData.map((a) => a.id);
-
-          //all restaurants names by owner
-          setAllRestrauntsByOwnerName(restaurantNames);
-
-          //number of restaurants
-          const numberOfRestraunts = restrauntsByOwnerData.length;
-
+        if (currentRestaurantId) {
           //order for that specifc restaurant (currently hard coded in)
-          let restId = 48;
+          let restId = currentRestaurantId; //currentRestaurantId
+          restId = 68;
+
+          console.log(restId);
 
           ///BAR GRAPH
 
+          //all orders by rest
           const { data: orderData, error: orderError } = await supabase
             .from("Order")
             .select()
@@ -78,15 +78,20 @@ const Reports = ({ children }) => {
             //console.log(orderData);
           }
 
-          console.log();
+          console.log(
+            "restrauntsByOwnerData",
+            restrauntsByOwnerData[0].RestName
+          );
+
+          const restName = restrauntsByOwnerData
+            .map((a) => (a.id == currentRestaurantId ? a.RestName : ""))
+            .filter((n) => n);
+
+          console.log("restName", restName[0]);
+
           //all unique days items were purchased
           let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
           DatePurchased = [...new Set(DatePurchased)];
-
-          console.log(
-            "sort",
-            DatePurchased.sort((a, b) => a - b)
-          );
 
           //arrays for totals by day
           let days = [];
@@ -121,7 +126,7 @@ const Reports = ({ children }) => {
           ];
 
           let layout = {
-            title: "Lifetime Totals: $" + monthlyAmountMade,
+            title: restName[0] + " Lifetime Totals: $" + monthlyAmountMade,
             paper_bgcolor: "#efebe4",
             plot_bgcolor: "#efebe4",
             height: 400,
@@ -230,14 +235,12 @@ const Reports = ({ children }) => {
 
           Plotly.newPlot("LINE", [linedata], linelayout);
 
+          /*
           const { data: stuffData, error: stuffError } = await supabase
             .from("MenuItems")
             .select()
             .match({ RestId: 58, ItemLunch: false });
-
-          console.log("stuff", stuffData);
-
-          console.log(stuffError);
+            */
 
           ///end of await function
 
@@ -255,7 +258,7 @@ const Reports = ({ children }) => {
       };
 
       fetchUserData();
-    }, [isOwner]);
+    }, [isOwner, currentRestaurantId]);
   }
 
   return (
@@ -266,7 +269,28 @@ const Reports = ({ children }) => {
           <div className="flex flex-row gap-3">
             <div className="">
               <div className="flex justify-between items-center"></div>
-              <div className=" items center sm:ml-10 space-y-3">
+              <div className="items center sm:ml-10 space-y-3">
+                <h1 className="text-2xl text-black">Reporting for:</h1>
+                <div
+                  className={
+                    allRestrauntsByOwner
+                      ? "items center sm:ml-10 space-y-3"
+                      : "hidden"
+                  }
+                >
+                  {allRestrauntsByOwner?.map((a) => (
+                    <div
+                      className="flex flex-row items-center w-[100px] h-[70px] md:w-[100px] md:h-[100px] box-border bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-3 py-3 md:py-3 md:shadow-md justify-between"
+                      onClick={() => dispatch(setCurrentRestaurantId(a.id))}
+                    >
+                      <img
+                        className="relative w-full"
+                        src={a.RestLogo ? a.RestLogo : placeholder}
+                        alt="logo"
+                      />
+                    </div>
+                  ))}
+                </div>
                 {/* Lifetime totals BAR Graph */}
                 <div
                   onClick={() =>
