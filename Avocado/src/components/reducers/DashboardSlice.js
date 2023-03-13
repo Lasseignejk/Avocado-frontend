@@ -12,6 +12,12 @@ const initialState = {
   cartOpen: false,
   cart: [],
   location: "/",
+  currentRestId: "",
+  barGraph: false,
+  pieGraph: false,
+  tableGraph: false,
+  lineGraph: false,
+  currentReportingRestaurant: "",
 };
 
 export const DashboardSlice = createSlice({
@@ -88,6 +94,24 @@ export const DashboardSlice = createSlice({
     setLocation: (state, action) => {
       state.location = action.payload;
     },
+    setCurrentRestId: (state, action) => {
+      state.currentRestId = action.payload;
+    },
+    setBarGraph: (state, action) => {
+      state.barGraph = action.payload;
+    },
+    setLineGraph: (state, action) => {
+      state.lineGraph = action.payload;
+    },
+    setTableGraph: (state, action) => {
+      state.tableGraph = action.payload;
+    },
+    setPieGraph: (state, action) => {
+      state.pieGraph = action.payload;
+    },
+    setCurrentReportingRestaurant: (state, action) => {
+      state.currentReportingRestaurant = action.payload;
+    },
   },
 });
 
@@ -106,6 +130,12 @@ export const {
   clearCart,
   removeItem,
   removeCart,
+  setCurrentRestId,
+  setBarGraph,
+  setLineGraph,
+  setTableGraph,
+  setPieGraph,
+  setCurrentReportingRestaurant,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

@@ -60,7 +60,6 @@ const DashboardLogin = () => {
     //checks if owner/customer
     const owner = await queryIsOwner(user.user.email);
 
-    console.log("owner:", owner);
     //Restaurants
     if (owner) {
       //sets as owner in state
