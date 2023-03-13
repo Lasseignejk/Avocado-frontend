@@ -17,7 +17,6 @@ const initialState = {
   pieGraph: false,
   tableGraph: false,
   lineGraph: false,
-  currentReportingRestaurant: "",
 };
 
 export const DashboardSlice = createSlice({
@@ -109,9 +108,6 @@ export const DashboardSlice = createSlice({
     setPieGraph: (state, action) => {
       state.pieGraph = action.payload;
     },
-    setCurrentReportingRestaurant: (state, action) => {
-      state.currentReportingRestaurant = action.payload;
-    },
   },
 });
 
@@ -135,7 +131,6 @@ export const {
   setLineGraph,
   setTableGraph,
   setPieGraph,
-  setCurrentReportingRestaurant,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;
