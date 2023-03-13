@@ -60,7 +60,7 @@ const Reports = ({ children }) => {
           const numberOfRestraunts = restrauntsByOwnerData.length;
 
           //order for that specifc restaurant (currently hard coded in)
-          let restId = 48;
+          let restId = id;
 
           ///BAR GRAPH
 
