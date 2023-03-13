@@ -3,12 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import CustomerNavBar from "../../partials/CustomerNavBar";
 import { toast, ToastContainer } from "react-toastify";
 import DeleteCustomerForm from "./DeleteCustomerForm";
+import { setUserDetails } from "../../reducers/DashboardSlice";
+import { supabase } from "../../../supabase";
 
 const CustomerAccount = () => {
 	const userDetails = useSelector((state) => state?.userDetails[0]);
-	const dispatch = useDispatch();
-
+	const [toggle, setToggle] = useState(true);
 	const [updateDetails, setupdateDetails] = useState({});
+	const dispatch = useDispatch();
 
 	const setFormState = (e) => {
 		setupdateDetails({
@@ -17,6 +19,25 @@ const CustomerAccount = () => {
 			id: userDetails.id,
 		});
 	};
+
+	const fetchUserData = async () => {
+		const { data, error } = await supabase
+			.from("Customer")
+			.select()
+			.eq("CustomerEmail", userDetails.CustomerEmail);
+
+		if (error) {
+			setError(error);
+			return;
+		}
+		if (data) {
+			dispatch(setUserDetails(data[0]));
+		}
+	};
+
+	useEffect(() => {
+		fetchUserData();
+	}, [toggle]);
 
 	const updateUserAccount = async (updateDetails) => {
 		const data = await fetch(
@@ -30,7 +51,13 @@ const CustomerAccount = () => {
 			}
 		);
 		if (data) {
-			console.log(data);
+			setupdateDetails({ id: userDetails.id });
+			setToggle(!toggle);
+
+			toast.success("Account Updated!", {
+				position: toast.POSITION.TOP_CENTER,
+				icon: <img src="../../logos/icon_green.svg" alt="" />,
+			});
 		}
 	};
 
@@ -63,7 +90,7 @@ const CustomerAccount = () => {
 									type="text"
 									id="firstName"
 									name="CustomerFirstName"
-									placeholder={userDetails.CustomerFirstName}
+									placeholder={userDetails?.CustomerFirstName}
 									onChange={(e) => setFormState(e)}
 									value={
 										updateDetails.CustomerFirstName
@@ -83,7 +110,7 @@ const CustomerAccount = () => {
 									type="text"
 									id="lastName"
 									name="CustomerLastName"
-									placeholder={userDetails.CustomerLastName}
+									placeholder={userDetails?.CustomerLastName}
 									onChange={(e) => setFormState(e)}
 									value={
 										updateDetails.CustomerLastName
@@ -104,7 +131,7 @@ const CustomerAccount = () => {
 									type="text"
 									id="phone"
 									name="CustomerPhoneNumber"
-									placeholder={userDetails.CustomerPhoneNumber}
+									placeholder={userDetails?.CustomerPhoneNumber}
 									onChange={(e) => setFormState(e)}
 									value={
 										updateDetails.CustomerPhoneNumber
@@ -124,7 +151,7 @@ const CustomerAccount = () => {
 									type="address"
 									id="address"
 									name="Address"
-									placeholder={userDetails.Address}
+									placeholder={userDetails?.Address}
 									onChange={(e) => setFormState(e)}
 									value={updateDetails.Address ? updateDetails.Address : ""}
 								/>
