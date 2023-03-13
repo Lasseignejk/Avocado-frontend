@@ -10,7 +10,7 @@ const RestaurantAdminCard = ({ restaurant, toggle, setToggle }) => {
 	const [openModal, setOpenModal] = useState(false);
 	const dispatch = useDispatch();
 	return (
-		<div className="bg-ltgray rounded-xl duration-200 ease-in hover:bg-blue font-niveau px-3 flex py-3 md:w-[400px] md:py-3 md:shadow-md justify-between">
+		<div className="bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-3 flex py-3 md:w-[400px] md:py-3 md:shadow-md justify-between">
 			<Link
 				className="flex gap-3"
 				to="/menuinfo"
