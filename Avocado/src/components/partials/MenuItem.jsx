@@ -9,10 +9,6 @@ const MenuItem = ({ item, counter, setCounter }) => {
 	const dispatch = useDispatch();
 	const [openModal, setOpenModal] = useState(false);
 
-	const increaseCounter = () => (
-		setCounter(counter + 1), dispatch(addCart(item))
-	);
-
 	const shortenDescription = (description, num) => {
 		let cut = description.indexOf(" ", num);
 		if (cut == -1) {
