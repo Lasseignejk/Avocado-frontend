@@ -4,9 +4,11 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useSignOut } from "../../Layout/Queries";
 
 const DeleteCustomerForm = () => {
 	const userDetails = useSelector((state) => state?.userDetails[0]);
+	const signOut = useSignOut();
 
 	const displayDelete = () => {
 		toast.warning(deleteToast, {
@@ -16,16 +18,19 @@ const DeleteCustomerForm = () => {
 
 	const deleteCustomer = async () => {
 		console.log(userDetails);
-		// const response = await fetch(
-		// 	import.meta.env.VITE_BACKEND + "/deleteCustomer",
-		// 	{
-		// 		method: "DELETE",
-		// 		headers: {
-		// 			id: userDetails.id,
-		// 		},
-		// 	}
-		// );
-		// navigate to login screen
+		const response = await fetch(
+			"http://localhost:3060/customer/deletecustomer",
+			// import.meta.env.VITE_BACKEND + "/customer/deletecustomer",
+			{
+				method: "DELETE",
+				headers: {
+					id: userDetails.id,
+				},
+			}
+		);
+		console.log(response);
+		console.log("signing out...");
+		signOut();
 	};
 
 	const deleteToast = ({ closeToast, toastProps }) => (
@@ -51,16 +56,10 @@ const DeleteCustomerForm = () => {
 
 	return (
 		<div className="flex justify-center mb-3 lg:justify-start">
-			<ToastContainer />
 			<form className="px-3 py-5 flex flex-col gap-3 mb-3 items-center w-[80%] md:w-1/2 md:mb-5 bg-ltgray rounded-xl shadow-lg lg:w-1/3">
 				<h1 className="text-2xl font-bold text-[#b8241a] tracking-wider flex gap-2 items-center">
 					<FaExclamationTriangle /> DANGER ZONE <FaExclamationTriangle />
 				</h1>
-				<p className="text-center">
-					If you delete your account, all your restaurants, reports, and data
-					will be lost forever. Only click the button below if you understand
-					the consequences.
-				</p>
 				<button
 					type="button"
 					className="bg-[#b8241a] text-gray px-3 py-1 rounded-full tracking-wider hover:bg-[#992017] shadow-lg duration-200 ease-in"

@@ -4,6 +4,8 @@ import AdminNavBar from "../../partials/AdminNavBar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteAdminForm from "./DeleteAdminForm";
+import { setUserDetails } from "../../reducers/DashboardSlice";
+import { supabase } from "../../../supabase";
 
 const AdminAccount = () => {
 	const userDetails = useSelector((state) => state?.userDetails[0]);
@@ -32,8 +34,24 @@ const AdminAccount = () => {
 		}
 	};
 
+	const fetchUserData = async () => {
+		const { data, error } = await supabase
+			.from("Owner")
+			.select()
+			.eq("OwnerEmail", userDetails.OwnerEmail);
+
+		if (error) {
+			setError(error);
+			return;
+		}
+		if (data) {
+			dispatch(setUserDetails(data[0]));
+		}
+	};
+
 	useEffect(() => {
 		getRestaurants();
+		fetchUserData();
 	}, [toggle]);
 
 	const setFormState = (e) => {
@@ -45,7 +63,6 @@ const AdminAccount = () => {
 	};
 
 	const updateUserAccount = async (updateDetails) => {
-		console.log(updateDetails);
 		const data = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/updateAdmin",
 			{
@@ -58,8 +75,12 @@ const AdminAccount = () => {
 		);
 		if (data) {
 			setToggle(!toggle);
-			console.log(toggle);
-			setupdateDetails({});
+			setupdateDetails({ id: userDetails.id });
+
+			toast.success("Account Updated!", {
+				position: toast.POSITION.TOP_CENTER,
+				icon: <img src="../../logos/icon_green.svg" alt="" />,
+			});
 		}
 	};
 
