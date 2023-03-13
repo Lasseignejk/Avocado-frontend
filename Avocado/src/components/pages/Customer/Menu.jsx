@@ -50,7 +50,7 @@ const Menu = () => {
       <div className="mb-[65px] md:flex lg:mb-[30px]">
         <div className="flex lg:justify-between">
           <div className="flex flex-col gap-8 pt-8 lg:pt-20 lg:pl-16">
-            <div className="ml-5 flex gap-4 lg:ml-0">
+            <div className="ml-5 flex gap-4 justify-center lg:ml-0">
               <div className="w-[50px] h-[50px] z-10 bg-dkgreen fixed top-[10px] right-[10px] grid place-items-center rounded-full md:top-[100px] lg:hidden hover:cursor-pointer">
                 <FaShoppingCart
                   className="text-gray text-2xl"
@@ -60,18 +60,18 @@ const Menu = () => {
               <div className="w-[30px] h-[30px] border-2 z-[11] fixed top-[38px] right-[5px] rounded-full bg-blue md:top-[130px] grid place-items-center lg:hidden">
                 {counter}
               </div>
-              <div className="">
+              <div className="flex gap-6">
                 <img
-                  className="h-20"
+                  className="h-20 m-auto"
                   src={restuarant.RestLogo ? restuarant.RestLogo : placeholder}
                   alt=""
                 />
-              </div>
-              <div>
-                <h1 className="font-bold text-2xl">{restuarant.RestName}</h1>
-                <h1>{restuarant.RestLocation}</h1>
-                <h1>{restuarant.RestPhoneNumber}</h1>
-                <h1>{restuarant.RestHours}</h1>
+                <div>
+                  <h1 className="font-bold text-2xl">{restuarant.RestName}</h1>
+                  <h1>{restuarant.RestLocation}</h1>
+                  <h1>{restuarant.RestPhoneNumber}</h1>
+                  <h1>{restuarant.RestHours}</h1>
+                </div>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-evenly gap-7">
