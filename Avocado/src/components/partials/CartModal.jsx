@@ -25,7 +25,7 @@ const CartModal = ({ counter, setCounter, setCartModal }) => {
         </span>
         <div className="flex flex-col justify-center p-4">
           <div>
-            <h1 className="py-4 bg-ltgray text-[2rem] text-center font-black">
+            <h1 className="mb-4 bg-ltgray text-[2rem] text-center font-black">
               Your Order
             </h1>
           </div>
