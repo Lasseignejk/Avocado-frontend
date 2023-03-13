@@ -1,49 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import placeholder from "/items/menu_placeholder.svg";
 import { addCart } from "../reducers/DashboardSlice";
+import MenuItemModal from "./MenuItemModal";
 
 const MenuItem = ({ item, counter, setCounter }) => {
 	const cart = useSelector((state) => state.cart);
 	const dispatch = useDispatch();
+	const [openModal, setOpenModal] = useState(false);
 
 	const increaseCounter = () => (
 		setCounter(counter + 1), dispatch(addCart(item))
 	);
+
+	const shortenDescription = (description, num) => {
+		let cut = description.indexOf(" ", num);
+		if (cut == -1) {
+			return description;
+		} else {
+			return description.substring(0, cut);
+		}
+	};
+
+	const shortDescription = shortenDescription(item.ItemDescription, 35) + "...";
+
+	function cutString(s, n) {
+		var cut = s.indexOf(" ", n);
+		if (cut == -1) return s;
+		return s.substring(0, cut);
+	}
+
 	return (
-		<div>
-			<div className="flex flex-col bg-ltgray  font-niveau px-3 py-3 gap-3 hover:bg-dkgray md:hover:-translate-y-1 duration-200 ease-in sm:w-[400px] md:py-3 md:shadow-xl rounded-2xl">
+		<div className="px-3">
+			<div
+				className="flex flex-col bg-ltgray font-niveau gap-3 hover:bg-dkgray shadow-md md:hover:-translate-y-1 duration-200 ease-in w-full sm:w-[450px] md:shadow-md rounded-3xl hover:cursor-pointer"
+				onClick={() => setOpenModal(true)}>
 				<div className="flex gap-3">
-					<div className="grid place-items-center">
-						<div className="w-[75px] h-[75px]">
+					<div className="grid place-items-center w-1/2 ">
+						<div className="w-full">
 							<img
-								className=""
+								className="w-full rounded-tl-3xl rounded-bl-3xl"
 								src={item.ItemImg ? item.ItemImg : placeholder}
 								alt=""
 							/>
 						</div>
 					</div>
-					<div className="flex flex-col w-2/3">
-						<div className="flex justify-between">
-							<div className="flex flex-wrap px-1 items-center">
+					<div className="flex flex-col w-1/2 pt-3 px-3">
+						<div className="flex flex-col">
+							<div className="flex flex-wrap items-center">
 								<h1 className="text-xl font-bold">{item.ItemName}</h1>
 							</div>
 							<div>
-								<h1>${item.ItemPrice}.00</h1>
+								<h1 className="font-light ">${item.ItemPrice}.00</h1>
 							</div>
+							<h1 className="pt-2 font-light text-sm text-[#747474]">
+								{shortDescription}
+							</h1>
 						</div>
-
-						<h1 className="pl-1">{item.ItemDescription}</h1>
 					</div>
-					<div className="">
+					{/* <div className="">
 						<button
-							className="w-full bg-green font-bold text-gray px-2 hover:bg-dkgreen hover:text-ltgray duration-200"
+							className="w-full bg-green font-bold text-gray px-2 rounded-full hover:bg-dkgreen hover:text-ltgray duration-200"
 							onClick={() => increaseCounter()}>
 							+
 						</button>
-					</div>
+					</div> */}
 				</div>
 			</div>
+			<>
+				{openModal && (
+					<MenuItemModal
+						className="fixed"
+						item={item}
+						setOpenModal={setOpenModal}
+						counter={counter}
+						setCounter={setCounter}
+					/>
+				)}
+			</>
 		</div>
 	);
 };

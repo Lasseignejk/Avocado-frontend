@@ -69,10 +69,11 @@ const Menu = () => {
 								<h1>{restuarant.RestHours}</h1>
 							</div>
 						</div>
-						<div className="flex flex-col md:flex-row md:flex-wrap md:justify-evenly gap-3">
-							{menu?.map((item) => (
+						<div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-evenly gap-7">
+							{menu?.map((item, index) => (
 								<MenuItem
 									item={item}
+									key={index}
 									counter={counter}
 									setCounter={setCounter}
 								/>
