@@ -7,7 +7,7 @@ import DashboardSignup from "./components/Layout/DashboardSignup";
 // Admin
 import RestaurantDashboard from "./components/Layout/RestaurantDashboard";
 import AdminAccount from "./components/pages/Admin/AdminAccount";
-import BOH from "./components/pages/BOH";
+import BOH from "./components/pages/Admin/BOH/BOH";
 import ManageRestaurants from "./components/pages/Admin/ManageRestaurants/ManageRestaurants";
 import RestaurantMenu from "./components/pages/Admin/Menu/RestaurantMenu";
 import Reports from "./components/Layout/Reports";
