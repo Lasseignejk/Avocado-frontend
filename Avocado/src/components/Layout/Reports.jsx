@@ -38,8 +38,6 @@ const Reports = () => {
 
   const [allRestrauntsByOwner, setRestaurants] = useState(null);
 
-  console.log("currentRestaurantId", currentRestId);
-
   useEffect(() => {
     if (isOwner) {
       const fetchOwnerData = async () => {
@@ -72,9 +70,7 @@ const Reports = () => {
       //order for that specifc restaurant (currently hard coded in)
 
       try {
-        console.log("currentRestId", currentRestId);
         let restId = currentRestId; //currentRestaurantId
-        restId = 68;
 
         ///BAR GRAPH
 
