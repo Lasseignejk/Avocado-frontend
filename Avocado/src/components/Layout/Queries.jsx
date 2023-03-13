@@ -21,6 +21,7 @@ export function useSignOut() {
     localStorage.clear();
     let { error } = await supabase.auth.signOut();
     dispatch(setGuest(true));
+    navigate("/");
   };
 }
 
