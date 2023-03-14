@@ -5,12 +5,8 @@ import {
   setUserDetails,
   setLogOut,
   setGuest,
-  setBarGraph,
-  setLineGraph,
-  setTableGraph,
-  setPieGraph,
 } from "../reducers/DashboardSlice";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //Customer hooks for querying supabase for specific rows
 

@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import placeholder from "/items/menu_placeholder.svg";
 import { supabase } from "../../supabase";
-import { useUserData } from "./Queries";
-import Button from "./Button";
 import {
   setBarGraph,
   setLineGraph,
@@ -107,7 +103,6 @@ const Reports = () => {
         //all unique days items were purchased
         let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
         DatePurchased = [...new Set(DatePurchased)];
-        console.log("DatePurchased", DatePurchased);
 
         //arrays for totals by day
         let days = [];
@@ -235,7 +230,6 @@ const Reports = () => {
         /////TABLE GRAPH
 
         //most popular items
-        console.log(menuData);
         let popularItems = menuData
           .map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
           .filter((n) => n);
@@ -244,9 +238,7 @@ const Reports = () => {
           {
             type: "table",
             header: {
-              values: [1, 2, 3],
               align: "center",
-              height: 30,
               fill: { color: "#387f5f" },
               font: { family: "niveau-grotesk", size: 20, color: "#fffbf7" },
             },
@@ -254,11 +246,12 @@ const Reports = () => {
               values: popularItems,
               align: "center",
               height: 30,
+              width: 50,
               fill: { color: "#efebe4" },
 
               font: {
                 family: "niveau-grotesk",
-                size: 18,
+                size: 8,
                 color: "#387f5f",
               },
             },
