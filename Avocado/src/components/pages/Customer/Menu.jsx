@@ -48,8 +48,8 @@ const Menu = () => {
 			<CustomerNavBar />
 			<div className="mb-[65px] md:flex lg:mb-[30px]">
 				<div className="flex lg:justify-between w-full">
-					<div className="flex flex-col gap-8 pt-8 lg:pt-20 lg:pl-16">
-						<div className="ml-5 flex gap-4 justify-center lg:ml-0">
+					<div className="flex flex-col gap-8 pt-8 lg:pt-20 lg:pl-16 w-full">
+						<div className="flex gap-4 justify-center lg:ml-0 w-full px-3">
 							<div className="w-[50px] h-[50px] z-10 bg-dkgreen fixed top-[10px] right-[10px] grid place-items-center rounded-full md:top-[100px] lg:hidden hover:cursor-pointer">
 								<FaShoppingCart
 									className="text-gray text-2xl"
@@ -61,11 +61,11 @@ const Menu = () => {
 							</div>
 							<div className="flex gap-6">
 								<img
-									className="h-20 m-auto"
+									className="h-20 m-auto lg:h-40"
 									src={restuarant.RestLogo ? restuarant.RestLogo : placeholder}
 									alt=""
 								/>
-								<div>
+								<div className="flex flex-col justify-center">
 									<h1 className="font-bold text-2xl">{restuarant.RestName}</h1>
 									<h1>{restuarant.RestLocation}</h1>
 									<h1>{restuarant.RestPhoneNumber}</h1>
@@ -74,14 +74,21 @@ const Menu = () => {
 							</div>
 						</div>
 						<div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-evenly gap-7">
-							{menu?.map((item, index) => (
-								<MenuItem
-									item={item}
-									key={index}
-									counter={counter}
-									setCounter={setCounter}
-								/>
-							))}
+							{menu?.length == 0 && (
+								<p className="px-3 text-center">
+									It looks like this restaurant doesn't have anything on its
+									menu. Check back later!
+								</p>
+							)}
+							{menu?.length > 0 &&
+								menu?.map((item, index) => (
+									<MenuItem
+										item={item}
+										key={index}
+										counter={counter}
+										setCounter={setCounter}
+									/>
+								))}
 						</div>
 					</div>
 					<div className="hidden lg:block">
