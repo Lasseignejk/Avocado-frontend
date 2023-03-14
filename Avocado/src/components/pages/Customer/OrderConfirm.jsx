@@ -16,7 +16,13 @@ const OrderConfirm = () => {
   }
 
   const [delivery, setDelivery] = useState(false);
+  const toggleDelivery = () => {
+    setDelivery(!delivery);
+  };
   const [pickup, setPickup] = useState(false);
+  const togglePickup = () => {
+    setPickup(!pickup);
+  };
 
   const [order, setOrder] = useState({
     id: orderId,
@@ -24,15 +30,16 @@ const OrderConfirm = () => {
     RestaurantId: restaurant.id,
     OrderTotal: finalTotal,
     OrderComplete: false,
-    IsPickup: pickup,
-    IsDelivery: delivery,
     TotalItems: cart.length,
   });
+  console.log(order);
 
   const setOptions = (e) => {
     setOrder({
       ...order,
       [e.target.name]: e.target.value,
+      IsPickup: pickup,
+      IsDelivery: delivery,
     });
   };
 
@@ -138,6 +145,26 @@ const OrderConfirm = () => {
             placeholder="Order notes"
             onChange={(e) => setOptions(e)}
           ></textarea>
+          <div>
+            <label htmlFor="IsPickup">Pickup</label>
+            <input
+              className="hover:cursor-pointer"
+              type="checkbox"
+              id="IsPickup"
+              name="IsPickup"
+              checked={pickup}
+              onChange={togglePickup}
+            />
+            <label htmlFor="IsDelivery">Delivery</label>
+            <input
+              className="hover:cursor-pointer"
+              type="checkbox"
+              id="IsDelivery"
+              name="IsDelivery"
+              checked={delivery}
+              onChange={toggleDelivery}
+            />
+          </div>
         </div>
         <h1 className="py-4 text-[2rem] text-center font-black">
           Total: ${finalTotal}.00
