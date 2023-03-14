@@ -6,6 +6,7 @@ const OrderConfirm = () => {
 	const cart = useSelector((state) => state.cart);
 	const user = useSelector((state) => state.userDetails[0]);
 	const restaurant = useSelector((state) => state.currentRestaurant[0]);
+	const [orderId, setOrderId] = useState();
 
 	let finalTotal = 0;
 	let amountTotal = 0;
@@ -18,6 +19,7 @@ const OrderConfirm = () => {
 	const [pickup, setPickup] = useState(false);
 
 	const [order, setOrder] = useState({
+		id: orderId,
 		CustomerId: user.id,
 		RestaurantId: restaurant.id,
 		OrderTotal: finalTotal,
@@ -34,21 +36,6 @@ const OrderConfirm = () => {
 		});
 	};
 
-	const submitOrder = async () => {
-		const response = await fetch(
-			import.meta.env.VITE_BACKEND + "/order/sendorder",
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(order),
-			}
-		);
-		getOrderId();
-	};
-
-	const [orderId, setOrderId] = useState();
 	const getOrderId = async () => {
 		const response = await fetch(
 			import.meta.env.VITE_BACKEND + "/order/getorders",
@@ -62,19 +49,51 @@ const OrderConfirm = () => {
 		if (!response.ok) {
 			window.alert(response.statusText);
 		} else {
-			const json = await response.json();
-			setOrderId(json[json.length - 1]);
-			console.log("json - array of orders:  ", json);
+			const orderData = await response.json();
+			console.log("response", orderData);
 		}
-		console.log("order id: ", orderId);
 	};
 
-	// const [orderItems, setOrderItems] = useState({
-	//   MenuItemId: cart.ItemId,
-	//   OrderId: orderId.id,
-	//   ItemQuantity: cart.Ammount,
-	//   MenuItemName: cart.ItemName,
-	// });
+	const submitOrder = async () => {
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND + "/order/sendorder",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(order),
+			}
+		);
+	};
+
+	// get the single, last order consistently
+	useEffect(() => {
+		getOrderId();
+	}, []);
+
+	const [orderItems, setOrderItems] = useState({
+		MenuItemId: cart.ItemId,
+		OrderId: orderId + 1,
+		ItemQuantity: cart.Ammount,
+		MenuItemName: cart.ItemName,
+	});
+
+	const sendOrderItems = async (item) => {
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND + "/order/sendorderitems",
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(item),
+			}
+		);
+	};
+
+	const OrderItems = () => {
+		for (let item in cart) {
+		}
+	};
 
 	return (
 		<div className="flex flex-col gap-4 justify-items-center ">
@@ -104,7 +123,12 @@ const OrderConfirm = () => {
 				<button
 					className="bg-green text-gray text-lg px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
 					onClick={() => submitOrder()}>
-					Submit
+					Confirm
+				</button>
+				<button
+					className="bg-green text-gray text-lg px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
+					onClick={() => sendOrderItems()}>
+					Finish & Pay
 				</button>
 			</div>
 		</div>
