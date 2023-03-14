@@ -52,7 +52,10 @@ const AdminNavBar = () => {
 			className="w-full lg:min-h-screen fixed bottom-0 lg:flex lg:flex-col lg:bg-green lg:static lg:w-[300px]"
 			onClick={() => toggleNav()}>
 			<div className="bg-green w-full box-border p-3 flex justify-between z-10 relative lg:w-[300px] lg:z-0 lg:p-5">
-				<img src="../logos/avocado_gray.svg" alt="" className="h-[30px]" />
+				<Link to={"/restaurantdashboard"}>
+					{" "}
+					<img src="../logos/avocado_gray.svg" alt="" className="h-[30px]" />
+				</Link>
 				<button
 					className="w-[30px] h-[30px] bg-green lg:hidden "
 					onClick={() => toggleNav()}>
