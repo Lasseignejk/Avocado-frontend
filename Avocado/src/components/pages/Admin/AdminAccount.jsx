@@ -97,84 +97,89 @@ const AdminAccount = () => {
 						Account Details
 					</h1>
 				</div>
+				<div className="flex flex-col lg:flex-row w-full gap-5">
+					<div className="w-full">
+						<div className="flex justify-center lg:justify-start">
+							<form className="px-3 py-5 flex flex-col gap-3 mb-3 items-center w-[80%] md:w-1/2 md:mb-5 bg-ltgray rounded-xl shadow-lg lg:w-full">
+								<h1 className="text-2xl font-bold text-center tracking-wider">
+									Update Account
+								</h1>
 
-				<div className="flex justify-center lg:justify-start">
-					<form className="px-3 py-5 flex flex-col gap-3 mb-3 items-center w-[80%] md:w-1/2 md:mb-5 bg-ltgray rounded-xl shadow-lg lg:w-1/3">
-						<h1 className="text-2xl font-bold text-center tracking-wider">
-							Update Account
-						</h1>
+								<div className="flex flex-col w-full">
+									<label
+										className="font-bold text-xl tracking-wide"
+										htmlFor="firstName">
+										First Name
+									</label>
+									<input
+										className="pl-1 py-1 border-b-2 border-black bg-ltgray font-thin"
+										type="text"
+										id="firstName"
+										name="OwnerFirstName"
+										placeholder={userDetails?.OwnerFirstName}
+										onChange={(e) => setFormState(e)}
+										value={
+											updateDetails.OwnerFirstName
+												? updateDetails.OwnerFirstName
+												: ""
+										}
+									/>
+								</div>
+								<div className="flex flex-col w-full">
+									<label
+										className="font-bold text-xl tracking-wide"
+										htmlFor="lastName">
+										Last Name
+									</label>
+									<input
+										className="pl-1 py-1 border-b-2 border-black bg-ltgray font-thin"
+										type="text"
+										id="lastName"
+										name="OwnerLastName"
+										placeholder={userDetails?.OwnerLastName}
+										onChange={(e) => setFormState(e)}
+										value={
+											updateDetails.OwnerLastName
+												? updateDetails.OwnerLastName
+												: ""
+										}
+									/>
+								</div>
 
-						<div className="flex flex-col w-full">
-							<label
-								className="font-bold text-xl tracking-wide"
-								htmlFor="firstName">
-								First Name
-							</label>
-							<input
-								className="pl-1 py-1 border-b-2 border-black bg-ltgray font-thin"
-								type="text"
-								id="firstName"
-								name="OwnerFirstName"
-								placeholder={userDetails?.OwnerFirstName}
-								onChange={(e) => setFormState(e)}
-								value={
-									updateDetails.OwnerFirstName
-										? updateDetails.OwnerFirstName
-										: ""
-								}
-							/>
-						</div>
-						<div className="flex flex-col w-full">
-							<label
-								className="font-bold text-xl tracking-wide"
-								htmlFor="lastName">
-								Last Name
-							</label>
-							<input
-								className="pl-1 py-1 border-b-2 border-black bg-ltgray font-thin"
-								type="text"
-								id="lastName"
-								name="OwnerLastName"
-								placeholder={userDetails?.OwnerLastName}
-								onChange={(e) => setFormState(e)}
-								value={
-									updateDetails.OwnerLastName ? updateDetails.OwnerLastName : ""
-								}
-							/>
-						</div>
+								<div className="flex flex-col w-full">
+									<label
+										className="font-bold text-xl tracking-wide"
+										htmlFor="phone">
+										Phone Number
+									</label>
+									<input
+										className="pl-1 py-1 border-b-2 border-black bg-ltgray font-thin"
+										type="text"
+										id="phone"
+										name="OwnerPhoneNumber"
+										placeholder={userDetails?.OwnerPhoneNumber}
+										onChange={(e) => setFormState(e)}
+										value={
+											updateDetails.OwnerPhoneNumber
+												? updateDetails.OwnerPhoneNumber
+												: ""
+										}
+									/>
+								</div>
 
-						<div className="flex flex-col w-full">
-							<label
-								className="font-bold text-xl tracking-wide"
-								htmlFor="phone">
-								Phone Number
-							</label>
-							<input
-								className="pl-1 py-1 border-b-2 border-black bg-ltgray font-thin"
-								type="text"
-								id="phone"
-								name="OwnerPhoneNumber"
-								placeholder={userDetails?.OwnerPhoneNumber}
-								onChange={(e) => setFormState(e)}
-								value={
-									updateDetails.OwnerPhoneNumber
-										? updateDetails.OwnerPhoneNumber
-										: ""
-								}
-							/>
+								<div className="flex justify-center">
+									<button
+										className="bg-green text-gray text-lg px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
+										type="button"
+										onClick={() => updateUserAccount(updateDetails)}>
+										UPDATE
+									</button>
+								</div>
+							</form>
 						</div>
-
-						<div className="flex justify-center">
-							<button
-								className="bg-green text-gray text-lg px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
-								type="button"
-								onClick={() => updateUserAccount(updateDetails)}>
-								UPDATE
-							</button>
-						</div>
-					</form>
+					</div>
+					<DeleteAdminForm rest={rest} setRest={setRest} />
 				</div>
-				<DeleteAdminForm rest={rest} setRest={setRest} />
 			</div>
 		</div>
 	);

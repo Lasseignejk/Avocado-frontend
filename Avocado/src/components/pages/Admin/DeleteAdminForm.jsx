@@ -108,9 +108,9 @@ const DeleteAdminForm = ({ rest, setRest }) => {
 	);
 
 	return (
-		<div className="flex justify-center mb-3 lg:justify-start">
+		<div className="flex justify-center mb-3 lg:justify-start w-full lg:items-center">
 			<ToastContainer />
-			<form className="px-3 py-5 flex flex-col gap-3 mb-3 items-center w-[80%] md:w-1/2 md:mb-5 bg-ltgray rounded-xl shadow-lg lg:w-1/3">
+			<form className="px-3 py-5 flex flex-col gap-3 mb-3 items-center w-[80%] md:w-1/2 md:mb-5 bg-ltgray rounded-xl shadow-lg lg:w-full">
 				<h1 className="text-2xl font-bold text-[#b8241a] tracking-wider flex gap-2 items-center">
 					<FaExclamationTriangle /> DANGER ZONE <FaExclamationTriangle />
 				</h1>
