@@ -56,6 +56,13 @@ export const DashboardSlice = createSlice({
       state.userDetails = [{ OwnerFirstName: "", CustomerFirstName: "" }];
       state.currentMenu = [{ ItemName: "" }];
       state.currentRestaurant = [{ RestName: "" }];
+      state.cartOpen = false;
+      state.cart = [];
+      state.currentRestId = "";
+      state.barGraph = false;
+      state.pieGraph = false;
+      state.tableGraph = false;
+      state.lineGraph = false;
     },
     setCartOpen: (state, action) => {
       state.cartOpen = action.payload;
