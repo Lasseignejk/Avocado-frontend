@@ -34,7 +34,12 @@ const Cart = ({ counter, setCounter }) => {
 					</div>
 					<div className=" flex flex-col pt-12 gap-4">
 						{cart?.map((item) => (
-							<CartItem item={item} counter={counter} setCounter={setCounter} />
+							<CartItem
+								item={item}
+								counter={counter}
+								setCounter={setCounter}
+								key={item.id}
+							/>
 						))}
 					</div>
 				</div>

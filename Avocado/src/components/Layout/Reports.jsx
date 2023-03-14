@@ -243,7 +243,6 @@ const Reports = () => {
 					{
 						type: "table",
 						header: {
-							values: [1, 2, 3],
 							align: "center",
 							height: 30,
 							fill: { color: "#387f5f" },
@@ -257,7 +256,7 @@ const Reports = () => {
 
 							font: {
 								family: "niveau-grotesk",
-								size: 18,
+								size: 10,
 								color: "#387f5f",
 							},
 						},
