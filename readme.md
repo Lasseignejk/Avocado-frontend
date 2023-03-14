@@ -54,7 +54,7 @@ React
 ---
 
 <h2 align="center">Use/View:</h2>
-To view the project, click here: 
+To view the project, click here: <a href="https://avocado-frontend.onrender.com/">Live Site</a>
 <br><br>
 To read the project blog, head to: <a href="https://dev.to/megdiv/avocado-3im3
 ">Project Blog</a>
