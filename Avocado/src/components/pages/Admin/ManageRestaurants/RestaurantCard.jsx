@@ -12,7 +12,7 @@ const RestaurantAdminCard = ({ restaurant, toggle, setToggle }) => {
 	return (
 		<div className="bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-3 flex py-3 md:w-[400px] md:py-3 md:shadow-md justify-between">
 			<Link
-				className="flex gap-3"
+				className="flex gap-3 items-center"
 				to="/menuinfo"
 				state={restaurant}
 				onClick={() => dispatch(setRestaurant(restaurant.id))}>
