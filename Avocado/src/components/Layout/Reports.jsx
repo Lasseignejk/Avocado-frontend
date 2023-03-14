@@ -200,30 +200,33 @@ const Reports = () => {
 
 				/////TABLE GRAPH
 
-				//most popular items
-				console.log(menuData);
-				let popularItems = menuData
-					.map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
-					.filter((n) => n);
+				const { data: popularData, error: popularError } = await supabase
+					.from("MenuItems")
+					.select("ItemName")
+					.match({ RestId: restId, ItemIsPopular: true });
+
+				console.log(popularData);
+
+				let popItems = popularData.map((a) => a.ItemName);
 
 				let tabledata = [
 					{
 						type: "table",
 						header: {
 							align: "center",
-							height: 30,
 							fill: { color: "#387f5f" },
 							font: { family: "niveau-grotesk", size: 20, color: "#fffbf7" },
 						},
 						cells: {
-							values: popularItems,
+							values: popItems,
 							align: "center",
 							height: 30,
+							width: 50,
 							fill: { color: "#efebe4" },
 
 							font: {
 								family: "niveau-grotesk",
-								size: 10,
+								size: 8,
 								color: "#387f5f",
 							},
 						},
