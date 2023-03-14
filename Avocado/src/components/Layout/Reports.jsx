@@ -147,45 +147,12 @@ const Reports = () => {
 					height: 300,
 					width: 500,
 					xaxis: {
-						tickformat: "%d %B (%a)\n %Y",
+						tickformat: "%d %B (%a) %Y",
+						tickvals: days,
 					},
 				};
 
 				Plotly.newPlot("BAR", data, layout);
-
-				//orderData
-				//orderItemData
-				// const ids = [];
-				// const getOrderIds = (orderData) => {
-				// 	console.log(orderData);
-
-				// 	orderData.forEach((order) => {
-				// 		ids.push(order.id);
-				// 	});
-				// 	return ids;
-				// };
-				// const orderIds = getOrderIds(orderData);
-				// console.log(orderIds);
-
-				// const getOrderItemIds = () => {
-				// 	let orderItems = [];
-				// 	orderIds.map(async (id) => {
-				// 		const { data, error } = await supabase
-				// 			.from("OrderItem")
-				// 			.select()
-				// 			.eq("OrderId", id);
-				// 		orderItems = [...orderItems, ...data];
-				// 		console.log(orderItems);
-				// 		const itemsIds = [];
-				// 		orderItems.map((item) => {
-				// 			itemsIds.push(item.MenuItemId);
-				// 		});
-				// 		console.log(itemsIds);
-				// 	});
-				// };
-
-				// const test = getOrderItemIds();
-				// console.log(test);
 
 				//////PIE CHART
 
@@ -289,7 +256,8 @@ const Reports = () => {
 					plot_bgcolor: "#efebe4",
 					height: 280,
 					xaxis: {
-						tickformat: "%d %B (%a)\n %Y",
+						tickformat: "%d %B (%a) %Y",
+						tickvals: days,
 					},
 				};
 
@@ -339,12 +307,12 @@ const Reports = () => {
 									Ordered Total
 								</button>
 								{/* Percentage of items on menu Pie Graph */}
-								<button
+								{/* <button
 									type="button"
 									onClick={() => dispatch(openPieGraph())}
 									className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2">
 									Menu Percentages
-								</button>
+								</button> */}
 							</div>
 						</div>
 
