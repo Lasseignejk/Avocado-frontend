@@ -36,6 +36,8 @@ const OrderConfirm = () => {
 		});
 	};
 
+	let orderData = null;
+
 	const getOrderId = async () => {
 		const response = await fetch(
 			import.meta.env.VITE_BACKEND + "/order/getorders",
@@ -49,8 +51,8 @@ const OrderConfirm = () => {
 		if (!response.ok) {
 			window.alert(response.statusText);
 		} else {
-			const orderData = await response.json();
-			console.log("response", orderData);
+			orderData = await response.json();
+			console.log("data: ", orderData);
 		}
 	};
 
@@ -67,32 +69,51 @@ const OrderConfirm = () => {
 		);
 	};
 
-	// get the single, last order consistently
 	useEffect(() => {
-		getOrderId();
+		const fetchData = async () => {
+			await getOrderId();
+			setOrderId(orderData[orderData.length - 1].id + 1);
+		};
+		fetchData();
 	}, []);
 
-	const [orderItems, setOrderItems] = useState({
-		MenuItemId: cart.ItemId,
-		OrderId: orderId + 1,
-		ItemQuantity: cart.Ammount,
-		MenuItemName: cart.ItemName,
-	});
+	console.log("order id: ", orderId);
 
-	const sendOrderItems = async (item) => {
-		const response = await fetch(
-			import.meta.env.VITE_BACKEND + "/order/sendorderitems",
-			{
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(item),
-			}
-		);
-	};
+	// const [orderItems, setOrderItems] = useState({
+	//   MenuItemId: cart.id,
+	//   OrderId: orderId,
+	//   ItemQuantity: cart.Amount,
+	//   MenuItemName: cart.ItemName,
+	// });
 
-	const OrderItems = () => {
-		for (let item in cart) {
-		}
+	const submitOrderItems = () => {
+		submitOrder();
+		cart.forEach((item) => {
+			console.log({
+				MenuItemId: item.id,
+				OrderId: orderId,
+				ItemQuantity: item.Amount,
+				MenuItemName: item.ItemName,
+			});
+			const sendItems = async (item) => {
+				const response = await fetch(
+					import.meta.env.VITE_BACKEND + "/order/sendorderitems",
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							MenuItemId: item.id,
+							OrderId: orderId,
+							ItemQuantity: item.Amount,
+							MenuItemName: item.ItemName,
+						}),
+					}
+				);
+			};
+			sendItems(item);
+		});
 	};
 
 	return (
@@ -122,12 +143,7 @@ const OrderConfirm = () => {
 				</h1>
 				<button
 					className="bg-green text-gray text-lg px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
-					onClick={() => submitOrder()}>
-					Confirm
-				</button>
-				<button
-					className="bg-green text-gray text-lg px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
-					onClick={() => sendOrderItems()}>
+					onClick={() => submitOrderItems()}>
 					Finish & Pay
 				</button>
 			</div>
