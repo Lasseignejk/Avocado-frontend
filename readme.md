@@ -1,3 +1,63 @@
-Readme for the frontend
+<h1 align="center"> 
+<img src="public/article/left.png" alt="brand"> <img width="200" height="auto" src="public/article/brand.jpg" alt="brand"> <img src="public/article/right.png" alt="brand">
+</h1>
 
-<a href="https://github.com/peterriesing">Peter Riesing</a>
+<br>
+<p align="center">
+Avocado is a restaurant point of sale and database management system that gives a customer the ability to order food, a restaurant the ability to view and manage current orders, and an owner the ability to edit their menu and analyze sales statistics.
+</p>
+
+---
+
+<h2 align="center">Creators:</h2>
+<p align="center">
+<a href="hhttps://github.com/corewill">Corey Williams</a>
+* <a href="https://github.com/peterriesing">Peter Riesing</a>
+* <a href="https://github.com/Lasseignejk">Jaye Lasseigne</a>
+* <a href="https://github.com/Meg-Div">Meg Divringi</a>
+
+<p align="center">Corey, Peter, Jaye, and Meg created Avocado while enrolled within the Web Developer program at DigitalCrafts. 
+</p>
+<br>
+<p align="center">*</p>
+
+<p align="center">Peter designed our brand identity and styling, creating the restaurant logos and layout with Adobe Illustrator, and implementing the menu, cart, and order confirmation pages as well as their frontend Supabase routes. 
+</p>
+<br>
+<p align="center">*</p>
+<p align="center">Jaye was our project manager and styling TailwindCSS specialist, leading our multiple daily standups, acting as our instructor liaison, creating our mockup flow chart in Figma and database schema in DB designer, as well as managing our Github project tracking page, setting up our Supabase storage, and deploying our project front and back ends on Render. 
+</p>
+<br>
+<p align="center">*</p>
+<p align="center">Meg designed the login, signup, and dashboard logic as well as the reducers slice for our Redux state, implementing state persist, our front-end routes and state logic queries, and creating our reporting in Plotly to showcase database statistics.
+</p>
+
+---
+
+<h2 align="center">Languages/ Technologies:</h2>
+<p align="center">
+React
+* JavScript
+* Redux
+* Supabase
+* TailwindCSS
+* Plotly
+* Toastify
+* State Persist
+* HTML/CSS
+</p>
+
+---
+
+<h2 align="center">Use/View:</h2>
+To view the project, click here: 
+<br><br>
+To read the project blog, head to: <a href="https://dev.to/megdiv">Project Blog</a>
+<br><br>
+
+---
+
+<br>
+<p align="center"> 
+<img src="public/article/left.png" alt="brand"> <img src="public/article/right.png" alt="brand">
+</p>
