@@ -1,5 +1,5 @@
 <h1 align="center"> 
-<img src="public/article/left.png" alt="brand"> <img width="200" height="auto" src="public/article/brand.jpg" alt="brand"> <img src="public/article/right.png" alt="brand">
+<img height="300px" src="Avocado/public/items/Avocado.png" alt="brand">
 </h1>
 
 <br>
@@ -11,16 +11,20 @@ Avocado is a restaurant point of sale and database management system that gives 
 
 <h2 align="center">Creators:</h2>
 <p align="center">
-<a href="hhttps://github.com/corewill">Corey Williams</a>
+<a href="https://github.com/corewill">Corey Williams</a>
 * <a href="https://github.com/peterriesing">Peter Riesing</a>
 * <a href="https://github.com/Lasseignejk">Jaye Lasseigne</a>
 * <a href="https://github.com/Meg-Div">Meg Divringi</a>
 
 <p align="center">Corey, Peter, Jaye, and Meg created Avocado while enrolled within the Web Developer program at DigitalCrafts. 
 </p>
-<br>
-<p align="center">*</p>
 
+<p align="center">*</p>
+<p align="center">Corey set up our Supabase schema, our initial routes and multiple table backend routes, connecting our backend and frontend servers and creating the reporting system for the back-of-house operation page.
+</p>
+<br>
+
+<p align="center">*</p>
 <p align="center">Peter designed our brand identity and styling, creating the restaurant logos and layout with Adobe Illustrator, and implementing the menu, cart, and order confirmation pages as well as their frontend Supabase routes. 
 </p>
 <br>
@@ -52,12 +56,12 @@ React
 <h2 align="center">Use/View:</h2>
 To view the project, click here: 
 <br><br>
-To read the project blog, head to: <a href="https://dev.to/megdiv">Project Blog</a>
-<br><br>
+To read the project blog, head to: <a href="https://dev.to/megdiv/avocado-3im3
+">Project Blog</a>
 
----
+<br>
 
 <br>
 <p align="center"> 
-<img src="public/article/left.png" alt="brand"> <img src="public/article/right.png" alt="brand">
+<img height="200px" src="Avocado/public/items/dashboard_illustration.svg" alt="brand"> 
 </p>
