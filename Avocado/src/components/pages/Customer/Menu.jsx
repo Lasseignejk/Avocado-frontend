@@ -19,6 +19,7 @@ const Menu = () => {
 	const [menu, setMenu] = useState();
 	const [counter, setCounter] = useState(0);
 
+<<<<<<< Updated upstream
 	const getMenu = async () => {
 		const response = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/restaurant/getmenu",
@@ -38,6 +39,25 @@ const Menu = () => {
 			console.log("menu: ", json);
 		}
 	};
+=======
+  const getMenu = async () => {
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND + "/admin/restaurant/getmenu",
+      {
+        method: "GET",
+        headers: {
+          restid: restuarant.id,
+        },
+      }
+    );
+    if (!response.ok) {
+      window.alert(response.statusText);
+    } else {
+      const json = await response.json();
+      setMenu(json);
+    }
+  };
+>>>>>>> Stashed changes
 
 	useEffect(() => {
 		getMenu();
