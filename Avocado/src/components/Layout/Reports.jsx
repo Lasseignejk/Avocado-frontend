@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import placeholder from "/items/menu_placeholder.svg";
 import { supabase } from "../../supabase";
-import { useUserData } from "./Queries";
 import {
   setBarGraph,
   setLineGraph,
