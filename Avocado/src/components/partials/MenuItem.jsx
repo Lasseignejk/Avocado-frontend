@@ -18,8 +18,6 @@ const MenuItem = ({ item, counter, setCounter }) => {
 		}
 	};
 
-	// const shortTitle
-
 	const shortDescription = shortenDescription(item.ItemDescription, 35);
 
 	return (
