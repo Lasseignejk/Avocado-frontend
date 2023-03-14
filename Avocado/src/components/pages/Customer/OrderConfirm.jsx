@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CustomerNavBar from "../../partials/CustomerNavBar";
 
@@ -45,30 +45,36 @@ const OrderConfirm = () => {
         body: JSON.stringify(order),
       }
     );
-    console.log(response);
     getOrderId();
   };
 
-  const [orderId, setOrderId] = useState({});
+  const [orderId, setOrderId] = useState();
   const getOrderId = async () => {
     const response = await fetch(
-      import.meta.env.VITE_BACKEND + "/order/getorder",
+      import.meta.env.VITE_BACKEND + "/order/getorders",
       {
         method: "GET",
         headers: {
-          CustomerId: user.id,
+          userid: user.id,
         },
       }
     );
-
     if (!response.ok) {
       window.alert(response.statusText);
     } else {
       const json = await response.json();
-      setOrderId(json);
+      setOrderId(json[json.length - 1]);
+      console.log("json - array of orders:  ", json);
     }
-    console.log(orderId);
+    console.log("order id: ", orderId);
   };
+
+  // const [orderItems, setOrderItems] = useState({
+  //   MenuItemId: cart.ItemId,
+  //   OrderId: orderId.id,
+  //   ItemQuantity: cart.Ammount,
+  //   MenuItemName: cart.ItemName,
+  // });
 
   return (
     <div className="flex flex-col gap-4 justify-items-center ">
