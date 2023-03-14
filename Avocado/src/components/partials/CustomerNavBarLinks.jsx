@@ -9,7 +9,7 @@ const CustomerNavBarLinks = ({ links }) => {
 					className={
 						"border-b-2 border-black h-[50px] flex justify-center items-center w-full md:border-none"
 					}
-					index={index}>
+					key={index}>
 					<Link
 						to={link.path}
 						className="flex justify-center items-center w-full hover:bg-[#4e98ba] hover:text-gray duration-200 ease-in rounded-full md:pr-3 md:pl-1 md:py-1 md:w-[150px] lg:w-[200px]">

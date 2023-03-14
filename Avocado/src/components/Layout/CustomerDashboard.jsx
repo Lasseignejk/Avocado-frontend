@@ -95,10 +95,14 @@ const CustomerDashboard = () => {
 							{restaurants?.map((restaurant, index) => (
 								<Link
 									to="/menu"
+									key={index}
 									state={restaurant}
 									className="w-full sm:w-[350px]"
 									onClick={() => dispatch(setRestaurant(restaurant))}>
-									<CustomerRestaurantCard restaurant={restaurant} key={index} />
+									<CustomerRestaurantCard
+										restaurant={restaurant}
+										key={restaurant.id}
+									/>
 								</Link>
 							))}
 						</div>
