@@ -6,7 +6,6 @@ const OrderConfirm = () => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.userDetails[0]);
   const restaurant = useSelector((state) => state.currentRestaurant[0]);
-  const [sendOrder, setSendOrder] = useState();
 
   let finalTotal = 0;
   let amountTotal = 0;
@@ -15,17 +14,25 @@ const OrderConfirm = () => {
     amountTotal += elem.Amount;
   }
 
-  const order = {
+  const [delivery, setDelivery] = useState(false);
+  const [pickup, setPickup] = useState(false);
+
+  const [order, setOrder] = useState({
     CustomerId: user.id,
     RestaurantId: restaurant.id,
     OrderTotal: finalTotal,
     OrderComplete: false,
-    IsPickup: true,
-    IsDelivery: false,
+    IsPickup: pickup,
+    IsDelivery: delivery,
     TotalItems: cart.length,
-    Notes: "no notes",
+  });
+
+  const setOptions = (e) => {
+    setOrder({
+      ...order,
+      [e.target.name]: e.target.value,
+    });
   };
-  console.log(order);
 
   const submitOrder = async () => {
     const response = await fetch(
@@ -33,27 +40,44 @@ const OrderConfirm = () => {
       {
         method: "POST",
         headers: {
-          body: order,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      }
+    );
+    console.log(response);
+    getOrderId();
+  };
+
+  const [orderId, setOrderId] = useState({});
+  const getOrderId = async () => {
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND + "/order/getorder",
+      {
+        method: "GET",
+        headers: {
+          CustomerId: user.id,
         },
       }
     );
+
     if (!response.ok) {
       window.alert(response.statusText);
     } else {
       const json = await response.json();
-      setSendOrder(json);
-      console.log(sendOrder);
+      setOrderId(json);
     }
+    console.log(orderId);
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4 justify-items-center ">
       <CustomerNavBar />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col m-auto w-[400px] gap-4">
         <h1 className="py-4 text-[2rem] text-center font-black">
           Confirm your order
         </h1>
-        <div>
+        <div className="flex flex-col justify-center">
           {cart?.map((item) => (
             <div className="flex gap-3">
               <h1>{item.Amount}</h1>
@@ -61,6 +85,13 @@ const OrderConfirm = () => {
               <h1>${item.ItemPrice}.00</h1>
             </div>
           ))}
+          <textarea
+            name="Notes"
+            id="Notes"
+            rows="5"
+            placeholder="Order notes"
+            onChange={(e) => setOptions(e)}
+          ></textarea>
         </div>
         <h1 className="py-4 text-[2rem] text-center font-black">
           Total: ${finalTotal}.00
