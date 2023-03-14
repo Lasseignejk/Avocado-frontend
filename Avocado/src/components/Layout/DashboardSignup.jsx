@@ -10,6 +10,8 @@ import {
 	setLocation,
 	setGuest,
 } from "../reducers/DashboardSlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DashboardSignup = () => {
 	const dispatch = useDispatch();
@@ -33,7 +35,39 @@ const DashboardSignup = () => {
 		});
 	};
 
+	const checkSignUpDetails = (accountDetails) => {
+		if (!accountDetails.CustomerFirstName) {
+			return toast.error("Please enter in a first name.", {
+				position: toast.POSITION.TOP_CENTER,
+			});
+		}
+		if (!accountDetails.CustomerLastName) {
+			return toast.error("Please enter in a last name.", {
+				position: toast.POSITION.TOP_CENTER,
+			});
+		}
+		if (!accountDetails.CustomerEmail) {
+			return toast.error("Please enter in a valid email.", {
+				position: toast.POSITION.TOP_CENTER,
+			});
+		}
+		if (!accountDetails.CustomerPhoneNumber) {
+			return toast.error("Please enter in a phone number.", {
+				position: toast.POSITION.TOP_CENTER,
+			});
+		}
+		if (!accountDetails.Password) {
+			return toast.error(
+				"Please enter in a valid password. Passwords must be at least 8 characters long.",
+				{
+					position: toast.POSITION.TOP_CENTER,
+				}
+			);
+		}
+	};
+
 	const sendToSupabase = async (accountDetails) => {
+		checkSignUpDetails(accountDetails);
 		const {
 			CustomerEmail,
 			Password,
@@ -49,11 +83,6 @@ const DashboardSignup = () => {
 			email: CustomerEmail,
 			password: Password,
 		});
-
-		if (signUpError) {
-			setIsError(signUpError);
-			return;
-		}
 
 		//signs in
 		let { data, error: SignInError } = await supabase.auth.signInWithPassword({
@@ -133,17 +162,18 @@ const DashboardSignup = () => {
 		return navigate("/");
 	};
 
-	if (isError) {
-		return (
-			<>
-				<h1>Something went wrong</h1>
-				<pre>{isError?.msg}</pre>
-			</>
-		);
-	}
+	// if (isError) {
+	// 	return (
+	// 		<>
+	// 			<h1>Something went wrong</h1>
+	// 			<pre>{isError?.msg}</pre>
+	// 		</>
+	// 	);
+	// }
 
 	return (
 		<div className="w-screen h-screen flex justify-center items-center bg-green">
+			<ToastContainer />
 			<div className="w-[300px] bg-gray flex flex-col items-center p-5 gap-10 rounded-xl shadow-2xl shadow-dkgreen">
 				<form className="flex flex-col gap-5 font-niveau font-bold">
 					<img src="../logos/avocado_green.svg" alt="" className="h-[30px]" />
