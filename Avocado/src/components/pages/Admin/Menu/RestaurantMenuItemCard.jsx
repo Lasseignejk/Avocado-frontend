@@ -5,17 +5,27 @@ import { FaCog } from "react-icons/fa";
 
 const RestaurantMenuItemCard = ({ item, setMenu, toggle, setToggle }) => {
 	const [openModal, setOpenModal] = useState(false);
+
+	const shortenTitle = (title, num) => {
+		let cut = title.indexOf(" ", num);
+		if (cut == -1) {
+			return title;
+		} else {
+			return title.substring(0, cut) + "...";
+		}
+	};
+
 	return (
 		<div className="flex-col w-[350px]">
-			<div className="bg-ltgray font-niveau px-3 flex py-3 gap-3 duration-200 ease-in w-full md:py-3 shadow-md justify-between rounded-xl">
-				<div className="flex gap-3">
+			<div className="bg-ltgray font-niveau pr-3 flex gap-1 duration-200 ease-in w-full shadow-md justify-between rounded-xl h-[100px]">
+				<div className="flex gap-2">
 					<img
-						className="w-20 h-20"
+						className="w-24 rounded-tl-xl rounded-bl-xl"
 						src={item.ItemImg ? item.ItemImg : placeholder}
 						alt="item image"
 					/>
-					<div>
-						<h1 className="font-bold">{item?.ItemName}</h1>
+					<div className="py-3">
+						<h1 className="font-bold">{shortenTitle(item?.ItemName, 15)}</h1>
 						<h1>${item?.ItemPrice}</h1>
 						<h1>{item?.ItemType}</h1>
 					</div>
