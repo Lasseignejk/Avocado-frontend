@@ -6,377 +6,384 @@ import { supabase } from "../../supabase";
 import { useUserData } from "./Queries";
 import Button from "./Button";
 import {
-	setRestaurant,
-	setBarGraph,
-	setLineGraph,
-	setTableGraph,
-	setPieGraph,
+  setBarGraph,
+  setLineGraph,
+  setTableGraph,
+  setPieGraph,
 } from "../reducers/DashboardSlice";
 
 import AdminNavBar from "../partials/AdminNavBar";
 import ReportsRestaurantOptions from "../pages/Admin/ReportsRestaurantOptions";
 
 const Reports = () => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const isOwner = useSelector((state) => state.isOwner);
-	const userDetails = useSelector((state) => state.userDetails);
-	const currentRestaurant = useSelector((state) => state.currentRestaurant[0]);
+  const isOwner = useSelector((state) => state.isOwner);
+  const userDetails = useSelector((state) => state.userDetails);
+  const currentRestaurant = useSelector((state) => state.currentRestaurant[0]);
+  const barGraph = useSelector((state) => state.barGraph);
+  const lineGraph = useSelector((state) => state.lineGraph);
+  const tableGraph = useSelector((state) => state.tableGraph);
+  const pieGraph = useSelector((state) => state.pieGraph);
 
-	const barGraph = useSelector((state) => state.barGraph);
-	const lineGraph = useSelector((state) => state.lineGraph);
-	const tableGraph = useSelector((state) => state.tableGraph);
-	const pieGraph = useSelector((state) => state.pieGraph);
+  const [restName, setRestName] = useState(null);
 
-	const [restName, setRestName] = useState(null);
+  const [error, setError] = useState(false);
 
-	const [error, setError] = useState(false);
+  //const [barOpen, setBarOpen] = useState(false);
 
-	const [pieOpen, setPieOpen] = useState(false);
-	const [tableOpen, setTableOpen] = useState(false);
-	const [lineOpen, setLineOpen] = useState(false);
+  const [allRestrauntsByOwner, setRestaurants] = useState(null);
 
-	//const [barOpen, setBarOpen] = useState(false);
+  const openBarGraph = () => {
+    dispatch(setBarGraph(!barGraph));
+    dispatch(setPieGraph(false));
+    dispatch(setLineGraph(false));
+    dispatch(setTableGraph(false));
+  };
 
-	const [allRestrauntsByOwner, setRestaurants] = useState(null);
+  const openPieGraph = () => {
+    dispatch(setBarGraph(false));
+    dispatch(setPieGraph(pieGraph));
+    dispatch(setLineGraph(false));
+    dispatch(setTableGraph(false));
+  };
 
-	useEffect(() => {
-		if (isOwner) {
-			const fetchOwnerData = async () => {
-				try {
-					const { id } = userDetails[0];
+  const openLineGraph = () => {
+    dispatch(setBarGraph(false));
+    dispatch(setPieGraph(false));
+    dispatch(setLineGraph(!lineGraph));
+    dispatch(setTableGraph(false));
+  };
 
-					//all restaurants by owner
-					const { data: restrauntsByOwnerData, error: errorByOwnerData } =
-						await supabase.from("Restaurant").select().eq("OwnerId", id);
+  const openTableGraph = () => {
+    dispatch(setBarGraph(false));
+    dispatch(setPieGraph(false));
+    dispatch(setLineGraph(false));
+    dispatch(setTableGraph(!tableGraph));
+  };
 
-					if (errorByOwnerData) {
-						setError(errorByOwnerData);
-						return;
-					}
+  useEffect(() => {
+    if (isOwner) {
+      const fetchOwnerData = async () => {
+        try {
+          const { id } = userDetails[0];
 
-					//all restraunts data by owner
+          //all restaurants by owner
+          const { data: restrauntsByOwnerData, error: errorByOwnerData } =
+            await supabase.from("Restaurant").select().eq("OwnerId", id);
 
-					setRestaurants(restrauntsByOwnerData);
-				} catch (error) {
-					console.log(error);
-				}
-			};
+          if (errorByOwnerData) {
+            setError(errorByOwnerData);
+            return;
+          }
 
-			fetchOwnerData();
-		}
-	}, [isOwner]);
+          //all restraunts data by owner
 
-	useEffect(() => {
-		const fetchUserData = async () => {
-			//order for that specifc restaurant (currently hard coded in)
+          setRestaurants(restrauntsByOwnerData);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-			try {
-				let restId = currentRestaurant; //currentRestaurantId
+      fetchOwnerData();
+    }
+  }, [isOwner]);
 
-				///BAR GRAPH
+  useEffect(() => {
+    const fetchUserData = async () => {
+      //order for that specifc restaurant (currently hard coded in)
 
-				//all orders by rest
-				const { data: orderData, error: orderError } = await supabase
-					.from("Order")
-					.select()
-					.eq("RestaurantId", restId);
+      try {
+        let restId = currentRestaurant; //currentRestaurantId
 
-				//all unique days items were purchased
-				let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
-				DatePurchased = [...new Set(DatePurchased)];
+        ///BAR GRAPH
 
-				//arrays for totals by day
-				let days = [];
-				let totals = [];
-				let totalItemsPerDay = [];
+        //all orders by rest
+        const { data: orderData, error: orderError } = await supabase
+          .from("Order")
+          .select()
+          .eq("RestaurantId", restId);
 
-				//daily totals
-				for (let i = 0; i < DatePurchased.length; i++) {
-					days.push(DatePurchased[i]);
-					let total = 0;
-					let totalItemsCount = 0;
-					for (let elem of orderData) {
-						if (elem.DatePurchased == DatePurchased[i]) {
-							total += elem.OrderTotal;
-							totalItemsCount += elem.TotalItems;
-						}
-					}
-					totals.push(total);
-					totalItemsPerDay.push(totalItemsCount);
-				}
-				let monthlyAmountMade = totals.reduce((a, b) => a + b);
+        //all unique days items were purchased
+        let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
+        DatePurchased = [...new Set(DatePurchased)];
+        console.log("DatePurchased", DatePurchased);
 
-				var data = [
-					{
-						x: days,
-						y: totals,
-						type: "bar",
-						marker: {
-							color: "#387f5f",
-						},
-					},
-				];
+        //arrays for totals by day
+        let days = [];
+        let totals = [];
+        let totalItemsPerDay = [];
 
-				let layout = {
-					title: "Lifetime Totals: $" + monthlyAmountMade,
-					paper_bgcolor: "#efebe4",
-					plot_bgcolor: "#efebe4",
-					height: 300,
-					width: 500,
-				};
+        //daily totals
+        for (let i = 0; i < DatePurchased.length; i++) {
+          days.push(DatePurchased[i]);
+          let total = 0;
+          let totalItemsCount = 0;
+          for (let elem of orderData) {
+            if (elem.DatePurchased == DatePurchased[i]) {
+              total += elem.OrderTotal;
+              totalItemsCount += elem.TotalItems;
+            }
+          }
+          totals.push(total);
+          totalItemsPerDay.push(totalItemsCount);
+        }
+        let monthlyAmountMade = totals.reduce((a, b) => a + b);
 
-				Plotly.newPlot("BAR", data, layout);
+        var data = [
+          {
+            x: days,
+            y: totals,
+            type: "bar",
+            marker: {
+              color: "#387f5f",
+            },
+          },
+        ];
 
-				//orderData
-				//orderItemData
-				// const ids = [];
-				// const getOrderIds = (orderData) => {
-				// 	console.log(orderData);
+        let layout = {
+          title: "Lifetime Totals: $" + monthlyAmountMade,
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+          height: 300,
+          width: 500,
+          xaxis: {
+            tickformat: "%d %B (%a)\n %Y",
+          },
+        };
 
-				// 	orderData.forEach((order) => {
-				// 		ids.push(order.id);
-				// 	});
-				// 	return ids;
-				// };
-				// const orderIds = getOrderIds(orderData);
-				// console.log(orderIds);
+        Plotly.newPlot("BAR", data, layout);
 
-				// const getOrderItemIds = () => {
-				// 	let orderItems = [];
-				// 	orderIds.map(async (id) => {
-				// 		const { data, error } = await supabase
-				// 			.from("OrderItem")
-				// 			.select()
-				// 			.eq("OrderId", id);
-				// 		orderItems = [...orderItems, ...data];
-				// 		console.log(orderItems);
-				// 		const itemsIds = [];
-				// 		orderItems.map((item) => {
-				// 			itemsIds.push(item.MenuItemId);
-				// 		});
-				// 		console.log(itemsIds);
-				// 	});
-				// };
+        //orderData
+        //orderItemData
+        // const ids = [];
+        // const getOrderIds = (orderData) => {
+        // 	console.log(orderData);
 
-				// const test = getOrderItemIds();
-				// console.log(test);
+        // 	orderData.forEach((order) => {
+        // 		ids.push(order.id);
+        // 	});
+        // 	return ids;
+        // };
+        // const orderIds = getOrderIds(orderData);
+        // console.log(orderIds);
 
-				//////PIE CHART
+        // const getOrderItemIds = () => {
+        // 	let orderItems = [];
+        // 	orderIds.map(async (id) => {
+        // 		const { data, error } = await supabase
+        // 			.from("OrderItem")
+        // 			.select()
+        // 			.eq("OrderId", id);
+        // 		orderItems = [...orderItems, ...data];
+        // 		console.log(orderItems);
+        // 		const itemsIds = [];
+        // 		orderItems.map((item) => {
+        // 			itemsIds.push(item.MenuItemId);
+        // 		});
+        // 		console.log(itemsIds);
+        // 	});
+        // };
 
-				//all menu items by restaurant
-				const { data: menuData, error: menuError } = await supabase
-					.from("MenuItems")
-					.select()
-					.eq("RestId", restId);
+        // const test = getOrderItemIds();
+        // console.log(test);
 
-				//All breakfast items by restaurant
-				let itemBreak = menuData.map((a) => [a.ItemBreakfast]).length;
-				let itemLun = menuData.map((a) => [a.itemLunch]).length;
-				let itemDin = menuData.map((a) => [a.itemDinner]).length;
+        //////PIE CHART
 
-				let piedata = [
-					{
-						values: [itemBreak, itemLun, itemDin],
-						labels: ["Breakfast", "Lunch", "Dinner"],
-						type: "pie",
-						marker: {
-							colors: [
-								"#387f5f",
-								"#96d9f7",
-								"#d2d2c8",
-								"#efebe4",
-								"#145a3c",
-								"#d2d2c8",
-							],
-						},
-					},
-				];
+        //all menu items by restaurant
+        const { data: menuData, error: menuError } = await supabase
+          .from("MenuItems")
+          .select()
+          .eq("RestId", restId);
 
-				let pielayout = {
-					height: 300,
-					width: 500,
-					paper_bgcolor: "#efebe4",
-					plot_bgcolor: "#efebe4",
-					legend: {
-						x: 1,
-						xanchor: "right",
-					},
-				};
+        //All breakfast items by restaurant
+        let itemBreak = menuData.map((a) => [a.ItemBreakfast]).length;
+        let itemLun = menuData.map((a) => [a.itemLunch]).length;
+        let itemDin = menuData.map((a) => [a.itemDinner]).length;
 
-				Plotly.newPlot("PIE", piedata, pielayout);
+        let piedata = [
+          {
+            values: [itemBreak, itemLun, itemDin],
+            labels: ["Breakfast", "Lunch", "Dinner"],
+            type: "pie",
+            marker: {
+              colors: [
+                "#387f5f",
+                "#96d9f7",
+                "#d2d2c8",
+                "#efebe4",
+                "#145a3c",
+                "#d2d2c8",
+              ],
+            },
+          },
+        ];
 
-				/////TABLE GRAPH
+        let pielayout = {
+          height: 300,
+          width: 500,
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+          legend: {
+            x: 1,
+            xanchor: "right",
+          },
+        };
 
-				//most popular items
-				console.log(menuData);
-				let popularItems = menuData
-					.map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
-					.filter((n) => n);
+        Plotly.newPlot("PIE", piedata, pielayout);
 
-				let tabledata = [
-					{
-						type: "table",
-						header: {
-							values: [1, 2, 3],
-							align: "center",
-							height: 30,
-							fill: { color: "#387f5f" },
-							font: { family: "niveau-grotesk", size: 20, color: "#fffbf7" },
-						},
-						cells: {
-							values: popularItems,
-							align: "center",
-							height: 30,
-							fill: { color: "#efebe4" },
+        /////TABLE GRAPH
 
-							font: {
-								family: "niveau-grotesk",
-								size: 18,
-								color: "#387f5f",
-							},
-						},
-					},
-				];
+        //most popular items
+        console.log(menuData);
+        let popularItems = menuData
+          .map((a) => (a.ItemIsPopular === true ? a.ItemName : ""))
+          .filter((n) => n);
 
-				let tablelayout = {
-					height: 300,
-					width: 500,
-					paper_bgcolor: "#efebe4",
-					plot_bgcolor: "#efebe4",
-				};
+        let tabledata = [
+          {
+            type: "table",
+            header: {
+              values: [1, 2, 3],
+              align: "center",
+              height: 30,
+              fill: { color: "#387f5f" },
+              font: { family: "niveau-grotesk", size: 20, color: "#fffbf7" },
+            },
+            cells: {
+              values: popularItems,
+              align: "center",
+              height: 30,
+              fill: { color: "#efebe4" },
 
-				Plotly.newPlot("TABLE", tabledata, tablelayout);
+              font: {
+                family: "niveau-grotesk",
+                size: 18,
+                color: "#387f5f",
+              },
+            },
+          },
+        ];
 
-				///LINE GRAPH
+        let tablelayout = {
+          height: 300,
+          width: 500,
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+        };
 
-				var linedata = {
-					x: days,
-					y: totalItemsPerDay,
-					mode: "lines",
-					marker: {
-						color: "#387f5f",
-					},
-				};
+        Plotly.newPlot("TABLE", tabledata, tablelayout);
 
-				var linelayout = {
-					title: "Amount of items ordered per day",
-					paper_bgcolor: "#efebe4",
-					plot_bgcolor: "#efebe4",
-					height: 280,
-				};
+        ///LINE GRAPH
 
-				Plotly.newPlot("LINE", [linedata], linelayout);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchUserData();
-	}, [currentRestaurant]);
+        var linedata = {
+          x: days,
+          y: totalItemsPerDay,
+          mode: "lines",
+          marker: {
+            color: "#387f5f",
+          },
+        };
 
-	return (
-		<>
-			<div className="mb-[55px] lg:flex lg:mb-0 overflow-y-hidden">
-				<AdminNavBar />
-				<div className="flex flex-col gap-10 pt-3 lg:w-full lg:pl-16 lg:pr-8 lg:pt-20 lg:flex-row lg:justify-between lg:pb-10">
-					<div className="flex flex-col gap-3">
-						<div className="flex flex-col items center">
-							<h1 className="text-center mb-3 text-4xl font-bold text-green lg:pl-0 lg:text-left">
-								Reports
-							</h1>
+        var linelayout = {
+          title: "Amount of items ordered per day",
+          paper_bgcolor: "#efebe4",
+          plot_bgcolor: "#efebe4",
+          height: 280,
+          xaxis: {
+            tickformat: "%d %B (%a)\n %Y",
+          },
+        };
 
-							<div className="flex justify-center lg:justify-start">
-								<ReportsRestaurantOptions />
-							</div>
-							<div className="flex flex-wrap gap-3 justify-center mt-4">
-								{/* Lifetime totals BAR Graph */}
-								<button
-									type="button"
-									onClick={() =>
-										dispatch(
-											setBarGraph(!barGraph),
-											setPieOpen(false),
-											setLineOpen(false),
-											setTableOpen(false)
-										)
-									}
-									className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2">
-									Lifetime Totals
-								</button>
+        Plotly.newPlot("LINE", [linedata], linelayout);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUserData();
+  }, [currentRestaurant]);
 
-								{/* Popular items Table Graph */}
-								<button
-									type="button"
-									onClick={() =>
-										dispatch(
-											setBarGraph(false),
-											setPieOpen(false),
-											setLineOpen(false),
-											setTableOpen(!tableGraph)
-										)
-									}
-									className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2">
-									Popular Items
-								</button>
-								{/* Order item totals Line Graph */}
-								<button
-									type="button"
-									onClick={() =>
-										dispatch(
-											setBarGraph(false),
-											setPieOpen(false),
-											setLineOpen(!lineGraph),
-											setTableOpen(false)
-										)
-									}
-									className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2">
-									Ordered Total
-								</button>
-								{/* Percentage of items on menu Pie Graph */}
-								<button
-									type="button"
-									onClick={() =>
-										dispatch(
-											setBarGraph(false),
-											setPieOpen(!pieGraph),
-											setLineOpen(false),
-											setTableOpen(false)
-										)
-									}
-									className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2">
-									Menu Percentages
-								</button>
-							</div>
-						</div>
+  return (
+    <>
+      <div className="mb-[55px] lg:flex lg:mb-0 overflow-y-hidden">
+        <AdminNavBar />
+        <div className="flex flex-col gap-10 pt-3 lg:w-full lg:pl-16 lg:pr-8 lg:pt-20 lg:flex-row lg:justify-between lg:pb-10">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col items center">
+              <h1 className="text-center mb-3 text-4xl font-bold text-green lg:pl-0 lg:text-left">
+                Reports
+              </h1>
 
-						<div className="mt-5 space-x-3 items-center mx-12 h-[500px]">
-							<div className="flex justify-center">
-								<div
-									id="BAR"
-									className={barGraph ? "w-[510px] h-[310px]" : "hidden"}></div>
-							</div>
-							<div className="flex justify-center">
-								<div
-									id="LINE"
-									className={lineOpen ? "w-[510px] h-[310px]" : "hidden"}></div>
-							</div>
-							<div className="flex justify-center">
-								<div
-									id="PIE"
-									className={pieOpen ? "w-[510px] h-[310px]" : "hidden"}></div>
-							</div>
-							<div className="flex justify-center">
-								<div
-									id="TABLE"
-									className={
-										tableOpen ? "w-[510px] h-[310px]" : "hidden"
-									}></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+              <div className="flex justify-center lg:justify-start">
+                <ReportsRestaurantOptions />
+              </div>
+              <div className="flex flex-wrap gap-3 justify-center mt-4">
+                {/* Lifetime totals BAR Graph */}
+                <button
+                  type="button"
+                  onClick={() => dispatch(openBarGraph())}
+                  className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2"
+                >
+                  Lifetime Totals
+                </button>
+
+                {/* Popular items Table Graph */}
+                <button
+                  type="button"
+                  onClick={() => dispatch(openTableGraph())}
+                  className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2"
+                >
+                  Popular Items
+                </button>
+                {/* Order item totals Line Graph */}
+                <button
+                  type="button"
+                  onClick={() => dispatch(openLineGraph())}
+                  className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2"
+                >
+                  Ordered Total
+                </button>
+                {/* Percentage of items on menu Pie Graph */}
+                <button
+                  type="button"
+                  onClick={() => dispatch(openPieGraph())}
+                  className="w-[170px] text-ltgray bg-green rounded-full px-5 py-2"
+                >
+                  Menu Percentages
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-5 space-x-3 items-center mx-12 h-[500px]">
+              <div className="flex justify-center">
+                <div
+                  id="BAR"
+                  className={barGraph ? "w-[510px] h-[310px]" : "hidden"}
+                ></div>
+              </div>
+              <div className="flex justify-center">
+                <div
+                  id="LINE"
+                  className={lineGraph ? "w-[510px] h-[310px]" : "hidden"}
+                ></div>
+              </div>
+              <div className="flex justify-center">
+                <div
+                  id="PIE"
+                  className={pieGraph ? "w-[510px] h-[310px]" : "hidden"}
+                ></div>
+              </div>
+              <div className="flex justify-center">
+                <div
+                  id="TABLE"
+                  className={tableGraph ? "w-[510px] h-[310px]" : "hidden"}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 export default Reports;
