@@ -7,10 +7,9 @@ const BOH = () => {
 
   const [Order, setOrder] = useState([]);
   const [OrderItems, setOrderItems] = useState([]);
-
   useEffect(() => {
-    const getOrders = async () => {
-      const response = await fetch(
+    const getOrdersAndItems = async () => {
+      const orderResponse = await fetch(
         import.meta.env.VITE_BACKEND + "/admin/restaurant/getOrders",
         {
           method: "GET",
@@ -19,34 +18,28 @@ const BOH = () => {
           },
         }
       );
-
-      if (!response.ok) {
-        window.alert(response?.statusText);
-      } else {
-        const json = await response?.json();
-        setOrder(json);
+      if (!orderResponse.ok) {
+        window.alert(orderResponse.statusText);
+        return;
       }
-    };
-    getOrders();
-  }, [], restaurantId);
-
-  useEffect(() => {
-    const getOrderItems = async (OrderId) => {
-      const response = await fetch(
-        import.meta.env.VITE_BACKEND + "/admin/restaurant/getOrderItems",
-        {
-          method: "GET",
-          headers: {
-            orderid: OrderId,
-          },
+      const orders = await orderResponse.json();
+      const promises = orders.reverse().map(async (order) => {
+        const itemResponse = await fetch(
+          import.meta.env.VITE_BACKEND + "/admin/restaurant/getOrderItems",
+          {
+            method: "GET",
+            headers: {
+              orderid: order.id,
+            },
+          }
+        );
+        if (!itemResponse.ok) {
+          window.alert(itemResponse.statusText);
+          return [];
         }
-      );
-      if (!response.ok) {
-        window.alert(response.statusText);
-      } else {
-        const json = await response.json();
+        const items = await itemResponse.json();
         const uniqueItems = [];
-        for (let newItem of json) {
+        for (let newItem of items) {
           const itemExists = OrderItems.some(
             (existingItem) =>
               existingItem.id === newItem.id &&
@@ -56,21 +49,17 @@ const BOH = () => {
             uniqueItems.push(newItem);
           }
         }
-        // Return the array of unique items
         return uniqueItems;
-      }
-    };
-    
-    const promises = Order.reverse().map((order) => getOrderItems(order.id));
-  
-    // Use Promise.all() to wait for all promises to complete
-    Promise.all(promises).then((results) => {
+      });
+      const results = await Promise.all(promises);
       const allItems = results.flat();
       if (allItems.length > 0) {
-        setOrderItems((prevItems) => [...prevItems, ...allItems]);
+        setOrderItems(allItems);
       }
-    });
-  }, [Order]);
+      setOrder(orders);
+    };
+    getOrdersAndItems();
+  }, [restaurantId, OrderItems]);
   return (
     <div className="mb-[55px] lg:flex lg:mb-0 justify-start">
       <AdminNavBar />
