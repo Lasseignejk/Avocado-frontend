@@ -37,7 +37,6 @@ const RestaurantDashboard = () => {
 			return;
 		}
 		if (data) {
-			console.log(data[0]);
 			dispatch(setUserDetails(data[0]));
 		}
 	};

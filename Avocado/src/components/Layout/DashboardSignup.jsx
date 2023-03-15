@@ -120,8 +120,6 @@ const DashboardSignup = () => {
 					setIsError(insertOwnerError);
 					return;
 				}
-				console.log(data);
-				console.log(insertOwnerError);
 
 				//sets as owner in state
 				dispatch(setOwner(!isOwner));
@@ -147,8 +145,6 @@ const DashboardSignup = () => {
 					setIsError(insertCustomerError);
 					return;
 				}
-				console.log(data);
-				console.log(insertCustomerError);
 
 				//sets as customer in state
 				dispatch(setCustomer(!isCustomer));
@@ -161,15 +157,6 @@ const DashboardSignup = () => {
 		//navigates to signup/login again
 		return navigate("/");
 	};
-
-	// if (isError) {
-	// 	return (
-	// 		<>
-	// 			<h1>Something went wrong</h1>
-	// 			<pre>{isError?.msg}</pre>
-	// 		</>
-	// 	);
-	// }
 
 	return (
 		<div className="w-screen h-screen flex justify-center items-center bg-green">

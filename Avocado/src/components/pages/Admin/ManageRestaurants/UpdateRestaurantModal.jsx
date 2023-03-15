@@ -112,7 +112,6 @@ const UpdateRestaurantModal = ({
 				uploadPath,
 			id: restaurant.id,
 		};
-		console.log(logoPath);
 
 		const response = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/restaurant/updaterestaurant",

@@ -51,7 +51,6 @@ export function useUserData() {
 			}
 			if (data) {
 				dispatch(setUserDetails(data));
-				console.log("userdetails", data);
 			}
 		};
 		if (userEmail) {

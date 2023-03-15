@@ -28,12 +28,10 @@ const DeleteAdminForm = ({ rest, setRest }) => {
 
 	const checkRestaurants = async () => {
 		getRestaurants();
-		console.log(rest);
+
 		if (rest.length > 0) {
-			console.log("cannot delete");
 			displayError();
 		} else {
-			console.log("can delete");
 			displayDelete();
 		}
 	};
@@ -51,7 +49,6 @@ const DeleteAdminForm = ({ rest, setRest }) => {
 	};
 
 	const deleteAdmin = async () => {
-		console.log(userDetails);
 		const response = await fetch(
 			import.meta.env.VITE_BACKEND + "/admin/deleteAdmin",
 			{
