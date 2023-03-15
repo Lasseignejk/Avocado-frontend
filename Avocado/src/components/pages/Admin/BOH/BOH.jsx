@@ -63,100 +63,103 @@ const BOH = () => {
     getOrdersAndItems();
   }, [restaurantId, OrderItems]);
 
-  const updateOrder = async (order) => {
-    const response = await fetch(
-      import.meta.env.VITE_BACKEND + "/admin/restaurant/updateOrderDone",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(order),
-      }
-    );
-    if (!response.ok) {
-      window.alert(response.statusText);
-      return;
-    }}
+  // const updateOrder = async (order) => {
+  //   try {
+  //     const response = await fetch(
+  //       import.meta.env.VITE_BACKEND + "/admin/restaurant/updateOrderDone",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ orderid: order.id}),
+  //       } 
+  //     ); console.log(response)
+  //     const data = await response.json();
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-    const deleteOrder = async () => {
-      const response = await fetch(
-        import.meta.env.VITE_BACKEND + "/admin/restaurant/deleteOrder",
-        {
-          method: "DELETE",
-          headers: {
-            orderid: Order.id,
-          },
-        }
-      );
-    };
+  // const deleteOrder = async () => {
+  //   const response = await fetch(
+  //     import.meta.env.VITE_BACKEND + "/admin/restaurant/deleteOrder",
+  //     {
+  //       method: "DELETE",
+  //       headers: {
+  //         orderid: Order.id,
+  //       },
+  //     }
+  //   );
+  // };
 
-    return (
-      <div className="mb-[55px] lg:flex lg:mb-0 justify-start">
-        <AdminNavBar />
-        <div className="flex flex-col items-center lg:flex-row lg:flex-wrap gap-3 lg:justify-center">
-          <h1 className="text-center text-4xl font-bold text-green lg:text-left">
-            {" "}
-            Current Orders{" "}
-          </h1>
-          <div className="flex flex-col gap-10 pt-3 lg:w-full lg:px-16 lg:pt-20 lg:flex-row  justify-center">
-            <div>
-              {Order.map((order) => (
-                <div key={order.id}>
-                  <div className="flex flex-col gap-3 mb-5">
-                    <h1 className="text-center text-xl font-bold lg:text-left">
-                      Customer number {order.id}
-                    </h1>
-                  </div>
-                  <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:justify-evenly">
-                    {OrderItems.filter((item) => item.OrderId === order.id).map(
-                      (item, index) => (
-                        <div className="bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-3 flex py-3 md:w-[400px] md:py-3 md:shadow-md justify-between">
-                          <div key={`${order.id}-${index}`}>
-                            <div className="flex flex-row gap-3 mb-5">
-                              Menu Item:{" "}
-                              <p className="font-bold ml-5">
-                                {item.MenuItemName}
-                              </p>
-                            </div>
-                            <div className="flex flex-row gap-3 mb-5">
-                              Portion Count:{" "}
-                              <p className="font-bold">{item.ItemQuantity}</p>
-                            </div>
-                            <div className="flex flex-row gap-3 mb-5">
-                              Order Date/Time:{" "}
-                              <p className="font-bold">{item.created_at}</p>
-                            </div>
+  return (
+    <div className="mb-[55px] lg:flex lg:mb-0 justify-start">
+      <AdminNavBar />
+      <div className="flex flex-col items-center lg:flex-row lg:flex-wrap gap-3 lg:justify-center">
+        <h1 className="text-center text-4xl font-bold text-green lg:text-left">
+          {" "}
+          Current Orders{" "}
+        </h1>
+        <div className="flex flex-col gap-10 pt-3 lg:w-full lg:px-16 lg:pt-20 lg:flex-row  justify-center">
+          <div>
+            {Order.map((order) => (
+              <div key={order.id}>
+                <div className="flex flex-col gap-3 mb-5">
+                  <h1 className="text-center text-xl font-bold lg:text-left">
+                    Order Number {order.id}
+                  </h1>
+                </div>
+                <div className="flex flex-col gap-4 md:flex-row md:flex-wrap ">
+                  {OrderItems.filter((item) => item.OrderId === order.id).map(
+                    (item, index) => (
+                      <div className="bg-ltgray rounded-2xl duration-200 ease-in hover:bg-blue font-niveau px-3 flex py-3 md:w-[400px] md:py-3 md:shadow-md justify-between">
+                        <div key={`${order.id}-${index}`}>
+                          <div className="flex flex-row gap-3 mb-5">
+                            Menu Item:{" "}
+                            <p className="font-bold ml-5">
+                              {item.MenuItemName}
+                            </p>
                           </div>
-                          <div className="grid place-items-center">
-                            <button
-                              className="hover:bg-gray bg-green duration-200 ease-in w-[50px] h-[50px] flex items-center justify-center rounded-full hover:text-gray"
-                              type="button"
-                              onClick={() => updateOrder(order.id)}
-                            >
-                              <FaCheck className="text-2xl text-black" />
-                            </button>
-
-                            <button
-                              className="hover:bg-gray bg-[#b8241a] duration-200 ease-in w-[50px] h-[50px] flex items-center justify-center rounded-full hover:text-gray"
-                              type="button"
-                              onClick={() => deleteOrder(Order.id)}
-                            >
-                              <FaRegTrashAlt className="text-2xl text-black" />
-                            </button>
+                          <div className="flex flex-row gap-3 mb-5">
+                            Portion Count:{" "}
+                            <p className="font-bold">{item.ItemQuantity}</p>
+                          </div>
+                          <div className="flex flex-row gap-3 mb-5">
+                            Order Date/Time:{" "}
+                            <p className="font-bold">{item.created_at}</p>
                           </div>
                         </div>
-                      )
-                    )}
-                  </div>
+                        <div className="grid place-items-center">
+                          <button
+                            className="hover:bg-gray bg-green duration-200 ease-in w-[50px] h-[50px] flex items-center justify-center rounded-full hover:text-gray"
+                            type="button"
+                            // onClick={() => updateOrder(order.id)}
+                          >
+                            <FaCheck className="text-2xl text-black" />
+                          </button>
+
+                          <button
+                            className="hover:bg-gray bg-[#b8241a] duration-200 ease-in w-[50px] h-[50px] flex items-center justify-center rounded-full hover:text-gray"
+                            type="button"
+                            // onClick={() => deleteOrder(order.id)}
+                          >
+                            <FaRegTrashAlt className="text-2xl text-black" />
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-          <div className="flex justify-center"></div>
         </div>
+        <div className="flex justify-center"></div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default BOH;
