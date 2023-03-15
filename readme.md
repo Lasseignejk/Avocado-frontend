@@ -58,6 +58,9 @@ To view the project, click here: <a href="https://avocado-frontend.onrender.com/
 <br><br>
 To read the project blog, head to: <a href="https://dev.to/megdiv/avocado-3im3
 ">Project Blog</a>
+<br><br>
+To watch a video walkthrough, make your way to YouTube: <a href="https://www.youtube.com/watch?v=wsLZCA090U4
+">Project Blog</a>
 
 <br>
 
