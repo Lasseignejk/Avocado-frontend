@@ -3,20 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const RestaurantAuthGaurd = ({ children }) => {
-  const isCustomer = useSelector((state) => state.isCustomer);
-  const location = useSelector((state) => state.location);
+	const isCustomer = useSelector((state) => state.isCustomer);
+	const location = useSelector((state) => state.location);
 
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isCustomer) {
-      if (location != "/restaurantdashboard" || location != "/myrestaurants") {
-        navigate("/restaurantdashboard");
-      }
-    }
-    console.log("location:", location);
-  }, [location]);
-  return children;
+	useEffect(() => {
+		if (!isCustomer) {
+			if (location != "/restaurantdashboard" || location != "/myrestaurants") {
+				navigate("/restaurantdashboard");
+			}
+		}
+	}, [location]);
+	return children;
 };
 
 export default RestaurantAuthGaurd;

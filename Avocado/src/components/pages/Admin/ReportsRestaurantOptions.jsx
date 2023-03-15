@@ -1,27 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import placeholder from "/items/menu_placeholder.svg";
-import { supabase } from "../../../supabase";
-import { useUserData } from "../../Layout/Queries";
-
-import {
-	setRestaurant,
-	setBarGraph,
-	setLineGraph,
-	setTableGraph,
-	setPieGraph,
-} from "../../reducers/DashboardSlice";
+import { setRestaurant } from "../../reducers/DashboardSlice";
 
 const ReportsRestaurantOptions = () => {
 	const dispatch = useDispatch();
 	const [restaurants, setRestaurants] = useState([]);
-
 	const isOwner = useSelector((state) => state.isOwner);
 	const userDetails = useSelector((state) => state.userDetails[0]);
-
 	const currentRestaurant = useSelector((state) => state.currentRestaurant[0]);
-	console.log(currentRestaurant);
 
 	const getRestaurants = async () => {
 		const response = await fetch(

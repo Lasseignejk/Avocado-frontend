@@ -79,9 +79,7 @@ const Reports = () => {
 					//all restraunts data by owner
 
 					setRestaurants(restrauntsByOwnerData);
-				} catch (error) {
-					console.log(error);
-				}
+				} catch (error) {}
 			};
 
 			fetchOwnerData();
@@ -106,7 +104,6 @@ const Reports = () => {
 				//all unique days items were purchased
 				let DatePurchased = orderData.map((a) => a.DatePurchased.toString());
 				DatePurchased = [...new Set(DatePurchased)];
-				console.log("DatePurchased", DatePurchased);
 
 				//arrays for totals by day
 				let days = [];
@@ -205,8 +202,6 @@ const Reports = () => {
 					.select("ItemName")
 					.match({ RestId: restId, ItemIsPopular: true });
 
-				console.log(popularData);
-
 				let popItems = popularData.map((a) => a.ItemName);
 
 				let tabledata = [
@@ -265,9 +260,7 @@ const Reports = () => {
 				};
 
 				Plotly.newPlot("LINE", [linedata], linelayout);
-			} catch (error) {
-				console.log(error);
-			}
+			} catch (error) {}
 		};
 		fetchUserData();
 	}, [currentRestaurant]);

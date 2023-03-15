@@ -17,10 +17,8 @@ const DeleteCustomerForm = () => {
 	};
 
 	const deleteCustomer = async () => {
-		console.log(userDetails);
 		const response = await fetch(
-			"http://localhost:3060/customer/deletecustomer",
-			// import.meta.env.VITE_BACKEND + "/customer/deletecustomer",
+			import.meta.env.VITE_BACKEND + "/customer/deletecustomer",
 			{
 				method: "DELETE",
 				headers: {
@@ -28,8 +26,6 @@ const DeleteCustomerForm = () => {
 				},
 			}
 		);
-		console.log(response);
-		console.log("signing out...");
 		signOut();
 	};
 

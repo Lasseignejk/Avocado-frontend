@@ -29,7 +29,7 @@ const Menu = () => {
 				},
 			}
 		);
-		console.log(response);
+
 		if (!response.ok) {
 			window.alert(response.statusText);
 		} else {

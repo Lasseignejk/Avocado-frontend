@@ -17,14 +17,6 @@ const UpdateMenuItem = ({ item, setOpenModal, toggle, setToggle }) => {
 			.select()
 			.eq("id", item.id)
 			.single();
-
-		if (error) {
-			console.log(error);
-		}
-		if (data) {
-			console.log(data);
-			setUpdateItem(data);
-		}
 	};
 
 	// Reload menu items
@@ -95,12 +87,6 @@ const UpdateMenuItem = ({ item, setOpenModal, toggle, setToggle }) => {
 			.delete()
 			.eq("id", item.id);
 
-		if (error) {
-			console.log("error here: ", error);
-		}
-		if (data) {
-			console.log("data here: ", data);
-		}
 		setOpenModal(false);
 	};
 
