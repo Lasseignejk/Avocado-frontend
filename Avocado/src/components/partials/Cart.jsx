@@ -22,7 +22,7 @@ const Cart = ({ counter, setCounter }) => {
 
 	return (
 		<div className="lg:sticky lg:top-0">
-			<div className="w-[400px] min-h-screen border-2 p-4 bg-ltgray">
+			<div className="w-[400px] min-h-screen p-4 bg-ltgray">
 				<div className="flex flex-col justify-center p-4">
 					<div>
 						<h1 className=" py-4 bg-ltgray text-[2rem] text-center font-black">
