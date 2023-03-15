@@ -22,7 +22,7 @@ const Cart = ({ counter, setCounter }) => {
 
 	return (
 		<div className="lg:sticky lg:top-0">
-			<div className="w-[400px] min-h-full  p-4 bg-ltgray">
+			<div className="w-[400px] min-h-screen border-2 p-4 bg-ltgray">
 				<div className="flex flex-col justify-center p-4">
 					<div>
 						<h1 className=" py-4 bg-ltgray text-[2rem] text-center font-black">
@@ -46,7 +46,7 @@ const Cart = ({ counter, setCounter }) => {
 				<Link to="/confirmation">
 					<button
 						className={
-							"flex justify-between right-0 bg-green text-gray text-l font-bold w-full p-8 hover:bg-dkgreen" +
+							"flex justify-between right-0 bg-green text-gray text-lg font-bold w-full rounded-full p-8 hover:bg-dkgreen" +
 							(cart.length == 0 && "hover:cursor-auto hidden")
 						}>
 						<h1>Checkout</h1>
