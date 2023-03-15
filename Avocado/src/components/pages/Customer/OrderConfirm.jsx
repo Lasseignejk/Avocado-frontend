@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CustomerNavBar from "../../partials/CustomerNavBar";
+import { Link } from "react-router-dom";
 
 const OrderConfirm = () => {
   const cart = useSelector((state) => state.cart);
@@ -124,57 +125,94 @@ const OrderConfirm = () => {
   // };
 
   return (
-    <div className="flex flex-col gap-4 justify-items-center ">
+    <div className="flex flex-col gap-4">
       <CustomerNavBar />
       <div className="flex flex-col m-auto w-[400px] gap-4">
         <h1 className="py-4 text-[2rem] text-center font-black">
           Confirm your order
         </h1>
-        <div className="flex flex-col justify-center">
-          {cart?.map((item) => (
-            <div className="flex gap-3">
-              <h1>{item.Amount}</h1>
-              <h1>{item.ItemName}</h1>
-              <h1>${item.ItemPrice}.00</h1>
-            </div>
-          ))}
+        <div className="flex flex-col justify-center gap-3">
+          <div className="flex flex-col m-2">
+            {cart?.map((item) => (
+              <div className="flex justify-between p-2 border-b-[2px] border-dkgray">
+                <div className="flex gap-3">
+                  <h1 className="text-xl">{item.Amount}</h1>
+                  <h1 className="text-xl">{item.ItemName}</h1>
+                </div>
+                <h1 className="text-xl">${item.ItemPrice}.00</h1>
+              </div>
+            ))}
+          </div>
           <textarea
+            className="p-2"
             name="Notes"
             id="Notes"
-            rows="5"
+            rows="4"
             placeholder="Order notes"
             onChange={(e) => setOptions(e)}
           ></textarea>
-          <div>
-            <label htmlFor="IsPickup">Pickup</label>
-            <input
-              className="hover:cursor-pointer"
-              type="checkbox"
-              id="IsPickup"
-              name="IsPickup"
-              checked={pickup}
-              onChange={togglePickup}
-            />
-            <label htmlFor="IsDelivery">Delivery</label>
-            <input
-              className="hover:cursor-pointer"
-              type="checkbox"
-              id="IsDelivery"
-              name="IsDelivery"
-              checked={delivery}
-              onChange={toggleDelivery}
-            />
+          <div className="flex justify-center gap-8">
+            <div className="flex gap-2">
+              <label className="text-xl font-bold" htmlFor="IsPickup">
+                Pickup
+              </label>
+              <input
+                className="w-[1rem] hover:cursor-pointer"
+                type="checkbox"
+                id="IsPickup"
+                name="IsPickup"
+                checked={pickup}
+                onChange={togglePickup}
+              />
+            </div>
+            <div className="flex gap-2">
+              <label className="text-xl font-bold" htmlFor="IsDelivery">
+                Delivery
+              </label>
+              <input
+                className="w-[1rem] hover:cursor-pointer"
+                type="checkbox"
+                id="IsDelivery"
+                name="IsDelivery"
+                checked={delivery}
+                onChange={toggleDelivery}
+              />
+            </div>
           </div>
+          {/* <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
+            <input
+              class=""
+              type="radio"
+              name="IsPickup"
+              id="IsPickup"
+              checked
+            />
+            <label
+              class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
+              for="IsPickup"
+            >
+              Pickup
+            </label>
+          </div>
+          <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
+            <input class="" type="radio" name="IsDelivery" id="IsDelivery" />
+            <label
+              class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
+              for="IsDelivery"
+            >
+              Delivery
+            </label>
+          </div> */}
         </div>
         <h1 className="py-4 text-[2rem] text-center font-black">
           Total: ${finalTotal}.00
         </h1>
-        <button
-          className="bg-green text-gray text-lg px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
-          onClick={() => submitOrderItems()}
+        <Link
+          to="/finished"
+          className="bg-green text-gray text-[2rem] text-center px-3 py-1 duration-200 font-bold tracking-widest hover:bg-dkgreen rounded-full shadow-lg ease-in"
         >
-          Finish & Pay
-        </button>
+          <button onClick={() => submitOrderItems()}>Finish & Pay</button>
+        </Link>
       </div>
     </div>
   );
